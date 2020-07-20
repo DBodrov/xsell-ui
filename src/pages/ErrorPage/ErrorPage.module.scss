@@ -1,0 +1,32 @@
+@import '~lib/ui-kit/main';
+
+.ErrorPage {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: calc(100% - 60px);
+  padding: 5rem 0 0;
+  user-select: none;
+}
+
+.ErrorImageWrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.ErrorImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ErrorTitle {
+  display: flex;
+  flex-flow: column nowrap;
+  margin-bottom: 20px;
+}

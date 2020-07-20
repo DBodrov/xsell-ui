@@ -1,0 +1,44 @@
+@import '~ui-kit/main';
+
+.AccountForm {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+}
+
+.FormSection {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 1rem 22px;
+  background-color: $white;
+  border: 1px $gray-3 solid;
+  border-radius: 4px;
+}
+
+.FormField {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.FormButtons {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.InfoSectionCard {
+  background-color: $white;
+  margin-top: 1rem;
+  padding-top: 1rem;
+
+  img {
+    align-self: flex-start;
+  }
+}

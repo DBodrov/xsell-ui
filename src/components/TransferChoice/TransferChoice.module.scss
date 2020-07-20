@@ -1,0 +1,36 @@
+@import '~ui-kit/main';
+
+$screen-max-width: 450px;
+
+.Page {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: $screen-max-width;
+  overflow: hidden;
+}
+
+.Description {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  padding: 2rem 1rem 1rem;
+}
+
+.ButtonsGroup {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+}
+
+.ChoiceButton {
+  width: 100%;
+  height: 3rem;
+  margin-bottom: 1.2rem;
+}

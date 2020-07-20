@@ -1,0 +1,11 @@
+@import '../colors/colors';
+
+@mixin thin-scroll($background: $text-primary, $width: 5px) {
+  &::-webkit-scrollbar {
+    width: $width;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $background;
+  }
+}

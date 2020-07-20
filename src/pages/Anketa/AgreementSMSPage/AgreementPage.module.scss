@@ -1,0 +1,36 @@
+@import '~lib/ui-kit/main';
+
+.Page {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 450px;
+  padding: 20px 1rem;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.Header {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  background-color: $green-primary;
+  min-height: 4rem;
+}
+
+.PageTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.Disclaimer {
+  p {
+    border-top: 1px $shade-400 solid;
+    padding: 1rem 0.5rem;
+    color: $text-secondary;
+    text-align: center;
+  }
+}

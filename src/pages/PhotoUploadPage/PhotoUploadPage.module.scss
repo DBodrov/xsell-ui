@@ -1,0 +1,15 @@
+@import '~lib/ui-kit/main';
+
+.Page {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  max-width: $screen-max-width;
+  height: 100%;
+  padding: 0 1rem;
+}
+
+.PageTitle {
+  text-align: left;
+  margin-bottom: 2rem;
+}

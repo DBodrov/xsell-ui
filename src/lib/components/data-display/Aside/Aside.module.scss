@@ -1,0 +1,85 @@
+@import '~lib/ui-kit/main';
+
+.Overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: rgba($color: $shade-300, $alpha: 0.4);
+  transition: all 0.2s ease-in-out;
+}
+
+.Aside {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: minmax(2rem, 5rem) minmax(0, 1fr);
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0px;
+  height: 100%;
+  overflow: hidden;
+  background-color: $white;
+  transition: width 0.3s ease-in-out;
+  box-shadow: 8px 0px 16px 16px $shade-200;
+}
+.isOpen {
+  &.Full {
+    width: calc(100% - 4rem);
+    transition: width 0.3s ease-in-out;
+  }
+
+  &.Middle {
+    width: calc(50%);
+    transition: width 0.3s ease-in-out;
+  }
+
+  &.Small {
+    width: calc(25%);
+    transition: width 0.3s ease-in-out;
+  }
+
+  @media (max-width: $bp-laptop) {
+    &.Small {
+      width: calc(50%);
+      transition: width 0.3s ease-in-out;
+    }
+  }
+
+  @media (max-width: $bp-tablet) {
+    &.Small,
+    &.Middle {
+      width: calc(100% - 4rem);
+      transition: width 0.3s ease-in-out;
+    }
+  }
+}
+
+.Title {
+  @include font-base;
+  margin: auto;
+}
+
+.Close {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 1rem;
+  height: 1rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  img {
+    width: 1rem;
+    height: 1rem;
+  }
+}

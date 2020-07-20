@@ -1,0 +1,14 @@
+@import '~lib/ui-kit/main';
+
+$screen-max-width: 450px;
+
+.Page {
+  display: block;
+  width: 100%;
+  max-width: $screen-max-width;
+  margin: 0 auto;
+}
+
+.Layout {
+  background-color: $gray-1;
+}

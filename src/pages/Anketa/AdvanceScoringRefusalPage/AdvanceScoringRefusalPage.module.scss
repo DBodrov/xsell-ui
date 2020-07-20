@@ -1,0 +1,52 @@
+@import '~lib/ui-kit/main';
+
+.Page {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  max-width: $screen-max-width;
+  width: 100%;
+  height: 100%;
+  padding: 0 15px 5px 15px;
+  margin: 0 auto;
+}
+
+.PageTitle {
+  margin-bottom: 20px;
+}
+
+.Options {
+  padding: 20px 0 0;
+}
+
+.Button {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.RejectReason {
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 0.5rem;
+  height: 100%;
+  overflow: auto;
+
+  h3 {
+    padding-right: 4rem;
+  }
+}
+
+.ReasonsList {
+  list-style: disc !important;
+  // list-style-type: circle !important;
+  color: $primary;
+  padding: 1rem !important;
+
+  li {
+    padding: 2px 0;
+  }
+
+  span {
+    color: $text-primary;
+  }
+}

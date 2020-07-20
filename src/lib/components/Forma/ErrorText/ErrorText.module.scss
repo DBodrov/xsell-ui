@@ -1,0 +1,33 @@
+@import '~lib/ui-kit/main';
+
+.ErrorText {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  padding-top: 4px;
+}
+
+.Message {
+  @include font-base(14px);
+  color: $red_error;
+  font-weight: 600;
+  padding: 0 0;
+}
+
+.ClearButton {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  height: 100%;
+  top: 0;
+  right: 0;
+  margin: auto;
+  padding: 2px;
+  font-size: 0.7rem;
+  cursor: pointer;
+
+  img {
+    width: 0.7rem;
+    height: 0.7rem;
+  }
+}

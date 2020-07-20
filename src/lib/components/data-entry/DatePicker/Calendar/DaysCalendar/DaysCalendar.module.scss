@@ -1,0 +1,99 @@
+@import '~ui-kit/main';
+
+.DaysCalendar {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  position: relative;
+}
+
+.DaysPanel {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+  height: 3rem;
+  border-bottom: 1px solid $shade-300;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.DaysTable {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 2rem);
+  gap: 1px;
+  width: 100%;
+  height: calc(100% - 3rem);
+  padding-top: 3px;
+  overflow-y: auto;
+  position: absolute;
+  top: 3rem;
+  left: 0;
+}
+
+.DayOfWeek,
+.Day {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  border-radius: 4px;
+  user-select: none;
+}
+
+.DayOfWeek {
+  font-weight: 700;
+}
+
+.Day {
+  height: 2rem;
+  &:hover {
+    cursor: pointer;
+    border: 1px $yellow solid;
+  }
+  &:active,
+  &.Active {
+    background-color: $yellow;
+  }
+}
+
+.PrevMonthDay,
+.NextMonthDay {
+  opacity: 0.6;
+}
+
+.isDisabled {
+  opacity: 0.3;
+
+  &:hover {
+    cursor: not-allowed;
+    border: 0;
+  }
+
+  &:focus,
+  &:active {
+    background-color: transparent;
+    outline: 0;
+    border: 0;
+  }
+
+  &.Active {
+    background-color: transparent;
+  }
+}
+
+.Weekend {
+  color: $red;
+}
+
+.DayOfWeek {
+  &:nth-child(6),
+  &:nth-child(7) {
+    @extend .Weekend;
+  }
+}

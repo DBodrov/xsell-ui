@@ -1,0 +1,15 @@
+@import '~lib/ui-kit/main';
+
+.MinmaxText {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 4px;
+}
+
+.MinText,
+.MaxText {
+  @include font-base(0.87rem);
+  font-weight: 400;
+}

@@ -1,0 +1,39 @@
+@import '~ui-kit/main';
+
+.LayoutPage {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  max-width: 720px;
+  min-width: $bp-phone;
+  min-height: 100vh;
+  // height: 100vh;
+  // height: auto;
+  margin: auto;
+  position: relative;
+  background-color: $white;
+  box-shadow: 0 0 0 1px $border-color;
+  overflow: auto;
+}
+
+.Main {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  max-width: 720px;
+  min-width: $bp-phone;
+  min-height: calc(100% - 50px);
+  // height: auto;
+  // margin: auto;
+  position: relative;
+  background-color: $white;
+  // box-shadow: 0 0 0 1px $border-color;
+}
+
+.TypeGray {
+  background-color: $shade-100;
+}

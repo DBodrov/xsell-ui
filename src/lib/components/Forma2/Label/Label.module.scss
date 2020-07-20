@@ -1,0 +1,16 @@
+@import '~ui-kit/main';
+
+.Label {
+  @include font-base;
+  text-transform: uppercase;
+  font-weight: 600;
+  line-height: 20px;
+  margin-bottom: 4px;
+
+  &.Inline {
+    margin-bottom: 0;
+    margin-right: 4px;
+    align-self: center;
+    min-width: 3rem;
+  }
+}

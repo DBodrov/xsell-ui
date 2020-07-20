@@ -1,0 +1,21 @@
+@import '~lib/ui-kit/main';
+
+.Layout {
+  //@include thin-scroll;
+
+  display: flex;
+  // flex-flow: column nowrap;
+  justify-content: center;
+  // align-items: center;
+  width: 100vw;
+  min-width: $bp-phone;
+  min-height: 100vh;
+  height: auto;
+  margin: auto;
+  position: relative;
+  background-color: $white;
+}
+
+.TypeGray {
+  background-color: $shade-100;
+}

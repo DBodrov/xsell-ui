@@ -1,0 +1,43 @@
+@import '../colors/colors';
+
+@mixin font-base($font-size: 16px) {
+  font-family: 'Source Sans Pro';
+  font-size: $font-size;
+  font-weight: 400;
+  font-style: normal;
+  color: $text;
+}
+
+@mixin font-thin($font-size: 16px) {
+  font-family: 'Source Sans Pro';
+  font-size: $font-size;
+  font-weight: 200 !important;
+  font-style: normal;
+  color: $text;
+}
+
+@mixin asLink($font-size: 16px) {
+  font-family: 'Source Sans Pro';
+  font-size: $font-size;
+  font-weight: normal;
+  font-style: normal;
+  color: $primary;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: $secondary;
+  }
+}
+
+@mixin text-lead {
+  @include font-base(18px);
+  line-height: 24px;
+}
+
+@mixin text-small {
+  @include font-base(14px);
+}

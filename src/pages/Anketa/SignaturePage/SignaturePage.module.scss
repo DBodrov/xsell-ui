@@ -1,0 +1,18 @@
+@import '~lib/ui-kit/main';
+
+.Page {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 450px;
+  padding: 20px 1rem;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.PageTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}

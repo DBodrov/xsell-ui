@@ -1,0 +1,63 @@
+.Page {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #fff;
+  // overflow: hidden;
+  border: 2px red solid;
+  position: relative;
+  // padding-bottom: 60px;
+}
+.Header {
+  display: block;
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: darkgreen;
+}
+
+// .Content {
+//     display: flex;
+//     flex-flow: column nowrap;
+//     width: 100%;
+//     height: 100vh;
+//     position: absolute;
+//     top: 50px;
+//     left: 0;
+//     background-color: rgb(206, 111, 3);
+//     // overflow: hidden;
+//     border: 2px rgb(17, 0, 255) solid;
+//     overflow: scroll;
+// }
+
+.Text {
+  display: block;
+  width: 100%;
+  padding: 50px 0;
+  background-color: cadetblue;
+
+  input {
+    width: 100%;
+    height: 2rem;
+    margin-bottom: 8px;
+  }
+}
+
+.Footer {
+  display: block;
+  width: 100%;
+  height: 50px;
+  background-color: rgb(148, 187, 5);
+  color: white;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+.Form {
+  width: 80%;
+  padding: 60px 20px;
+}

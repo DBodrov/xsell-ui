@@ -1,0 +1,10 @@
+@import '~lib/ui-kit/main';
+
+.Range {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative;
+  width: 100%;
+}

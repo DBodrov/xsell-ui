@@ -1,0 +1,57 @@
+@import '~lib/ui-kit/main';
+
+.TransferForm {
+  display: block;
+  width: 100%;
+  min-height: 100%;
+  background-color: $gray-1;
+}
+
+.FormHeader {
+  margin: 1rem 0;
+}
+
+.FormFields {
+  display: flex;
+  flex-flow: column nowrap;
+  flex-grow: 1;
+  width: 100%;
+  padding: 4px 20px;
+}
+
+.FormField {
+  padding-bottom: 2rem;
+}
+
+.FormButton {
+  width: 100%;
+  height: 100%;
+}
+
+.FormFooter {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  width: 100%;
+  padding: 5px 20px 0px;
+  margin-bottom: 2rem;
+  z-index: 3;
+}
+
+.FormCard {
+  background-color: $white;
+  margin-bottom: 1rem;
+}
+
+.FormCardBody {
+  padding: 1rem;
+  padding-bottom: 0;
+}
+
+.InfoBlock {
+  margin-top: 1rem;
+}
+
+.List {
+  margin-top: 1rem;
+}

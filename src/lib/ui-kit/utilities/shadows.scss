@@ -1,0 +1,27 @@
+@import '../colors/colors.scss';
+
+@mixin raised-block {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+@mixin light-raised($color: $shade-400) {
+  box-shadow: 0 2px 6px 0 $color;
+}
+
+@mixin sh-outset-top($color: $shade-300) {
+  box-shadow: 0px -2px 10px -2px $color;
+}
+
+@mixin ripple-fx {
+  &:hover {
+    background: $shade-200 radial-gradient(circle, transparent 1%, $shade-200 1%) center/15000%;
+  }
+
+  &:active {
+    background-color: $shade-400;
+    //background-color: #e42945;
+    background-size: 100%;
+    transition: background 0s;
+  }
+}

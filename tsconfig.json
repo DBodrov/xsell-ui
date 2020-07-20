@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "checkJs": false,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "lib": ["dom", "es2015"],
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"],
+      "lib/*": ["src/lib/*"],
+      "ui-kit/*": ["src/lib/ui-kit/*"],
+      "test/*": ["test/*"],
+      "assets/*": ["src/assets/*"],
+      "services": ["src/services"],
+      "services/*": ["src/services/*"],
+      "pages/*": ["src/pages/*"],
+      "screens/*": ["src/screens/*"],
+      "components/*": ["src/components/*"],
+      "providers": ["src/providers"],
+      "context": ["src/context"],
+      "context/*": ["src/context/*"],
+      "hooks": ["src/hooks"],
+      "typings": ["src/typings"],
+      "utils/*": ["src/utils/*"],
+      "utils": ["src/utils"],
+      "icons": ["src/icons"]
+    }
+  },
+  "include": ["src"],
+  "compileOnSave": true,
+  "exclude": ["node_modules"]
+}

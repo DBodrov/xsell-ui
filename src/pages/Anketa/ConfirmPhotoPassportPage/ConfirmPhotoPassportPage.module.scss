@@ -1,0 +1,51 @@
+@import '~ui-kit/main';
+
+.Page {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  height: 100%;
+  padding: 1rem 1rem 0;
+  // background-color: $gray-1;
+
+  @media (max-width: $bp-xs) {
+    height: auto;
+  }
+}
+
+.PageTitle {
+  padding-bottom: 1rem;
+}
+
+.ConfirmForm {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  padding: 1rem;
+  border: 1px $border-color solid;
+  border-radius: 4px;
+
+  > img {
+    margin: 0 auto;
+  }
+
+  .Description {
+    padding-top: 8px;
+  }
+
+  .Info {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 1rem;
+
+    > img {
+      align-self: center;
+    }
+
+    .Text {
+      padding-left: 8px;
+    }
+  }
+}

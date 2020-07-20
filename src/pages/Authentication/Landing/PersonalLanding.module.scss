@@ -1,0 +1,63 @@
+@import '~ui-kit/main';
+
+.Page {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  height: calc(100% - 50px);
+  background-color: $white;
+}
+
+.Heading {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  .TagList {
+    display: inline-flex;
+    list-style: none;
+    position: absolute;
+    top: 1em;
+    left: 1rem;
+  }
+
+  .Tag {
+    display: block;
+    border: 1px $primary solid;
+    border-radius: 4px;
+    background-color: $white;
+    color: $primary;
+    font-size: 14px;
+    padding: 4px;
+    margin-right: 4px;
+  }
+
+  .HeadText {
+    display: inline-block;
+    position: absolute;
+    max-width: 200px;
+    top: 4em;
+    left: 1rem;
+    word-break: normal;
+
+    .HeadTitle {
+      display: block;
+      font-size: 32px;
+      line-height: 30px;
+    }
+
+    p {
+      line-height: normal;
+      margin-top: 8px;
+    }
+  }
+
+  .StartButton {
+    position: absolute;
+    bottom: 28px;
+  }
+}

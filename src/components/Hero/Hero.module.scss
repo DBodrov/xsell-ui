@@ -1,0 +1,101 @@
+@import '~lib/ui-kit/main';
+
+.Hero {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  position: relative;
+  background-color: $white;
+  justify-content: flex-start;
+
+  @media (max-width: $bp-tablet) {
+  }
+}
+
+.HeroFocus {
+  height: 220px;
+  width: 100%;
+  @media (max-width: $bp-tablet) {
+  }
+}
+
+.HeroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.HeroLines {
+  display: flex;
+  flex-flow: column nowrap;
+  margin-top: -80px;
+  width: 100%;
+  background-color: transparent;
+  height: 105px;
+
+  @media (max-width: $bp-tablet) {
+  }
+}
+
+.HeroLinesWrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.HeroHeadline {
+  display: flex;
+  position: relative;
+  // top: 10px;
+  // left: 0;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 50px;
+  padding: 10px 15px;
+  z-index: 2;
+  user-select: none;
+  // max-width: 300px;
+  width: calc(100% - 20px);
+  @media (max-width: $bp-tablet) {
+  }
+
+  h2 {
+    color: $white;
+  }
+}
+
+.HeroSubheadline {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 50px;
+  padding: 0 0 5px 20px;
+  z-index: 1;
+  user-select: none;
+  // max-width: 300px;
+  width: calc(100% - 20px);
+  margin-top: -10px;
+  margin-left: auto;
+  @media (max-width: $bp-tablet) {
+  }
+  p {
+    display: block;
+    height: 100%;
+    padding-top: 10px;
+    color: $white;
+  }
+}
+
+.Orange {
+  background-color: $orange-200;
+}
+
+.Green {
+  background-color: $green-primary;
+}
+
+.Blue {
+  background-color: $blue-200;
+}

@@ -1,0 +1,92 @@
+@import '~ui-kit/main';
+
+.Overlay {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100%;
+  overflow: hidden;
+  background-color: rgba($color: $text-primary, $alpha: 0.9);
+  transition: all 0.2s ease-in-out;
+}
+
+.Modal {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: minmax(0, 1fr);
+  width: 40vw;
+  min-width: 20rem;
+  height: 20rem;
+  min-height: 10rem;
+  border-radius: 3px;
+  box-shadow: 0px 3px 1px 7px #ffffff;
+  background-color: rgba($color: $white, $alpha: 0.8);
+  overflow: hidden;
+  padding: 0.5rem 0;
+  background-color: $white;
+
+  &.withTitle {
+    grid-template-rows: minmax(0.5rem, 2rem) minmax(0, 1fr);
+  }
+
+  @media (max-width: $bp-phone) {
+    min-width: 100%;
+  }
+}
+
+.onTop {
+  margin: 1rem auto;
+}
+
+.onCenter {
+  margin: auto;
+}
+
+.onBottom {
+  margin: auto auto 0;
+}
+
+.Title {
+  @include font-base;
+  font-weight: 600;
+  text-align: center;
+}
+
+.Close {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border: 0;
+  background-color: transparent;
+  top: 1rem;
+  right: 1rem;
+  width: 1rem;
+  height: 1rem;
+  user-select: none;
+
+  &:focus,
+  &:active {
+    border: 0;
+    outline: 0;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  img {
+    max-width: 1rem;
+    height: 1rem;
+    user-select: none;
+  }
+}
+
+.ModalContent {
+  overflow: hidden;
+}
