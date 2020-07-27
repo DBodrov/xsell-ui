@@ -9,8 +9,11 @@ const Header = styled.div`
   height: 74px;
   justify-content: space-between;
   padding: 10px 0 0;
-  margin-bottom: 3rem;
+  margin-bottom: 15px;
   z-index: 1;
+  @media (min-width: 768px) {
+    margin-bottom: 32px;
+  }
 `;
 
 const TagList = styled.ul`
@@ -27,7 +30,8 @@ const Tag = styled.li`
   background-color: #fff;
   color: var(--color-primary);
   font-size: 14px;
-  padding: 4px;
+  line-height: 14px;
+  padding: 1px 6px 4px 4px;
   margin-right: 4px;
 `;
 
@@ -39,11 +43,11 @@ const TopHead = styled.div`
   width: 100%;
 `;
 
-export function LandingHeader() {
+export function LandingHeader({ color = '#fff' }: { color?: string }) {
   return (
     <Header>
       <TopHead>
-        <OtpLogo monocolor="#fff" />
+        <OtpLogo monocolor={color} />
         <div
           css={{
             display: 'flex',
@@ -52,8 +56,8 @@ export function LandingHeader() {
             alignItems: 'center',
             justifyContent: 'flex-end',
           }}>
-          <ShieldIcon stroke="#fff" css={{ minWidth: 26 }} />
-          <span css={{ color: '#fff', fontSize: 10, paddingLeft: 10 }}>
+          <ShieldIcon stroke={color} css={{ minWidth: 26 }} />
+          <span css={{ color, fontSize: 10, paddingLeft: 10 }}>
             Гарантируем безопасность ваших данных
           </span>
         </div>

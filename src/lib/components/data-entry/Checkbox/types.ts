@@ -8,6 +8,6 @@ export interface ICheckboxProps extends React.InputHTMLAttributes<HTMLInputEleme
     indeterminate?: boolean;
     onFocusHandler?: (value: boolean) => void;
     onBlurHandler?: (value: boolean) => void;
-    onChangeHandler: (value: boolean, event?: TCheckboxChangeEvent) => void;
+    onChangeHandler: (value: boolean, event: TCheckboxChangeEvent) => void;
     onClearHandler?: (name: string) => void;
 }

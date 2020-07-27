@@ -1,8 +1,15 @@
 export type AuthStatus = 'INITIALIZE' | 'AUTH1_REQUIRED' | 'AUTH2_REQUIRED' | 'OK';
-
+export type TLandingCode = 'LANDING_TEST_1' | 'LANDING_TEST_2' | 'LANDING_TEST_3' | 'LANDING_TEST_4';
+export type TClientSettings = {
+  landingCode?: TLandingCode;
+}
+export type TUser = {
+  phone?: string;
+}
 export interface IAuthContext {
   authStatus: 'INITIALIZE' | 'AUTH1_REQUIRED' | 'AUTH2_REQUIRED' | 'OK';
-  clientSettings?: { landingCode?: string };
+  clientSettings?: TClientSettings;
+  user?: TUser;
   // error: { code: string | number; message: string };
   // isError: boolean;
   handleAuth1SignIn: (auth1Params?: IAuth1Params, isComeback?: boolean, isClient?: boolean) => void;
@@ -11,7 +18,10 @@ export interface IAuthContext {
 
 export type AuthState = {
   status: 'idle' | 'pending' | 'resolved' | 'rejected';
-  data?: { status: AuthStatus; clientSettings?: Record<string, unknown> };
+  // authData?: { status: AuthStatus; clientSettings?: TClientSettings, user?: TUser};
+  authStatus?: AuthStatus;
+  landingCode?: TLandingCode;
+  phone?: string;
   error?: any;
 };
 

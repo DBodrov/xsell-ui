@@ -56,7 +56,7 @@ const validationSchema = {
   workInn: {
     isRequired: { error: 'ИНН обязателен к заполнению' },
     customCheck: {
-      options: (value: string) => value.length === 10 || value.length === 12,
+      options: (value: string) => value?.length === 10 || value?.length === 12,
       error: 'ИНН должен быть длиной 10 или 12 цифр',
     },
   },
@@ -88,7 +88,7 @@ export function JobInfoForm({ onConfirmArchiving }: IJobInfoFormProps) {
   } = useAnketa();
   const { campaignParams, STAFF_CAMPAIGN } = useCampaign();
   const [workExperience, setWorkExperience] = useState(0);
-  const isStaff = campaignParams.campaignName === STAFF_CAMPAIGN;
+  const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
 
   const initFormData = {
     workPlace: isStaff ? 'ОТП Банк' : '',

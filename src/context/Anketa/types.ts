@@ -1,13 +1,13 @@
 export interface IAnketaState {
   status: 'idle' | 'pending' | 'resolved' | 'rejected';
   data?: {
-    anketa: Partial<IAnketa>;
+    anketa?: Partial<IAnketa>;
     step?: TAnketaStep;
   };
 }
 
 type AnketaHandlers = {
-  updateAnketa: (step: TAnketaStep, anketa: Partial<IAnketa> | Record<string, unknown>) => void;
+  updateAnketa: (step?: TAnketaStep, anketa?: Partial<IAnketa> | Record<string, unknown>) => void;
   archivingAnketa: (step: TAnketaStep) => void;
   refusePhotoPassport: () => void;
   verifySignature: (step: TAnketaStep, payload: Record<string, unknown>) => void;

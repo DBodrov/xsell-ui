@@ -35,7 +35,7 @@ export function LoginPage() {
     );
   }
 
-  const landingCode = clientSettings?.landingCode ?? 'LANDING_TEST_3';
+  const landingCode = (clientSettings?.landingCode ?? 'LANDING_TEST_1');
 
   return <Landing landingCode={landingCode} onNextPage={handleNextPage} />;
 }

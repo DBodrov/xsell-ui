@@ -4,21 +4,30 @@ import { Cookies } from 'utils/cookies';
 import { useError } from '../Error';
 import { AuthState, IAuth1Params } from './types';
 
-const initialState: AuthState = { status: 'idle', data: { status: null, clientSettings: null }, error: null };
+const initialState: AuthState = {
+  status: 'idle',
+  authStatus: undefined,
+  landingCode: undefined,
+  phone: undefined,
+  error: null,
+};
+
+const authReducer = (state: AuthState, changes: AuthState): AuthState => {
+  const newState = { ...state, ...changes };
+  return newState;
+};
 
 export function useAuthClient() {
   const fetchClient = useFetch();
   const { setErrorState } = useError();
-  const [{ status, data }, setState] = useReducer(
-    (s: AuthState, a: AuthState) => ({ ...s, ...a }),
-    initialState
-  );
+  const [{ status, authStatus, landingCode }, setState] = useReducer(authReducer, initialState);
+
   const getAuthStatus = useCallback(() => {
     setState({ status: 'pending' });
     fetchClient('/gateway/auth-status', { body: {} }).then(
-      (data) => {
-        setState({ status: 'resolved', data });
-        return data;
+      (response) => {
+        setState({ status: 'resolved', authStatus: response.status });
+        return response;
       },
       (error) => {
         setState({ status: 'rejected' });
@@ -32,13 +41,14 @@ export function useAuthClient() {
     (initParams: Record<string, unknown> = {}) => {
       setState({ status: 'pending' });
       fetchClient('/gateway/initialize', { body: initParams }).then(
-        (data) => {
-          const { sessionStatus, settings } = data;
+        (response) => {
+          const { sessionStatus, settings } = response;
           setState({
             status: 'resolved',
-            data: { status: sessionStatus, clientSettings: settings },
+            authStatus: sessionStatus,
+            landingCode: settings?.landingCode,
           });
-          return data;
+          return response;
         },
         (error) => {
           setState({ status: 'rejected' });
@@ -58,24 +68,28 @@ export function useAuthClient() {
         : isClient
         ? { url: '/gateway/auth1-utm', body: {} }
         : { url: '/gateway/auth1', body: auth1Data };
+
       fetchClient(fetchConfig.url, { body: fetchConfig.body }).then(
-        (data) => {
-          const { sessionStatus, verified } = data;
+        (response) => {
+          const { sessionStatus, verified, phone } = response;
           if (verified) {
-            !isComeback && Cookies.setCookie('_dcash_tel', auth1Data?.phoneNumber);
+            const storedPhone = auth1Data?.phoneNumber ?? phone;
+            !isComeback && Cookies.setCookie('_dcash_tel', storedPhone);
             setState({
               status: 'resolved',
-              data: { status: sessionStatus },
+              authStatus: sessionStatus,
+              phone,
             });
           } else {
             setState({ status: 'rejected' });
             setErrorState({ status: 404, message: 'User not found', code: 'USER_NOT_FOUND' });
           }
-          return data;
+          return response;
         },
         (error) => {
           setState({ status: 'rejected' });
           setErrorState(error);
+
           return error;
         }
       );
@@ -98,7 +112,7 @@ export function useAuthClient() {
           if (verified) {
             setState({
               status: 'resolved',
-              data: { status: sessionStatus },
+              authStatus: sessionStatus,
             });
           } else {
             setState({ status: 'rejected' });
@@ -129,11 +143,12 @@ export function useAuthClient() {
     auth1SignIn,
     auth2SignIn,
     logoff,
-    data,
+    authStatus,
+    landingCode,
 
     isIdle: status === 'idle',
     isLoading: status === 'pending',
-    isInitialize: data?.status === 'INITIALIZE',
-    isSuccess: status === 'resolved' && data?.status !== 'INITIALIZE',
+    isInitialize: authStatus === 'INITIALIZE',
+    isSuccess: status === 'resolved' && authStatus !== 'INITIALIZE',
   };
 }

@@ -8,4 +8,5 @@ export const Page = styled.div`
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+  background-color: #fff;
 `;

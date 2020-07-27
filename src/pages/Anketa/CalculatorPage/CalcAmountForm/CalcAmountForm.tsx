@@ -35,7 +35,7 @@ const loanParamsReducer = (s: Partial<TLoanParams>, a: Partial<TLoanParams>) => 
 export function CalcAmountForm() {
   const [loanParams, setState] = useReducer(loanParamsReducer, defaultLoanParams);
   const { STAFF_CAMPAIGN, campaignParams } = useCampaign();
-  const isStaff = campaignParams.campaignName === STAFF_CAMPAIGN;
+  const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
   const { payment, updateLoanParams } = usePayment(isStaff);
   const fetchClient = useFetch();
   const { step, updateAnketa } = useAnketa();
@@ -78,7 +78,7 @@ export function CalcAmountForm() {
   }, [formIsValid, loanParams, updateLoanParams]);
 
   const setAmount = useCallback(
-    (value: string) => {
+    (value: string | number) => {
       validateLoanParam('requestedLoanAmount', Number(value));
       setState({ requestedLoanAmount: Number(value) });
     },
@@ -86,16 +86,18 @@ export function CalcAmountForm() {
   );
 
   const setTerm = useCallback(
-    (value: string) => {
+    (value: string | number) => {
       validateLoanParam('requestedLoanTermMonths', Number(value));
       setState({ requestedLoanTermMonths: Number(value) });
     },
     [validateLoanParam]
   );
 
-  const setCheckboxes = useCallback((value: boolean, event: React.ChangeEvent<HTMLInputElement>) => {
-    const fieldName = event.target.name;
-    setState({ [fieldName]: value });
+  const setCheckboxes = useCallback((value: boolean, event?: React.ChangeEvent<HTMLInputElement>) => {
+    const fieldName = event?.target?.name;
+    if (fieldName) {
+      setState({ [fieldName]: value });
+    }
   }, []);
 
   const amountError = readError('requestedLoanAmount');

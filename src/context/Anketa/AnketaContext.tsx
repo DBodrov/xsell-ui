@@ -3,7 +3,7 @@ import { Spinner } from 'lib/components/Spinner';
 import { useAnketaClient } from './use-anketaClient';
 import { TAnketaContext } from './types';
 
-export const AnketaContext = createContext<TAnketaContext>(undefined);
+export const AnketaContext = createContext<TAnketaContext | undefined>(undefined);
 
 export function AnketaProvider({ children }: any) {
   const {
@@ -24,7 +24,8 @@ export function AnketaProvider({ children }: any) {
 
   const contextValue = useMemo<TAnketaContext>(
     () => ({
-      ...data,
+      anketa: data?.anketa,
+      step: data?.step,
       updateAnketa,
       archivingAnketa,
       refusePhotoPassport,

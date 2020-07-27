@@ -9,7 +9,8 @@ export const AuthContext = createContext<IAuthContext>(undefined);
 
 export function AuthProvider({ children }: any) {
   const {
-    data,
+    authStatus,
+    landingCode,
     getAuthStatus,
     initializeAuthSession,
     auth1SignIn,
@@ -34,12 +35,12 @@ export function AuthProvider({ children }: any) {
 
   const value = useMemo<IAuthContext>(
     () => ({
-      authStatus: data?.status,
-      clientSettings: data?.clientSettings,
+      authStatus,
+      clientSettings: {landingCode},
       handleAuth1SignIn: auth1SignIn,
       handleAuth2SignIn: auth2SignIn,
     }),
-    [data?.status, data?.clientSettings, auth1SignIn, auth2SignIn]
+    [authStatus, landingCode, auth1SignIn, auth2SignIn]
   );
   if (isIdle || isLoading || isInitialize) return <Spinner withBackdrop message="Аутентификация..." />;
 

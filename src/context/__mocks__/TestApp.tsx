@@ -1,6 +1,7 @@
 import React from 'react';
 import { AllProviders } from 'utils/test-utils';
 import { Landing } from 'screens/Landing';
+import {CalculatorPage} from 'pages/Anketa/CalculatorPage';
 
 export function TestApp() {
   return (
@@ -13,7 +14,7 @@ export function TestApp() {
           batchDocumentLink: '/doc01.pdf',
         },
       }}>
-      <Landing />
+      <CalculatorPage />
     </AllProviders>
   );
 }
