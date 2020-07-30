@@ -67,7 +67,7 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
   return loaders;
 };
 
-module.exports = webpackMerge(commonConfig, {
+module.exports = webpackMerge.merge(commonConfig, {
   mode: 'production',
   bail: true,
   stats: 'errors-only',
