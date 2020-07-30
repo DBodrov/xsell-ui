@@ -65,7 +65,7 @@ export const globalStyles = css(
       margin: 0,
       padding: 0,
       width: '100%',
-      height: '100vh',
+      height: '100%',
       fontFamily: ['Source Sans Pro'],
       fontSize: '16px',
       fontWeight: 'normal',

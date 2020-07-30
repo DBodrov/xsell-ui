@@ -10,3 +10,4 @@ export * from './HourglassIcon';
 export * from './PhonespeakerIcon';
 export * from './UserBoxIcon';
 export * from './CCOnHand';
+export * from './CloseIcon';

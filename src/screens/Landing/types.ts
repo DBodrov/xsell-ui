@@ -1,2 +1,5 @@
 import { TLandingCode } from 'context/Auth';
-export type LandingProps = { landingCode: TLandingCode; onNextPage(): void };
+export type LandingProps = {
+  landingCode: TLandingCode;
+  onNextPage(): void;
+};

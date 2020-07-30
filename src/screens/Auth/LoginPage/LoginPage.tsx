@@ -8,7 +8,7 @@ import { prepareAuth1Args } from './utils';
 export function LoginPage() {
   const [loginFormIsShown, setShowLoginForm] = useState(false);
   const { handleAuth1SignIn, clientSettings } = useAuth();
-  const isClient = clientSettings?.hasOwnProperty('landingCode') ?? false;
+  const isClient = Boolean(clientSettings?.landingCode) ?? false;
 
   const handleLogin = useCallback(
     (customerInfo: IAuth1Params) => {

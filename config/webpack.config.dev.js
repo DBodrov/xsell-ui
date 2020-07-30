@@ -61,7 +61,7 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
   return loaders;
 };
 
-module.exports = webpackMerge(commonConfig, {
+module.exports = webpackMerge.merge(commonConfig, {
   mode: 'development',
   devtool: 'inline-source-map',
   bail: true,
@@ -186,13 +186,12 @@ module.exports = webpackMerge(commonConfig, {
         changeOrigin: true,
       },
       '/gateway/*': {
-        // target: 'https://85.192.34.147',
-        target: 'http://cash.staging.productcloud.ru',
+        target: 'https://cash.staging.productcloud.ru',
         changeOrigin: true,
         secure: false,
-        // headers: {
-        //   Host: 'cash.testing.otpcloud.ru',
-        // },
+        headers: {
+          Host: 'cash.staging.productcloud.ru',
+        },
       },
     },
   },

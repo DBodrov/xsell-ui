@@ -6,7 +6,7 @@ export const LandingContent = styled.div`
   max-width: 704px;
   width: 100%;
   height: 100%;
-  margin: auto;
+  margin: 0 auto;
   padding: 0 1rem;
   position: relative;
 `;

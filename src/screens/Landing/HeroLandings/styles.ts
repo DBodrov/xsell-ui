@@ -6,6 +6,7 @@ export const baseStyles = css`
   width: 100%;
   min-height: 390px;
   overflow: hidden;
+  height: 390px;
 `;
 
 export const landing1Styles = css`
@@ -22,7 +23,7 @@ export const landing1Styles = css`
 export const landing1ImageStyles = css`
   height: 350px;
   position: absolute;
-  bottom: 0;
+  bottom: 0px;
   right: -75px;
   transition: all 0.9s ease-in-out;
   @media (min-width: 375px) {
