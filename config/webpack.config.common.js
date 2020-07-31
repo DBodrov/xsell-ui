@@ -2,7 +2,7 @@ const { resolveApp } = require('./paths');
 
 module.exports = {
   entry: {
-    main: ['@babel/polyfill', resolveApp('src/index.tsx')],
+    main: resolveApp('src/index.tsx'),
   },
 
   resolve: {

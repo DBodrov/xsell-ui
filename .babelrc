@@ -1,28 +1,30 @@
 {
-    "presets": [
-        [
-            "@babel/preset-env",
-            {
-                "loose": true
-            }
-        ],
-        "@babel/preset-react",
-        "@babel/preset-typescript",
-        [
-            "@emotion/babel-preset-css-prop",
-            {
-                "autoLabel": true,
-                "labelFormat": "[local]"
-            }
-        ]
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage",
+        "loose": true,
+        "corejs": 3
+      }
     ],
-    "plugins": [
-        "@babel/plugin-syntax-dynamic-import",
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-proposal-export-namespace-from",
-        "@babel/plugin-proposal-export-default-from",
-        "@babel/plugin-proposal-throw-expressions",
-        "@babel/plugin-proposal-optional-chaining",
-        "emotion"
+    "@babel/preset-react",
+    "@babel/preset-typescript",
+    [
+      "@emotion/babel-preset-css-prop",
+      {
+        "autoLabel": true,
+        "labelFormat": "[local]"
+      }
     ]
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-export-namespace-from",
+    "@babel/plugin-proposal-export-default-from",
+    "@babel/plugin-proposal-throw-expressions",
+    "@babel/plugin-proposal-optional-chaining",
+    "emotion"
+  ]
 }
