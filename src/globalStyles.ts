@@ -1,20 +1,20 @@
-import { css } from '@emotion/core';
-import { createTheme } from 'neutrino-ui';
-import SourceRegularTTF from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-regular.ttf';
-import SourceRegularWoff from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-regular.woff';
-import SourceRegularWoff2 from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-regular.woff2';
+import {css} from '@emotion/core'
+import {createTheme} from 'neutrino-ui'
+import SourceRegularTTF from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-regular.ttf'
+import SourceRegularWoff from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-regular.woff'
+import SourceRegularWoff2 from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-regular.woff2'
 
-import SourceBoldTtf from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-600.ttf';
-import SourceBoldWoff from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-600.woff';
-import SourceBoldWoff2 from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-600.woff2';
+import SourceBoldTtf from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-600.ttf'
+import SourceBoldWoff from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-600.woff'
+import SourceBoldWoff2 from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-600.woff2'
 
-import SquadHeavyTtf from 'assets/fonts/Squad-Heavy.ttf';
-import SquadHeavyWoff from 'assets/fonts/Squad-Heavy.woff';
-import SquadHeavyWoff2 from 'assets/fonts/Squad-Heavy.woff2';
+import SquadHeavyTtf from 'assets/fonts/Squad-Heavy.ttf'
+import SquadHeavyWoff from 'assets/fonts/Squad-Heavy.woff'
+import SquadHeavyWoff2 from 'assets/fonts/Squad-Heavy.woff2'
 
-import SquadBoldTtf from 'assets/fonts/Squad-Bold.ttf';
-import SquadBoldWoff from 'assets/fonts/Squad-Bold.woff';
-import SquadBoldWoff2 from 'assets/fonts/Squad-Bold.woff2';
+import SquadBoldTtf from 'assets/fonts/Squad-Bold.ttf'
+import SquadBoldWoff from 'assets/fonts/Squad-Bold.woff'
+import SquadBoldWoff2 from 'assets/fonts/Squad-Bold.woff2'
 
 export const globalStyles = css(
   css`
@@ -59,7 +59,7 @@ export const globalStyles = css(
       '--color-border': '#C5C5C5',
       '--color-text': '#4A4A4A',
       '--color-text-lead': '#767676',
-      '--color-background': '#f0f0f0',
+      '--color-background': '#fff',
     },
     'html, body': {
       margin: 0,
@@ -73,10 +73,10 @@ export const globalStyles = css(
       backgroundColor: 'var(--color-background)',
       overflow: 'hidden',
     },
-    '*': { boxSizing: 'border-box' },
-    '#app': { width: '100%', height: '100%' },
-  }
-);
+    '*': {boxSizing: 'border-box'},
+    '#app': {width: '100%', height: '100%'},
+  },
+)
 
 export const theme = createTheme({
   colors: {
@@ -90,4 +90,4 @@ export const theme = createTheme({
   globals: {
     borderRadius: '24px',
   },
-});
+})
