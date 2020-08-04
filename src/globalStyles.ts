@@ -71,7 +71,6 @@ export const globalStyles = css(
       fontWeight: 'normal',
       color: 'var(--color-text)',
       backgroundColor: 'var(--color-background)',
-      overflow: 'hidden',
     },
     '*': {boxSizing: 'border-box'},
     '#app': {width: '100%', height: '100%'},
