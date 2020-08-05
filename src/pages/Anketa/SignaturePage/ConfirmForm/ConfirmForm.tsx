@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect, Fragment, useCallback } from 'react';
+import React, {useState, useRef, useEffect, Fragment, useCallback} from 'react';
 import cN from 'classnames/bind';
-import { ErrorText } from 'lib/components/Forma2';
-import { isEmptyString, onlyDigit } from 'utils/string.utils';
-import { Cookies } from 'utils/cookies';
-import { useFetch } from 'utils/use-fetch';
-import { Environment } from 'services';
-import { useAnketa } from 'context/Anketa';
-import { useError } from 'context/Error';
-import { TabletIcon } from 'icons';
+import {ErrorText} from 'lib/components/Forma2';
+import {isEmptyString, onlyDigit} from 'utils/string.utils';
+import {Cookies} from 'utils/cookies';
+import {useFetch} from 'utils/use-fetch';
+import {Environment} from 'services';
+import {useAnketa} from 'context/Anketa';
+import {useError} from 'context/Error';
+import {TabletIcon} from 'icons';
 import css from './ConfirmForm.module.scss';
 
 const cx = cN.bind(css);
@@ -30,8 +30,8 @@ export function ConfirmForm() {
   const [showLink, setShowLink] = useState(false);
   const [timeLeft, setTimeLeft] = useState(startTimeLeft);
   const fetchClient = useFetch();
-  const { verifySignature, step, anketa } = useAnketa();
-  const { errorState, setErrorState } = useError();
+  const {verifySignature, step, anketa} = useAnketa();
+  const {errorState, setErrorState} = useError();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const description = maskedPhoneNumber() ? `номер ${maskedPhoneNumber()}` : 'ваш номер';
@@ -46,11 +46,11 @@ export function ConfirmForm() {
   useEffect(() => {
     inputRef?.current?.focus();
     if (smsCode.length === 4) {
-      timeout = setTimeout(() => verifySignature(step, { verificationCode: smsCode }), 300);
+      timeout = setTimeout(() => verifySignature(step, {code: smsCode}), 300);
     }
     if (!showLink) {
       interval = setInterval(() => {
-        setTimeLeft((t) => t - 1);
+        setTimeLeft(t => t - 1);
       }, delay);
     }
 
@@ -70,17 +70,17 @@ export function ConfirmForm() {
   const handleGetSMS = useCallback(() => {
     setErrorState(undefined);
     fetchClient('/gateway/credit-application/send-signature-code', {
-      body: { phoneNumber: anketa.mobilePhone },
+      body: {phoneNumber: anketa.mobilePhone},
     }).then(
-      (data) => {
+      data => {
         setShowLink(false);
         setTimeLeft(startTimeLeft);
         return data;
       },
-      (error) => {
-        setErrorState({ status: 400, message: error?.message });
+      error => {
+        setErrorState({status: 400, message: error?.message});
         return error;
-      }
+      },
     );
   }, [anketa.mobilePhone, fetchClient, setErrorState]);
 
@@ -88,7 +88,7 @@ export function ConfirmForm() {
 
   return (
     <div className={css.ConfirmForm}>
-      <TabletIcon style={{ margin: '2rem auto 1rem' }} />
+      <TabletIcon style={{margin: '2rem auto 1rem'}} />
       <span>
         <strong>Для получения кредита подпишите пакет документов кодом из СМС</strong>
       </span>

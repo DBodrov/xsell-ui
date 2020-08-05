@@ -1,25 +1,26 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
-import { ProtectedRoute } from 'components/ProtectedRoute';
-import { CalculatorPage } from './CalculatorPage';
-import { PassportPage } from './PassportPage';
-import { JobInfo } from './JobInfo';
-import { AgreementPage } from './AgreementSMSPage';
-import { AdvanceScoringRefusalPage } from './AdvanceScoringRefusalPage';
-import { ResultScoringPage } from './ResultScoringPage';
-import { SignaturePage } from './SignaturePage';
-import { ExecutionPage } from './ExecutionPage';
-import { ExecutionFailedPage } from './ExecutionFailedPage';
-import { CompletedPage } from './CompletedPage';
-import { RegistrationChanged } from './RegistrationChanged';
-import { PendingScoringPage } from './PendingScoringPage';
-import { ConfirmPhotoPassportPage } from './ConfirmPhotoPassportPage';
-import { PhotoUploadPage } from '../PhotoUploadPage';
-import { PassportRegPhotoPage } from '../PassportRegPhotoPage';
-import { PassportPhotoPage } from '../PassportPhotoPage';
+import {Switch} from 'react-router-dom';
+import {ProtectedRoute} from 'components/ProtectedRoute';
+import {CalculatorPage} from './CalculatorPage';
+import {PassportPage} from './PassportPage';
+import {JobInfo} from './JobInfo';
+import {AgreementPage} from './AgreementSMSPage';
+import {AdvanceScoringRefusalPage} from './AdvanceScoringRefusalPage';
+import {ResultScoringPage} from './ResultScoringPage';
+import {SignaturePage} from './SignaturePage';
+import {ExecutionPage} from './ExecutionPage';
+import {ExecutionFailedPage} from './ExecutionFailedPage';
+import {CompletedPage} from './CompletedPage';
+import {RegistrationChanged} from './RegistrationChanged';
+import {PendingScoringPage} from './PendingScoringPage';
+import {ConfirmPhotoPassportPage} from './ConfirmPhotoPassportPage';
+import {PhotoUploadPage} from '../PhotoUploadPage';
+import {PassportRegPhotoPage} from '../PassportRegPhotoPage';
+import {PassportPhotoPage} from '../PassportPhotoPage';
+import {PendingDocumentsPage} from './PendingDocumentsPage';
 
-import { routeMap } from './anketa.routingMap';
-import { TransferPage } from './TransferPage';
+import {routeMap} from './anketa.routingMap';
+import {TransferPage} from './TransferPage';
 
 export function AnketaRoutes() {
   return (
@@ -70,13 +71,6 @@ export function AnketaRoutes() {
       <ProtectedRoute exact path={routeMap.ADVANCE_SCORING_REFUSAL}>
         <AdvanceScoringRefusalPage />
       </ProtectedRoute>
-      {/* Необходимо заполнить реквизиты для перевода (номер счета, БИК) */}
-      {/* <ProtectedRoute exact path={`${routeMap.TRANSFER_DETAILS}/card`}>
-                <TransferCardPage />
-            </ProtectedRoute>
-            <ProtectedRoute exact path={`${routeMap.TRANSFER_DETAILS}/account`}>
-                <AccountPage />
-            </ProtectedRoute> */}
       <ProtectedRoute exact path={routeMap.TRANSFER_DETAILS}>
         <TransferPage />
       </ProtectedRoute>
@@ -101,9 +95,9 @@ export function AnketaRoutes() {
         <SignaturePage />
       </ProtectedRoute>
       {/* Ждем */}
-      {/* <ProtectedRoute exact path={routeMap.PENDING_DOCUMENTS}>
-                <PendingDocumentsPage />
-            </ProtectedRoute> */}
+      <ProtectedRoute exact path={routeMap.PENDING_DOCUMENTS}>
+        <PendingDocumentsPage />
+      </ProtectedRoute>
       {/** Одобрено */}
       <ProtectedRoute exact path={routeMap.EXECUTION}>
         <CompletedPage />

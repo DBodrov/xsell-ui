@@ -16,6 +16,7 @@ export const anketaUpdateAPI: Partial<Record<TAnketaStep | string, string>> = {
   TRANSFER_DETAILS_CARDS: `${BASE_URL}/update-session-app-card-transfer-details`,
   AGREEMENT_SMS_CODE: `${BASE_URL}/verify-agreement-signature`,
   APPROVED: `${BASE_URL}/agree-to-sign-documents`,
+  SIGNATURE_SMS_CODE: `${BASE_URL}/verify-signature-code`,
 };
 
 const initialAnketaState: IAnketaState = {status: 'idle', data: {anketa: null, step: null}};
@@ -74,7 +75,7 @@ export function useAnketaClient() {
       setErrorState(undefined);
       fetchClient(anketaUpdateAPI[step], {body: payload}).then(
         response => {
-          if (response.verified) {
+          if (response.verified || response.code === 'OK') {
             setState({status: 'resolved'});
             getAnketa();
           } else {
