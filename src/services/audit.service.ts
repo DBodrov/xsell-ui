@@ -1,6 +1,6 @@
 import GA from 'react-ga';
-import { DataService } from './data.service';
-import { TestMode, StagingMode, JestEnv } from './Environment';
+import {DataService} from './data.service';
+import {TestMode, StagingMode, JestEnv} from './Environment';
 
 interface IAuditOptions {
   toGA?: boolean;
@@ -15,7 +15,7 @@ interface IUserEvent {
 }
 
 const initAudit = () => {
-  const trackId = TestMode || StagingMode ? 'UA-144581692-1' : 'UA-142682218-1'; // TODO: сделать через process.env + circleCI
+  const trackId = TestMode || StagingMode ? 'UA-144581692-1' : 'UA-142682218-1';
   GA.initialize(trackId);
 };
 
@@ -30,19 +30,19 @@ const pageView = (pathname: string, options: IAuditOptions = {}) => {
   if (JestEnv) return; // что бы в тестах не ругался на инициализацию GA
   if (pathname === cachePath) return;
   cachePath = pathname;
-  const { toGA = true, toBE = true } = options;
+  const {toGA = true, toBE = true} = options;
   toGA && GA.pageview(pathname);
-  toBE && saveUserEvent({ type: 'FE_PAGEVIEW', payload: JSON.stringify({ pathname }) });
+  toBE && saveUserEvent({type: 'FE_PAGEVIEW', payload: JSON.stringify({pathname})});
 };
 
 const userEvent = (eventArgs: GA.EventArgs, options: IAuditOptions = {}) => {
-  const { toGA = true, toBE = false } = options;
+  const {toGA = true, toBE = false} = options;
   toGA && GA.event(eventArgs);
   if (toBE) {
-    const { category, action } = eventArgs;
+    const {category, action} = eventArgs;
     const event: IUserEvent = {
       type: category as UserEventTypes,
-      payload: JSON.stringify({ target: action }),
+      payload: JSON.stringify({target: action}),
     };
     saveUserEvent(event);
   }

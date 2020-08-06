@@ -1,13 +1,13 @@
-import React, { useCallback, useState } from 'react';
-import { useAuth, IAuth1Params } from 'context/Auth';
-import { AppPage } from 'components/Layout';
-import { Landing } from 'screens/Landing';
-import { LoginForm } from './LoginForm';
-import { prepareAuth1Args } from './utils';
+import React, {useCallback, useState} from 'react';
+import {useAuth, IAuth1Params} from 'context/Auth';
+import {AppPage} from 'components/Layout';
+import {Landing} from 'screens/Landing';
+import {LoginForm} from './LoginForm';
+import {prepareAuth1Args} from './utils';
 
 export function LoginPage() {
   const [loginFormIsShown, setShowLoginForm] = useState(false);
-  const { handleAuth1SignIn, clientSettings } = useAuth();
+  const {handleAuth1SignIn, clientSettings} = useAuth();
   const isClient = Boolean(clientSettings?.landingCode) ?? false;
 
   const handleLogin = useCallback(
@@ -15,7 +15,7 @@ export function LoginPage() {
       const auth1Args = prepareAuth1Args(customerInfo);
       handleAuth1SignIn(auth1Args);
     },
-    [handleAuth1SignIn]
+    [handleAuth1SignIn],
   );
 
   const handleNextPage = useCallback(() => {
@@ -35,7 +35,7 @@ export function LoginPage() {
     );
   }
 
-  const landingCode = (clientSettings?.landingCode ?? 'LANDING_TEST_1');
+  const landingCode = clientSettings?.landingCode ?? 'LANDING_TEST_1';
 
   return <Landing landingCode={landingCode} onNextPage={handleNextPage} />;
 }

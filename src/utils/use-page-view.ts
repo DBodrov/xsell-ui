@@ -2,13 +2,14 @@ import {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 import {auditService} from 'services';
 
-export function usePageView() {
+export function usePageView(path?: string) {
   const location = useLocation();
+  const pathName = path ?? location.pathname;
   useEffect(() => {
-    if (location.pathname === '/anketa') {
+    if (pathName === '/anketa') {
       return;
     } else {
-      auditService.pageView(location.pathname, {toBE: true});
+      auditService.pageView(pathName, {toBE: true});
     }
-  }, [location.pathname]);
+  }, [pathName]);
 }
