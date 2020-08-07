@@ -1,7 +1,7 @@
 import React from 'react';
-import { AllProviders } from 'utils/test-utils';
-import { TLandingCode } from 'context/Auth';
-import { LoginPage } from 'screens/Auth/LoginPage';
+import {AllProviders} from 'utils/test-utils';
+import {TLandingCode} from 'context/Auth';
+import {LoginPage} from 'screens/Auth/LoginPage';
 // import { CalculatorPage } from 'pages/Anketa/CalculatorPage';
 
 const landingMap: Record<string, TLandingCode> = {
@@ -20,7 +20,8 @@ export function TestApp() {
         clientSettings: {
           landingCode: landingMap[search],
         },
-      }}>
+      }}
+    >
       <LoginPage />
     </AllProviders>
   );

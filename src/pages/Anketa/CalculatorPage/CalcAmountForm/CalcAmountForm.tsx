@@ -1,16 +1,16 @@
-import React, { useEffect, useCallback, useReducer } from 'react';
+import React, {useEffect, useCallback, useReducer} from 'react';
 import cN from 'classnames/bind';
-import { Card } from 'components/Card';
-import { BasicButton } from 'lib/components/buttons';
-import { Range } from 'lib/components/data-entry/Range';
-import { Checkbox } from 'lib/components/data-entry/Checkbox';
-import { useCampaign } from 'utils/use-campaign';
-import { useFetch } from 'utils/use-fetch';
-import { useAnketa } from 'context/Anketa';
-import { useValidationCalc } from './validation.hook';
-import { SmsInfoLink, JobInsuranceLink, LifeInsuranceLink } from './CalcLinks';
-import { getRate } from './utils';
-import { usePayment } from './use-payment';
+import {Card} from 'components/Card';
+import {BasicButton} from 'lib/components/buttons';
+import {Range} from 'lib/components/data-entry/Range';
+import {Checkbox} from 'lib/components/data-entry/Checkbox';
+import {useCampaign} from 'utils/use-campaign';
+import {useFetch} from 'utils/use-fetch';
+import {useAnketa} from 'context/Anketa';
+import {useValidationCalc} from './validation.hook';
+import {SmsInfoLink, JobInsuranceLink, LifeInsuranceLink} from './CalcLinks';
+import {getRate} from './utils';
+import {usePayment} from './use-payment';
 import css from './CalcAmountForm.module.scss';
 
 const cx = cN.bind(css);
@@ -30,44 +30,51 @@ const defaultLoanParams = {
   rate: 19.9,
 };
 
-const loanParamsReducer = (s: Partial<TLoanParams>, a: Partial<TLoanParams>) => ({ ...s, ...a });
+const loanParamsReducer = (s: Partial<TLoanParams>, a: Partial<TLoanParams>) => ({...s, ...a});
 
 export function CalcAmountForm() {
   const [loanParams, setState] = useReducer(loanParamsReducer, defaultLoanParams);
-  const { STAFF_CAMPAIGN, campaignParams } = useCampaign();
+  const {STAFF_CAMPAIGN, campaignParams} = useCampaign();
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
-  const { payment, updateLoanParams } = usePayment(isStaff);
+  const {payment, updateLoanParams} = usePayment(isStaff);
   const fetchClient = useFetch();
-  const { step, updateAnketa } = useAnketa();
+  const {step, updateAnketa} = useAnketa();
 
-  const { validateLoanParam, readError, formIsValid } = useValidationCalc(isStaff);
+  const {validateLoanParam, readError, formIsValid} = useValidationCalc(isStaff);
   const maxAmount = isStaff ? 3000000 : 1000000;
 
   const handleSubmit: React.MouseEventHandler = useCallback(
-    (event) => {
+    event => {
       event.preventDefault();
       if (formIsValid) {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { rate, ...anketa } = loanParams;
+        const {rate, ...anketa} = loanParams;
         updateAnketa(step, anketa);
       }
     },
-    [formIsValid, loanParams, step, updateAnketa]
+    [formIsValid, loanParams, step, updateAnketa],
   );
 
   useEffect(() => {
+    const fallbackWorkExperience = () => {
+      const fallbackRate = getRate(1);
+      setState({workExperience: 1, rate: fallbackRate});
+    };
     const getWorkExperience = async () => {
-      fetchClient('/gateway/customer-profile/get-work-experience', { method: 'post' }).then(
+      fetchClient('/gateway/customer-profile/get-work-experience', {method: 'post'}).then(
         (data: any) => {
           const rateByExperience = getRate(data?.workExperienceMonths);
-          setState({ workExperience: data?.workExperienceMonths, rate: rateByExperience });
+          setState({workExperience: data?.workExperienceMonths, rate: rateByExperience});
         },
-        (error) => {
+        error => {
+          fallbackWorkExperience();
           console.error(error.message);
-        }
+        },
       );
     };
-    isStaff && getWorkExperience();
+    if (isStaff) {
+      getWorkExperience();
+    }
   }, [fetchClient, isStaff]);
 
   useEffect(() => {
@@ -80,23 +87,23 @@ export function CalcAmountForm() {
   const setAmount = useCallback(
     (value: string | number) => {
       validateLoanParam('requestedLoanAmount', Number(value));
-      setState({ requestedLoanAmount: Number(value) });
+      setState({requestedLoanAmount: Number(value)});
     },
-    [validateLoanParam]
+    [validateLoanParam],
   );
 
   const setTerm = useCallback(
     (value: string | number) => {
       validateLoanParam('requestedLoanTermMonths', Number(value));
-      setState({ requestedLoanTermMonths: Number(value) });
+      setState({requestedLoanTermMonths: Number(value)});
     },
-    [validateLoanParam]
+    [validateLoanParam],
   );
 
   const setCheckboxes = useCallback((value: boolean, event?: React.ChangeEvent<HTMLInputElement>) => {
     const fieldName = event?.target?.name;
     if (fieldName) {
-      setState({ [fieldName]: value });
+      setState({[fieldName]: value});
     }
   }, []);
 
@@ -152,7 +159,8 @@ export function CalcAmountForm() {
         className={css.Triangle}
         shapeRendering="geometricPrecision"
         preserveAspectRatio="none"
-        viewBox="0 0 100 50">
+        viewBox="0 0 100 50"
+      >
         <path d="M 0 50 L 50 0 L 100 50" />
       </svg>
       <div className={css.TermsForm}>
@@ -219,7 +227,7 @@ export function CalcAmountForm() {
           value="Далее"
           disabled={!formIsValid}
         />
-        <p className={css.Disclaimer} style={{ marginBottom: 0 }}>
+        <p className={css.Disclaimer} style={{marginBottom: 0}}>
           * Расчет носит предварительный характер. Точная сумма ежемесячного платежа будет определена Банком
           по результатам рассмотрения заявки
         </p>
