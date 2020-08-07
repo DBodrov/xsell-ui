@@ -1,22 +1,21 @@
-import React, { useCallback, useState } from 'react';
-import { PageLayout } from 'components/Layout/PageLayout';
-import { useFetch } from 'utils/use-fetch';
-import { HeroLanding1, HeroLanding2, HeroLanding3, HeroLanding4 } from './HeroLandings';
-import { Offer } from './Offer';
-import { RejectModal } from './RejectModal';
-import { LandingProps } from './types';
+import React, {useCallback, useState} from 'react';
+import {PageLayout} from 'components/Layout/PageLayout';
+import {useFetch} from 'utils/use-fetch';
+import {HeroLanding1, HeroLanding2, HeroLanding3, HeroLanding4} from './HeroLandings';
+import {Offer} from './Offer';
+import {RejectModal} from './RejectModal';
+import {LandingProps} from './types';
 
-export function Landing({ landingCode, onNextPage }: LandingProps) {
+export function Landing({landingCode, onNextPage}: LandingProps) {
   const [modalState, setModalState] = useState({showModal: false, showThanks: false});
 
   const fetchClient = useFetch();
 
   const handleOfferReject = useCallback(
     (reason: string) => {
-      // console.log(reason);
-      fetchClient(' /gateway/reject-offer', { body: {offerRejectedReason: reason} });
+      fetchClient(' /gateway/reject-offer', {body: {offerRejectedReason: reason}});
     },
-    [fetchClient]
+    [fetchClient],
   );
 
   const handleNotInterested = useCallback(
@@ -27,9 +26,8 @@ export function Landing({ landingCode, onNextPage }: LandingProps) {
       const reason = e.currentTarget.innerText;
       handleOfferReject(reason);
     },
-    [handleOfferReject, modalState.showModal]
+    [handleOfferReject, modalState.showModal],
   );
-
 
   const renderHeroLanding = () => {
     switch (landingCode) {
@@ -51,11 +49,7 @@ export function Landing({ landingCode, onNextPage }: LandingProps) {
     <PageLayout>
       {renderHeroLanding()}
       <Offer />
-      <RejectModal
-        modalState={modalState}
-        setState={setModalState}
-        sendAnswer={handleNotInterested}
-      />
+      <RejectModal modalState={modalState} setState={setModalState} sendAnswer={handleNotInterested} />
     </PageLayout>
   );
 }
