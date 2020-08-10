@@ -2,10 +2,12 @@ import React, {useCallback} from 'react';
 import {P, Button} from 'neutrino-ui';
 import {HeroText} from 'components/lib';
 import {AppPage} from 'components/Layout/AppPage';
+import {usePageView} from 'utils/use-page-view';
 import {Page} from './styles';
 import {useAuth} from 'context/Auth';
 
 export function ComebackPage() {
+  usePageView('/comeback');
   const {handleAuth1SignIn} = useAuth();
   const handleUserComeback = useCallback(() => {
     handleAuth1SignIn(null, true);

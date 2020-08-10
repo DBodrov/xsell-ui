@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
-import { Forma, SimpleField, FormaButton, IValidationSchema } from 'lib/components/Forma2';
-import { IAuth1Params } from 'context/Auth';
-import { AgreementLink, DistanceAgreementLink } from './Links';
+import React, {useCallback} from 'react';
+import {Forma, SimpleField, FormaButton, IValidationSchema} from 'lib/components/Forma2';
+import {IAuth1Params} from 'context/Auth';
+import {usePageView} from 'utils/use-page-view';
+import {AgreementLink, DistanceAgreementLink} from './Links';
 import css from './LoginForm.module.scss';
 
 interface ILoginFormProps {
@@ -26,13 +27,13 @@ const initLoginForm: IAuth1Params = {
 
 const validationSchema: IValidationSchema = {
   birthDate: {
-    isDate: { error: 'Введите дату в формате ДД.ММ.ГГГГ' },
-    maxDate: { options: date18plus(), error: 'Вам должно быть больше 18 лет' },
-    minDate: { options: '01.01.1919', error: 'Укажите вашу реальную дату рождения' },
+    isDate: {error: 'Введите дату в формате ДД.ММ.ГГГГ'},
+    maxDate: {options: date18plus(), error: 'Вам должно быть больше 18 лет'},
+    minDate: {options: '01.01.1919', error: 'Укажите вашу реальную дату рождения'},
   },
   phoneNumber: {
     isMobilePhone: {
-      options: { mask: '(999) 999-99-99', countryCode: '+7' },
+      options: {mask: '(999) 999-99-99', countryCode: '+7'},
       error: 'Введите номер мобильного телефона',
     },
   },
@@ -51,21 +52,23 @@ const validationSchema: IValidationSchema = {
 };
 
 export function LoginForm(props: ILoginFormProps) {
-  const { onLogin } = props;
+  const {onLogin} = props;
+  usePageView('/login');
   const handleLogin = useCallback(
     (authData: IAuth1Params) => {
       onLogin(authData);
     },
-    [onLogin]
+    [onLogin],
   );
 
   return (
     <Forma
       initialValues={initLoginForm}
       validateOnBlur
-      controlProps={{ form: { className: css.LoginForm } }}
+      controlProps={{form: {className: css.LoginForm}}}
       validationSchema={validationSchema}
-      onSubmit={handleLogin}>
+      onSubmit={handleLogin}
+    >
       <div className={css.Heading}>
         <h2 className={css.Title}>Введите телефон</h2>
         <p className={css.Subtitle}>

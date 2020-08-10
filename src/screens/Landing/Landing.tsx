@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {PageLayout} from 'components/Layout/PageLayout';
 import {useFetch} from 'utils/use-fetch';
+import {usePageView} from 'utils/use-page-view';
 import {HeroLanding1, HeroLanding2, HeroLanding3, HeroLanding4} from './HeroLandings';
 import {Offer} from './Offer';
 import {RejectModal} from './RejectModal';
@@ -8,7 +9,7 @@ import {LandingProps} from './types';
 
 export function Landing({landingCode, onNextPage}: LandingProps) {
   const [modalState, setModalState] = useState({showModal: false, showThanks: false});
-
+  usePageView('/landing');
   const fetchClient = useFetch();
 
   const handleOfferReject = useCallback(
