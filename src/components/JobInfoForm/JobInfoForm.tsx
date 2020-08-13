@@ -1,48 +1,15 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { BasicButton } from 'lib/components/buttons/BasicButton';
-import { Forma, SimpleField, FormaButton } from 'lib/components/Forma2';
-import { useCampaign } from 'utils/use-campaign';
-import { useAnketa, TJobInfo } from 'context/Anketa';
-import { OTP_INN } from 'utils/externals';
+import React, {useEffect, useState, useCallback} from 'react';
+import {BasicButton} from 'lib/components/buttons/BasicButton';
+import {Forma, SimpleField, FormaButton} from 'lib/components/Forma2';
+import {useCampaign} from 'utils/use-campaign';
+import {useAnketa, TJobInfo} from 'context/Anketa';
+import {OTP_INN} from 'utils/externals';
+import {WorkIndustryField} from './WorkIndustryField';
 import css from './JobInfoForm.module.scss';
 
 interface IJobInfoFormProps {
   onConfirmArchiving: () => void;
 }
-
-const workIndustryList = [
-  { RGB_INDUSTRY_9: 'Ресторанный бизнес/Общественное питание' },
-  { RGB_INDUSTRY_3: 'Нефтегазовая промышленность' },
-  { RGB_INDUSTRY_3$1: 'Энергетика' },
-  { RGB_INDUSTRY_7: 'Коммунальное хоз-во/Дорожные службы' },
-  { RGB_INDUSTRY_18: 'Страхование' },
-  { RGB_INDUSTRY_18$1: 'Банк/Финансы' },
-  { RGB_INDUSTRY_18$2: 'Управляющая компания' },
-  { RGB_INDUSTRY_4: 'Здравоохранение' },
-  { RGB_INDUSTRY_12: 'Салоны красоты и здоровья' },
-  { RGB_INDUSTRY_13: 'Сборочные производства' },
-  { RGB_INDUSTRY_14: 'Сельское хозяйство' },
-  { RGB_INDUSTRY_19: 'Химия/Парфюмерия/Фармацевтика' },
-  { RGB_INDUSTRY_6: 'Туризм' },
-  { RGB_INDUSTRY_6$1: 'Развлечения/Искусство' },
-  { RGB_INDUSTRY_21: 'Юридические услуги/нотариальные услуги' },
-  { RGB_INDUSTRY_16: 'Недвижимость' },
-  { RGB_INDUSTRY_16$1: 'Торговля' },
-  { RGB_INDUSTRY_8: 'Образование' },
-  { RGB_INDUSTRY_8$1: 'Наука' },
-  { RGB_INDUSTRY_20: 'ЧОП/Детективная д-ть' },
-  { RGB_INDUSTRY_5: 'Информационные технологии' },
-  { RGB_INDUSTRY_5$1: 'Информационные услуги' },
-  { RGB_INDUSTRY_17: 'Транспорт' },
-  { RGB_INDUSTRY_17$1: 'Логистика' },
-  { RGB_INDUSTRY_2: 'Государственная служба' },
-  { RGB_INDUSTRY_11: 'Маркетинг' },
-  { RGB_INDUSTRY_11$1: 'Подбор персонала' },
-  { RGB_INDUSTRY_11$2: 'СМИ/Реклама/PR-агенства' },
-  { RGB_INDUSTRY_10: 'Металлургия/Промышленность/Машиностроение' },
-  { RGB_INDUSTRY_15: 'Строительство' },
-  { OTHER: 'Другие сферы' },
-];
 
 const getCanonicalCode = (code: string, sym = '$'): string => {
   const idx = code.indexOf(sym);
@@ -51,42 +18,42 @@ const getCanonicalCode = (code: string, sym = '$'): string => {
 
 const validationSchema = {
   workPlace: {
-    isRequired: { error: 'Место работы не может быть пустым' },
+    isRequired: {error: 'Место работы не может быть пустым'},
   },
   workInn: {
-    isRequired: { error: 'ИНН обязателен к заполнению' },
+    isRequired: {error: 'ИНН обязателен к заполнению'},
     customCheck: {
       options: (value: string) => value?.length === 10 || value?.length === 12,
       error: 'ИНН должен быть длиной 10 или 12 цифр',
     },
   },
   workIndustry: {
-    isRequired: { error: 'Отрасль обязательна к заполнению' },
+    isRequired: {error: 'Отрасль обязательна к заполнению'},
   },
   lastWorkExperienceMonths: {
-    min: { options: 3, error: 'Стаж должен быть больше 3 месяцев' },
+    min: {options: 3, error: 'Стаж должен быть больше 3 месяцев'},
   },
   mainMonthlyIncomeAmount: {
     min: {
       options: 1000,
       error: 'Доход не может быть менее 1 000 рублей',
     },
-    max: { options: 1000000, error: 'Доход не может быть более 1 000 000 рублей' },
+    max: {options: 1000000, error: 'Доход не может быть более 1 000 000 рублей'},
   },
   creditBureauConsentAgree: {
-    isEqual: { options: true, error: '' },
+    isEqual: {options: true, error: ''},
   },
 };
 
 const fallbackLink = 'https://cash.otpbank.ru/public/bki_soglasie.docx';
 
-export function JobInfoForm({ onConfirmArchiving }: IJobInfoFormProps) {
+export function JobInfoForm({onConfirmArchiving}: IJobInfoFormProps) {
   const {
     updateAnketa,
-    anketa: { agreementFormLink = fallbackLink, registrationAddress },
+    anketa: {agreementFormLink = fallbackLink, registrationAddress},
     step,
   } = useAnketa();
-  const { campaignParams, STAFF_CAMPAIGN } = useCampaign();
+  const {campaignParams, STAFF_CAMPAIGN} = useCampaign();
   const [workExperience, setWorkExperience] = useState(0);
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
 
@@ -105,7 +72,7 @@ export function JobInfoForm({ onConfirmArchiving }: IJobInfoFormProps) {
         const response = await window.fetch('/gateway/customer-profile/get-work-experience', {
           method: 'post',
         });
-        const { workExperienceMonths } = await response.json();
+        const {workExperienceMonths} = await response.json();
         setWorkExperience(workExperienceMonths);
       } catch (error) {
         console.error(error);
@@ -116,7 +83,7 @@ export function JobInfoForm({ onConfirmArchiving }: IJobInfoFormProps) {
   }, [isStaff]);
 
   const handleChangeAddress = useCallback(() => {
-    updateAnketa(step, { registrationAddressChanged: true });
+    updateAnketa(step, {registrationAddressChanged: true});
   }, [step, updateAnketa]);
 
   const handleUpdateAnketa = useCallback(
@@ -127,7 +94,7 @@ export function JobInfoForm({ onConfirmArchiving }: IJobInfoFormProps) {
         workIndustry: getCanonicalCode(formData.workIndustry),
       });
     },
-    [updateAnketa]
+    [updateAnketa],
   );
 
   return (
@@ -135,7 +102,8 @@ export function JobInfoForm({ onConfirmArchiving }: IJobInfoFormProps) {
       initialValues={initFormData}
       onSubmit={handleUpdateAnketa}
       validateOnBlur
-      validationSchema={validationSchema}>
+      validationSchema={validationSchema}
+    >
       <div className={css.FormContent}>
         <SimpleField
           type="textarea"
@@ -175,13 +143,9 @@ export function JobInfoForm({ onConfirmArchiving }: IJobInfoFormProps) {
           description="ваш постоянный + дополнительный доход до вычета налогов"
           placeholder="Рублей в месяц"
         />
-        <SimpleField
-          type="select"
-          options={workIndustryList}
-          name="workIndustry"
-          label="Отрасль занятости"
-          placeholder="выберите из списка"
-        />
+
+        <WorkIndustryField />
+
         <SimpleField
           type="mask"
           mask="999999999999"
@@ -196,7 +160,8 @@ export function JobInfoForm({ onConfirmArchiving }: IJobInfoFormProps) {
               className="as-link"
               href={`/gateway/doc${agreementFormLink}`}
               type="download"
-              rel="noopener noreferrer">
+              rel="noopener noreferrer"
+            >
               Бюро кредитных историй
             </a>{' '}
             для оценки моей платежеспособности
@@ -209,7 +174,7 @@ export function JobInfoForm({ onConfirmArchiving }: IJobInfoFormProps) {
           onClick={onConfirmArchiving}
           value="Переоформить заявку"
           theme="secondary"
-          style={{ padding: 0, marginBottom: '1rem' }}
+          style={{padding: 0, marginBottom: '1rem'}}
         />
         <FormaButton type="submit" value="Все данные верны" disabledMode="alwaysEnabled" />
       </div>
