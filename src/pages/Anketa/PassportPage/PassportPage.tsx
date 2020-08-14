@@ -1,30 +1,30 @@
-import React, { useState, Fragment, useCallback } from 'react';
-import { useAnketa } from 'context/Anketa';
-import { useError } from 'context/Error';
-import { LayoutPage } from 'components/Layout';
-import { PassportForm } from 'components/PassportForm';
+import React, {useState, Fragment, useCallback} from 'react';
+import {useAnketa} from 'context/Anketa';
+import {useError} from 'context/Error';
+import {LayoutPage} from 'components/Layout';
+import {PassportForm} from 'components/PassportForm';
 import css from './PassportPage.module.scss';
-import { AutoStepper } from 'components/AutoStepper';
-import { useModalState } from '../../../hooks/modal.hook';
-import { ArchiveModal } from '../../../components/ArchiveModal/ArchiveModal';
+import {AutoStepper} from 'components/AutoStepper';
+import {useModalState} from '../../../hooks/modal.hook';
+import {ArchiveModal} from '../../../components/ArchiveModal/ArchiveModal';
 
 export function PassportPage() {
-  const { archivingAnketa, step, updateAnketa } = useAnketa();
-  const { errorState } = useError();
-  const { isShowModal, handleOpenModal, handleCloseModal } = useModalState();
+  const {archivingAnketa, step, updateAnketa} = useAnketa();
+  const {errorState} = useError();
+  const {isShowModal, handleOpenModal, handleCloseModal} = useModalState();
 
   const [passport, setPassport] = useState<string[]>(undefined);
 
   const handleSubmitPassport: React.FormEventHandler<HTMLFormElement> = useCallback(
-    (event) => {
+    event => {
       event.preventDefault();
-      const [series, number] = passport.map(Number);
+      const [series, number] = passport;
       updateAnketa(step, {
         series,
         number,
       });
     },
-    [passport, step, updateAnketa]
+    [passport, step, updateAnketa],
   );
 
   const handleChangePassport = useCallback((passportValue: string[]) => {
