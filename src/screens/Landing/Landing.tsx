@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {PageLayout} from 'components/Layout/PageLayout';
 import {useFetch} from 'utils/use-fetch';
-import {usePageView} from 'utils/use-page-view';
+import {usePageView, userEvents} from 'utils/use-page-view';
 import {HeroLanding1, HeroLanding2, HeroLanding3, HeroLanding4} from './HeroLandings';
 import {Offer} from './Offer';
 import {RejectModal} from './RejectModal';
@@ -14,6 +14,7 @@ export function Landing({landingCode, onNextPage}: LandingProps) {
 
   const handleOfferReject = useCallback(
     (reason: string) => {
+      userEvents({category: 'LANDING', action: reason});
       fetchClient(' /gateway/reject-offer', {body: {offerRejectedReason: reason}});
     },
     [fetchClient],

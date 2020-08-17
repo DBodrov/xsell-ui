@@ -13,3 +13,5 @@ export function usePageView(path?: string) {
     }
   }, [pathName]);
 }
+
+export const userEvents = auditService.userEvent;
