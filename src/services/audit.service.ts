@@ -27,7 +27,7 @@ const saveUserEvent = (userEvent: IUserEvent) => {
 let cachePath: string;
 
 const pageView = (pathname: string, options: IAuditOptions = {}) => {
-  if (JestEnv) return; // что бы в тестах не ругался на инициализацию GA
+  if (JestEnv) return;
   if (pathname === cachePath) return;
   cachePath = pathname;
   const {toGA = true, toBE = true} = options;

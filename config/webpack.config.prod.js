@@ -7,9 +7,10 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 
 const utils = require('./utilities.js');
-const { resolveApp } = require('./paths');
+const {resolveApp} = require('./paths');
 const commonConfig = require('./webpack.config.common');
 
 // eslint-disable-next-line prefer-destructuring
@@ -116,7 +117,7 @@ module.exports = webpackMerge.merge(commonConfig, {
             importLoaders: 2,
             sourceMap: false,
           },
-          'sass-loader'
+          'sass-loader',
         ),
       },
       {
@@ -129,7 +130,7 @@ module.exports = webpackMerge.merge(commonConfig, {
               localIdentName: '[name]__[local]--[hash:base64:5]',
             },
           },
-          'sass-loader'
+          'sass-loader',
         ),
       },
     ],
@@ -188,6 +189,17 @@ module.exports = webpackMerge.merge(commonConfig, {
         minifyJS: true,
         minifyCSS: true,
         minifyURLs: true,
+      },
+    }),
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      include: 'allChunks',
+      as(entry) {
+        if (/\.css$/.test(entry)) return 'style';
+        if (/\.woff$/.test(entry)) return 'font';
+        if (/\.ttf$/.test(entry)) return 'font';
+        if (/\.png$/.test(entry)) return 'image';
+        return 'script';
       },
     }),
 
