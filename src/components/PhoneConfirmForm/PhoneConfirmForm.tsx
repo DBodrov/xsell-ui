@@ -1,12 +1,12 @@
-import React, { useState, useRef, useEffect, Fragment, useCallback } from 'react';
+import React, {useState, useRef, useEffect, Fragment, useCallback} from 'react';
 import cN from 'classnames/bind';
-import { ErrorText } from 'lib/components/Forma2';
-import { isEmptyString, onlyDigit } from 'utils/string.utils';
-import { Cookies } from 'utils/cookies';
-import { useFetch } from 'utils/use-fetch';
-import { Environment } from 'services';
-import { useAuth } from 'context/Auth';
-import { useError } from 'context/Error';
+import {ErrorText} from 'lib/components/Forma2';
+import {isEmptyString, onlyDigit} from 'utils/string.utils';
+import {Cookies} from 'utils/cookies';
+import {useFetch} from 'utils/use-fetch';
+import {Environment} from 'services';
+import {useAuth} from 'context/Auth';
+import {useError} from 'context/Error';
 import css from './PhoneConfirmForm.module.scss';
 
 const cx = cN.bind(css);
@@ -29,12 +29,12 @@ export function PhoneConfirmForm() {
   const [showLink, setShowLink] = useState(false);
   const [timeLeft, setTimeLeft] = useState(startTimeLeft);
   const fetchClient = useFetch();
-  const { errorState, setErrorState } = useError();
+  const {errorState, setErrorState} = useError();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const description = maskedPhoneNumber() ? `номер ${maskedPhoneNumber()}` : 'ваш номер';
 
-  const { handleAuth2SignIn } = useAuth();
+  const {handleAuth2SignIn} = useAuth();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = event.currentTarget.value;
@@ -50,7 +50,7 @@ export function PhoneConfirmForm() {
     }
     if (!showLink) {
       interval = setInterval(() => {
-        setTimeLeft((t) => t - 1);
+        setTimeLeft(t => t - 1);
       }, delay);
     }
 
@@ -69,16 +69,16 @@ export function PhoneConfirmForm() {
 
   const handleGetSMS = useCallback(() => {
     setErrorState(undefined);
-    fetchClient('/gateway/send-sms', { method: 'POST' }).then(
-      (data) => {
+    fetchClient('/gateway/send-sms', {method: 'POST'}).then(
+      data => {
         setShowLink(false);
         setTimeLeft(startTimeLeft);
         return data;
       },
-      (error) => {
-        setErrorState({ status: 400, message: error?.message });
+      error => {
+        setErrorState({status: 400, message: error?.message});
         return error;
-      }
+      },
     );
   }, [fetchClient, setErrorState]);
 
@@ -105,9 +105,9 @@ export function PhoneConfirmForm() {
       </div>
       <Fragment>
         {showLink ? (
-          <a className={css.GetSMSLink} onClick={handleGetSMS}>
+          <span className={css.GetSMSLink} onClick={handleGetSMS}>
             Отправить СМС повторно
-          </a>
+          </span>
         ) : (
           <span>Повторный запрос возможен через {timeLeft} сек.</span>
         )}

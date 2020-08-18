@@ -1,7 +1,7 @@
-import React, { createContext, useState, useMemo, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { ClientNotFound } from 'pages/Authentication/ClientNotFound';
-import { ErrorPage } from 'pages/ErrorPage';
+import React, {createContext, useState, useMemo, useContext, useEffect} from 'react';
+import {useHistory} from 'react-router-dom';
+import {ClientNotFound} from 'pages/Authentication/ClientNotFound';
+import {ErrorPage} from 'pages/ErrorPage';
 
 export type ErrorState = {
   status: number | string;
@@ -21,11 +21,11 @@ const notFoundResponse = (error: ErrorState) =>
   (error?.status === 404 && error?.code === 'USER_NOT_FOUND') ||
   (error?.status === 409 && error?.code === 'CUSTOMER_PROFILE_NOT_FOUND');
 
-export function ErrorProvider({ children }: any) {
+export function ErrorProvider({children}: any) {
   const [errorState, setErrorState] = useState<ErrorState>(undefined);
   const history = useHistory();
 
-  const contextValue = useMemo<IErrorContext>(() => ({ setErrorState, errorState }), [errorState]);
+  const contextValue = useMemo<IErrorContext>(() => ({setErrorState, errorState}), [errorState]);
 
   const renderContent = () => {
     if (notFoundResponse(errorState)) {
@@ -44,7 +44,7 @@ export function ErrorProvider({ children }: any) {
     if (errorState?.status === 401) {
       window.location.assign(window.location.pathname);
     }
-  }, [errorState?.code, errorState?.status, history]);
+  }, [errorState, history]);
 
   return <ErrorContext.Provider value={contextValue}>{renderContent()}</ErrorContext.Provider>;
 }

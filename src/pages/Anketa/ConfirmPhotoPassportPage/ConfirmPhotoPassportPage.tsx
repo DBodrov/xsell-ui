@@ -1,16 +1,16 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { useAnketa } from 'context/Anketa';
-import { BasicButton } from 'lib/components/buttons';
-import { LayoutPage } from 'components/Layout';
-import { AutoStepper } from 'components/AutoStepper';
+import {useHistory} from 'react-router-dom';
+import {useAnketa} from 'context/Anketa';
+import {BasicButton} from 'lib/components/buttons';
+import {LayoutPage} from 'components/Layout';
+import {AutoStepper} from 'components/AutoStepper';
 import womanWithPassportIcon from 'assets/images/woman-with-passport.png';
 import infoIcon from 'assets/images/info.svg';
 import css from './ConfirmPhotoPassportPage.module.scss';
 
 export function ConfirmPhotoPassportPage() {
   const history = useHistory();
-  const { refusePhotoPassport } = useAnketa();
+  const {refusePhotoPassport} = useAnketa();
 
   const handleAgreePhoto = () => history.push('/anketa/photo/upload');
 
@@ -20,7 +20,7 @@ export function ConfirmPhotoPassportPage() {
       <div className={css.Page}>
         <h2 className={css.PageTitle}>Три фотографии с документами</h2>
         <div className={css.ConfirmForm}>
-          <img src={womanWithPassportIcon} alt="make a photo" />
+          <img src={womanWithPassportIcon} alt="take passport" />
           <div className={css.Description}>
             <h3>Сфотографироваться со своим паспортом</h3>
             <div className={css.Info}>
@@ -35,7 +35,7 @@ export function ConfirmPhotoPassportPage() {
             type="button"
             value="Да, с фото"
             theme="primary"
-            style={{ width: '100%', marginTop: '1rem' }}
+            style={{width: '100%', marginTop: '1rem'}}
             // eslint-disable-next-line react/jsx-no-bind
             onClick={handleAgreePhoto}
           />
@@ -43,7 +43,7 @@ export function ConfirmPhotoPassportPage() {
             type="button"
             value="Нет, не готов"
             theme="secondary"
-            style={{ width: '100%', marginTop: '1rem' }}
+            style={{width: '100%', marginTop: '1rem'}}
             onClick={refusePhotoPassport}
           />
         </div>

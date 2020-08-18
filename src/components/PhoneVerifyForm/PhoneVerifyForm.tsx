@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from 'react';
-import { useAuth } from 'providers';
-import { Environment } from 'services';
-import { onlyDigit } from 'utils/string.utils';
-import { BasicInput } from 'lib/components/data-entry/BasicInput';
-import { Countdown } from 'lib/components/Countdown';
-import { Card } from 'components/Card';
+import React, {useState, useCallback} from 'react';
+import {useAuth} from 'providers';
+import {Environment} from 'services';
+import {onlyDigit} from 'utils/string.utils';
+import {BasicInput} from 'lib/components/data-entry/BasicInput';
+import {Countdown} from 'lib/components/Countdown';
+import {Card} from 'components/Card';
 import mobileIcon from 'assets/images/mobile.svg';
 
 import css from './PhoneVerifyForm.module.scss';
@@ -43,16 +43,16 @@ export function PhoneVerifyForm(props: IPhoneVerifyFormProps) {
 
   const [code, setCode] = useState('');
   const [attempt, setAttempt] = useState(0);
-  const { error } = useAuth();
+  const {error} = useAuth();
   const smsText = phone ? `номер ${maskPhoneNumber(phone)}` : 'ваш номер';
 
   const handleResend = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault();
-      setAttempt((i) => i + 1);
+      setAttempt(i => i + 1);
       onResend();
     },
-    [onResend]
+    [onResend],
   );
 
   const handleChange = useCallback(
@@ -62,7 +62,7 @@ export function PhoneVerifyForm(props: IPhoneVerifyFormProps) {
         onSubmit(value);
       }
     },
-    [codeLength, onSubmit]
+    [codeLength, onSubmit],
   );
 
   return (
@@ -80,7 +80,7 @@ export function PhoneVerifyForm(props: IPhoneVerifyFormProps) {
           <div className={css.PhoneVerifyInputBlock}>
             <BasicInput
               className={css.PhoneVerifyInput}
-              extendProps={{ control: { style: { textAlign: 'center', fontSize: '1.5rem' } } }}
+              extendProps={{control: {style: {textAlign: 'center', fontSize: '1.5rem'}}}}
               autoFocus
               autoComplete="off"
               type="tel"
@@ -100,11 +100,12 @@ export function PhoneVerifyForm(props: IPhoneVerifyFormProps) {
             className={css.PhoneVerifyCountdown}
             seconds={timeout}
             renderDone={
-              <a href="#" className={css.PhoneVerifyLink} onClick={handleResend}>
+              <span className={css.PhoneVerifyLink} onClick={handleResend}>
                 Отправить СМС повторно
-              </a>
-            }>
-            {(value) => <span>Повторный запрос возможен через {value} сек.</span>}
+              </span>
+            }
+          >
+            {value => <span>Повторный запрос возможен через {value} сек.</span>}
           </Countdown>
         </Card.Body>
       </Card>

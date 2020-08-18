@@ -1,11 +1,10 @@
-/* eslint-disable react/jsx-no-bind */
 import React from 'react';
-import { Route, Redirect, RouteProps } from 'react-router-dom';
-import { useAuth } from 'context/Auth';
+import {Route, Redirect, RouteProps} from 'react-router-dom';
+import {useAuth} from 'context/Auth';
 
 export function ProtectedRoute(props: RouteProps) {
-  const { children, ...rest } = props;
-  const { authStatus } = useAuth();
+  const {children, ...rest} = props;
+  const {authStatus} = useAuth();
   return (
     <Route {...rest}>
       {authStatus === 'OK' ? (
@@ -14,7 +13,6 @@ export function ProtectedRoute(props: RouteProps) {
         <Redirect
           to={{
             pathname: '/',
-            state: { from: location },
           }}
         />
       )}

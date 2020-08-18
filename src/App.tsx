@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
-import { Spinner } from 'lib/components/Spinner';
-import { useAuth } from './context/Auth';
+import React, {useEffect} from 'react';
+import {Route, Switch, useHistory} from 'react-router-dom';
+import {Spinner} from 'lib/components/Spinner';
+import {useAuth} from './context/Auth';
 // /* webpackPrefetch: true */
-const Auth1Container = React.lazy(() => import('./screens/Auth/Auth1Container'));
-const Auth2Container = React.lazy(() => import('./pages/Authentication/Auth2Container'));
-const Anketa = React.lazy(() => import('./pages/Anketa'));
+const Auth1Container = React.lazy(() => import(/* webpackPrefetch: true */ './screens/Auth/Auth1Container'));
+const Auth2Container = React.lazy(() =>
+  import(/* webpackPrefetch: true */ './pages/Authentication/Auth2Container'),
+);
+const Anketa = React.lazy(() => import(/* webpackPrefetch: true */ './pages/Anketa'));
 
 function AppRoutes() {
   return (
@@ -24,12 +26,12 @@ function AppRoutes() {
 }
 
 export function App() {
-  const { authStatus } = useAuth();
+  const {authStatus} = useAuth();
   const history = useHistory();
 
   useEffect(() => {
     if (authStatus === 'AUTH1_REQUIRED') {
-      history.replace('/', { step: 1 });
+      history.replace('/', {step: 1});
       return;
     } else if (authStatus === 'AUTH2_REQUIRED') {
       history.replace('/phoneverify');

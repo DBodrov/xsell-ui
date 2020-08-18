@@ -1,13 +1,12 @@
-import React, { useEffect, useLayoutEffect, createContext, useContext, useMemo } from 'react';
-import { Spinner } from 'lib/components/Spinner';
-import { useCampaign } from 'utils/use-campaign';
-import { useError } from '../Error';
-import { useAuthClient } from './use-authClient';
-import { IAuthContext } from './types';
+import React, {useEffect, useLayoutEffect, createContext, useContext, useMemo} from 'react';
+import {Spinner} from 'lib/components/Spinner';
+import {useCampaign} from 'utils/use-campaign';
+import {useAuthClient} from './use-authClient';
+import {IAuthContext} from './types';
 
 export const AuthContext = createContext<IAuthContext>(undefined);
 
-export function AuthProvider({ children }: any) {
+export function AuthProvider({children}: any) {
   const {
     authStatus,
     landingCode,
@@ -20,8 +19,8 @@ export function AuthProvider({ children }: any) {
     isInitialize,
     isLoading,
   } = useAuthClient();
-  const { errorState } = useError();
-  const { campaignParams } = useCampaign();
+
+  const {campaignParams} = useCampaign();
 
   useLayoutEffect(() => {
     getAuthStatus();
@@ -31,7 +30,7 @@ export function AuthProvider({ children }: any) {
     if (isInitialize) {
       initializeAuthSession(campaignParams);
     }
-  }, [campaignParams, errorState?.status, initializeAuthSession, isInitialize, logoff]);
+  }, [campaignParams, initializeAuthSession, isInitialize, logoff]);
 
   const value = useMemo<IAuthContext>(
     () => ({
@@ -40,7 +39,7 @@ export function AuthProvider({ children }: any) {
       handleAuth1SignIn: auth1SignIn,
       handleAuth2SignIn: auth2SignIn,
     }),
-    [authStatus, landingCode, auth1SignIn, auth2SignIn]
+    [authStatus, landingCode, auth1SignIn, auth2SignIn],
   );
   if (isIdle || isLoading || isInitialize) return <Spinner withBackdrop message="Аутентификация..." />;
 

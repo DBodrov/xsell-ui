@@ -108,9 +108,9 @@ export function ConfirmForm() {
       </div>
       <Fragment>
         {showLink ? (
-          <a className={css.GetSMSLink} onClick={handleGetSMS}>
+          <span className={css.GetSMSLink} onClick={handleGetSMS}>
             Отправить СМС повторно
-          </a>
+          </span>
         ) : (
           <span>Повторный запрос возможен через {timeLeft} сек.</span>
         )}

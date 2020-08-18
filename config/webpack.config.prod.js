@@ -142,7 +142,7 @@ module.exports = webpackMerge.merge(commonConfig, {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
-          chunks: 'all',
+          chunks: 'async',
         },
         default: {
           minChunks: 2,
@@ -193,14 +193,7 @@ module.exports = webpackMerge.merge(commonConfig, {
     }),
     new PreloadWebpackPlugin({
       rel: 'preload',
-      include: 'allChunks',
-      as(entry) {
-        if (/\.css$/.test(entry)) return 'style';
-        if (/\.woff$/.test(entry)) return 'font';
-        if (/\.ttf$/.test(entry)) return 'font';
-        if (/\.png$/.test(entry)) return 'image';
-        return 'script';
-      },
+      include: 'asyncChunks',
     }),
 
     new MiniCssExtractPlugin({
