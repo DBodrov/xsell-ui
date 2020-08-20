@@ -178,6 +178,7 @@ module.exports = webpackMerge.merge(commonConfig, {
       filename: 'index.html',
       template: resolveApp('src/index.html'),
       favicon: resolveApp('src/favicon.ico'),
+      chunksSortMode: 'none',
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -200,6 +201,7 @@ module.exports = webpackMerge.merge(commonConfig, {
       filename: 'static/css/[name].[contenthash].css',
       chunkFilename: 'static/css/[name].[contenthash].chunk.css',
       esModule: true,
+      ignoreOrder: true,
     }),
 
     new webpack.DefinePlugin({
