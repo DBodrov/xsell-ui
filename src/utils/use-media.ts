@@ -7,6 +7,7 @@ export function useMedia(query: string, initialState = false) {
   React.useEffect(() => {
     let mounted = true;
     const mql = window.matchMedia(query);
+    if (!mql) return;
     function onChange() {
       if (!mounted) {
         return;
@@ -14,12 +15,12 @@ export function useMedia(query: string, initialState = false) {
       setState(Boolean(mql.matches));
     }
 
-    mql.addListener(onChange);
+    mql.addEventListener('change', onChange);
     setState(mql.matches);
 
     return () => {
       mounted = false;
-      mql.removeListener(onChange);
+      mql.removeEventListener('change', onChange);
     };
   }, [query]);
 
