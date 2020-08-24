@@ -2,6 +2,7 @@ import {useReducer, useCallback} from 'react';
 import {auditService} from 'services';
 import {useFetch} from 'utils/use-fetch';
 import {Cookies} from 'utils/cookies';
+import {userEvents} from 'utils/use-page-view';
 import {useError} from '../Error';
 import {AuthState, IAuth1Params} from './types';
 
@@ -73,10 +74,11 @@ export function useAuthClient() {
       fetchClient(fetchConfig.url, {body: fetchConfig.body}).then(
         response => {
           const {sessionStatus, verified, phone} = response;
+
           if (verified) {
             const storedPhone = auth1Data?.phoneNumber ?? phone;
             !isComeback && Cookies.setCookie('_dcash_tel', storedPhone);
-            auditService.userEvent({category: 'AUTH', action: 'AUTH1_OK'});
+            userEvents({category: 'AUTH', action: 'AUTH1_OK'});
             setState({
               status: 'resolved',
               authStatus: sessionStatus,
@@ -85,14 +87,14 @@ export function useAuthClient() {
           } else {
             setState({status: 'rejected'});
             setErrorState({status: 404, message: 'User not found', code: 'USER_NOT_FOUND'});
-            auditService.userEvent({category: 'AUTH', action: 'AUTH1_FAIL_NOT_FOUND'});
+            userEvents({category: 'AUTH', action: 'AUTH1_FAIL_NOT_FOUND'});
           }
           return response;
         },
         error => {
           console.log(error);
           setState({status: 'rejected'});
-          auditService.userEvent({category: 'AUTH', action: 'AUTH1_FAIL'});
+          userEvents({category: 'AUTH', action: 'AUTH1_FAIL'});
           setErrorState(error);
 
           return error;

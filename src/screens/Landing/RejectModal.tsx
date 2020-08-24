@@ -106,11 +106,13 @@ export function RejectModal({modalState, setState, sendAnswer}: RejectModalProps
           borderRadius: isMobile ? '0px' : '32px',
           minHeight: '340px',
         }}
+        role="dialog"
       >
         <div
           css={{maxWidth: 24, height: 24, position: 'absolute', top: 34, right: 34, cursor: 'pointer'}}
           role="button"
           onClick={handleModalClose}
+          title="Закрыть"
         >
           <CloseIcon />
         </div>

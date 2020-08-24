@@ -15,7 +15,7 @@ export function Landing({landingCode, onNextPage}: LandingProps) {
   const handleOfferReject = useCallback(
     (reason: string) => {
       userEvents({category: 'LANDING', action: reason});
-      fetchClient(' /gateway/reject-offer', {body: {offerRejectedReason: reason}});
+      fetchClient('/gateway/reject-offer', {body: {offerRejectedReason: reason}});
     },
     [fetchClient],
   );

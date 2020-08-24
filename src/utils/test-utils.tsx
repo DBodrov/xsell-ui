@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { AuthContext, IAuthContext } from 'context/Auth';
-import { AnketaContext, TAnketaContext } from 'context/Anketa';
-import { ErrorContext, IErrorContext } from 'context/Error';
+import React, {useMemo} from 'react';
+import {render, RenderOptions} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import {Router} from 'react-router-dom';
+import {createMemoryHistory} from 'history';
+import {AuthContext, IAuthContext} from 'context/Auth';
+import {AnketaContext, TAnketaContext} from 'context/Anketa';
+import {ErrorContext, IErrorContext} from 'context/Error';
 
 const fn = (args?: any) => console.info(args ?? 'invoke');
 
@@ -27,7 +28,7 @@ export const mockAnketaContext: TAnketaContext = {
 
 const mockErrorContext: IErrorContext = {
   setErrorState: fn,
-  errorState: { status: null, code: null, message: null },
+  errorState: {status: null, code: null, message: null},
 };
 
 interface IAllProvidersProps {
@@ -37,11 +38,11 @@ interface IAllProvidersProps {
   errorContext?: IErrorContext;
 }
 
-export const AllProviders = ({ children, authContext, anketaContext, errorContext }: IAllProvidersProps) => {
+export const AllProviders = ({children, authContext, anketaContext, errorContext}: IAllProvidersProps) => {
   const history = createMemoryHistory();
-  const anketaCtx = useMemo(() => ({ ...mockAnketaContext, ...anketaContext }), [anketaContext]);
-  const authCtx = useMemo(() => ({ ...mockAuthContext, ...authContext }), [authContext]);
-  const errorCtx = useMemo(() => ({ ...mockErrorContext, ...errorContext }), [errorContext]);
+  const anketaCtx = useMemo(() => ({...mockAnketaContext, ...anketaContext}), [anketaContext]);
+  const authCtx = useMemo(() => ({...mockAuthContext, ...authContext}), [authContext]);
+  const errorCtx = useMemo(() => ({...mockErrorContext, ...errorContext}), [errorContext]);
 
   return (
     <Router history={history}>
@@ -62,9 +63,9 @@ type ProvidersProps = {
 export const providersRender = (
   children: React.ReactElement,
   providersProps?: ProvidersProps,
-  options?: RenderOptions
-) => render(<AllProviders {...providersProps}>{children}</AllProviders>, { ...options });
+  options?: RenderOptions,
+) => render(<AllProviders {...providersProps}>{children}</AllProviders>, {...options});
 
 export * from '@testing-library/react';
 
-export { providersRender as render };
+export {providersRender as render, userEvent, render as rtlRender};

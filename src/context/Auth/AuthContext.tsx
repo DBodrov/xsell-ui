@@ -41,7 +41,7 @@ export function AuthProvider({children}: any) {
     }),
     [authStatus, landingCode, auth1SignIn, auth2SignIn],
   );
-  if (isIdle || isLoading || isInitialize) return <Spinner withBackdrop message="Аутентификация..." />;
+  if (isIdle || isLoading || isInitialize) return <Spinner withBackdrop message="Загрузка..." />;
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

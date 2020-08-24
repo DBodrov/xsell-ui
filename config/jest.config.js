@@ -21,12 +21,13 @@ module.exports = {
     '^hooks': '<rootDir>/src/hooks',
     '^providers': '<rootDir>/src/providers',
     '^context/(.*)': '<rootDir>/src/context/$1',
+    '^context': '<rootDir>/src/context',
     '^typings': '<rootDir>/src/typings',
     '^utils/(.*)': '<rootDir>/src/utils/$1',
     '^icons': '<rootDir>/src/icons',
   },
   snapshotSerializers: ['jest-emotion'],
-
+  setupFiles: [require.resolve('whatwg-fetch'), require.resolve('abortcontroller-polyfill')],
   transform: {
     '^.+\\.(js|jsx|mjs|cjs|ts|tsx)$': require.resolve('react-scripts/config/jest/babelTransform'),
     '^.+\\.css$': require.resolve('react-scripts/config/jest/cssTransform.js'),
