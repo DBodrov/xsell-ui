@@ -27,8 +27,8 @@ globalThis.MutationObserver = class {
   observe(element, initObject) {}
 };
 
-// beforeAll(() => server.listen({onUnhandledRequest: 'error'}));
-beforeAll(() => server.listen());
+beforeAll(() => server.listen({onUnhandledRequest: 'error'}));
+//beforeAll(() => server.listen());
 afterAll(() => server.close());
 afterEach(() => server.resetHandlers());
 beforeEach(() => jest.useRealTimers());

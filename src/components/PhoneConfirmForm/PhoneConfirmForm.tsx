@@ -46,7 +46,7 @@ export function PhoneConfirmForm() {
   useEffect(() => {
     inputRef?.current?.focus();
     if (smsCode.length === 4) {
-      timeout = setTimeout(() => handleAuth2SignIn(smsCode), 300);
+      timeout = window.setTimeout(() => handleAuth2SignIn(smsCode), 300);
     }
     if (!showLink) {
       interval = setInterval(() => {

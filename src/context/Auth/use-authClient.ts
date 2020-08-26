@@ -117,14 +117,14 @@ export function useAuthClient() {
         data => {
           const {sessionStatus, verified} = data;
           if (verified) {
-            auditService.userEvent({category: 'AUTH', action: 'AUTH2_OK'});
+            userEvents({category: 'AUTH', action: 'AUTH2_OK'});
             setState({
               status: 'resolved',
               authStatus: sessionStatus,
             });
           } else {
             setState({status: 'rejected'});
-            auditService.userEvent({category: 'AUTH', action: 'AUTH2_FAIL'});
+            userEvents({category: 'AUTH', action: 'AUTH2_FAIL'});
             setErrorState({
               status: 400,
               message: 'Неверный код. Чтобы продолжить оформление кредита введите корректный код из СМС',

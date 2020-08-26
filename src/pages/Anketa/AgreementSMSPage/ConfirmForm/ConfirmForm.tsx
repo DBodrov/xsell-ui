@@ -78,6 +78,7 @@ export function ConfirmForm() {
         return data;
       },
       error => {
+        // TODO: обработать ошибку - ссылка доступна без счетчика
         setErrorState({status: 400, message: error?.message});
         return error;
       },
