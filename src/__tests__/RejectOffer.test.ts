@@ -7,9 +7,9 @@ import {
   waitForLoadingFinish,
 } from 'utils/test-utils';
 
-
 describe('reject offer flow', () => {
   test('render Reject modal', async () => {
+    jest.useFakeTimers();
     server.use(
       rest.post('/gateway/auth-status', (req, res, ctx) => {
         return res(
