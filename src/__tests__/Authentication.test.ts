@@ -1,5 +1,11 @@
 import {server, rest} from 'src/test/test-server';
-import {screen, userEvent, renderApp, waitForLoadingFinish, waitForElementToBeRemoved} from 'utils/test-utils';
+import {
+  screen,
+  userEvent,
+  renderApp,
+  waitForLoadingFinish,
+  waitForElementToBeRemoved,
+} from 'utils/test-utils';
 import {AuthStatus} from 'context/Auth';
 import {LandingProps} from '../screens/Landing/types';
 
@@ -7,7 +13,6 @@ const landing1 = 'https://cash.otpbank.ru/public/images/girl.png';
 const landing2 = 'https://cash.otpbank.ru/public/images/family.png';
 const landing3 = 'https://cash.otpbank.ru/public/images/girl3a.png';
 const landing4 = 'https://cash.otpbank.ru/public/images/girl_4.png';
-
 
 const appSetup = (status: AuthStatus) => {
   server.use(
@@ -69,14 +74,57 @@ test('render Landing4', async () => {
   expect(screen.queryByAltText(/landing picture/i)).toHaveAttribute('src', landing4);
 });
 
-test('non-client redirect to Login form', async () => {
+test('unknown client auth1 login - happy path', async () => {
   initSession({sessionStatus: 'AUTH1_REQUIRED', settings: {}});
   await waitForLoadingFinish();
   const nextPageButton = screen.getByRole('button', {name: /Получить онлайн/i});
   userEvent.click(nextPageButton);
-
   const formHeader = await screen.findByText(/Введите телефон/);
   expect(formHeader).toBeInTheDocument();
+  const phoneNumber = screen.queryByLabelText(/мобильный/i);
+  await userEvent.type(phoneNumber, '8001234567');
+  const birthDate = screen.queryByLabelText(/picker-input/i);
+  await userEvent.type(birthDate, '21091975');
+  const checkboxes = screen.queryAllByRole('checkbox');
+  checkboxes.forEach(checkbox => userEvent.click(checkbox));
+  const submitButton = screen.queryByText('Продолжить');
+  userEvent.click(submitButton);
+  await waitForLoadingFinish();
+  const SMSPageTitle = await screen.findByText(/Подтвердите вход/i);
+  expect(SMSPageTitle).toBeInTheDocument();
+});
+
+test('unknown client - not found', async () => {
+  server.use(
+    rest.post('/gateway/auth1', (req, res, ctx) => {
+      return res.once(
+        ctx.status(200),
+        ctx.json({
+          verified: false,
+          passwordLength: 0,
+          passwordLifetimeInSeconds: 0,
+          sessionStatus: 'AUTH1_REQUIRED',
+        }),
+      );
+    }),
+  );
+  initSession({sessionStatus: 'AUTH1_REQUIRED', settings: {}});
+  await waitForLoadingFinish();
+  const nextPageButton = screen.getByRole('button', {name: /Получить онлайн/i});
+  userEvent.click(nextPageButton);
+  const formHeader = await screen.findByText(/Введите телефон/);
+  expect(formHeader).toBeInTheDocument();
+  const phoneNumber = screen.queryByLabelText(/мобильный/i);
+  await userEvent.type(phoneNumber, '8001234567');
+  const birthDate = screen.queryByLabelText(/picker-input/i);
+  await userEvent.type(birthDate, '21091975');
+  const checkboxes = screen.queryAllByRole('checkbox');
+  checkboxes.forEach(checkbox => userEvent.click(checkbox));
+  const submitButton = screen.queryByText('Продолжить');
+  userEvent.click(submitButton);
+  await waitForLoadingFinish();
+  const PageTitle = await screen.findByText(/Не можем вас найти/i);
+  expect(PageTitle).toBeInTheDocument();
 });
 
 describe('client login flow', () => {
@@ -112,9 +160,9 @@ describe('client login flow', () => {
     const SMSPageTitle = await screen.findByText(/Подтвердите вход/i);
     expect(SMSPageTitle).toBeInTheDocument();
     await userEvent.type(screen.queryByPlaceholderText(/Введите код/i), '1234');
-    await waitForElementToBeRemoved(() => screen.queryByPlaceholderText(/Введите код/i), {timeout: 5000})
+    await waitForElementToBeRemoved(() => screen.queryByPlaceholderText(/Введите код/i), {timeout: 5000});
     await waitForLoadingFinish();
     jest.runAllTimers();
-    expect(screen.queryByText(/обновляем анкету/i)).toBeInTheDocument()
+    expect(screen.queryByText(/обновляем анкету/i)).toBeInTheDocument();
   });
 });
