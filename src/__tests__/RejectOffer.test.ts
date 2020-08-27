@@ -42,7 +42,7 @@ describe('reject offer flow', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  test('render Reject modal without crash, when api response = Error 500', async () => {
+  test('render Reject modal without crash, when api response Error', async () => {
     const handler = rest.post('/gateway/reject-offer', async (req, res, ctx) => {
       return res.once(ctx.status(400), ctx.json({message: 'Ooops!', status: 400}));
     });

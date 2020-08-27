@@ -1,5 +1,4 @@
 import {useReducer, useCallback} from 'react';
-import {auditService} from 'services';
 import {useFetch} from 'utils/use-fetch';
 import {Cookies} from 'utils/cookies';
 import {userEvents} from 'utils/use-page-view';
@@ -134,7 +133,7 @@ export function useAuthClient() {
         },
         error => {
           setState({status: 'rejected'});
-          auditService.userEvent({category: 'AUTH', action: 'AUTH2_FAIL'});
+          userEvents({category: 'AUTH', action: 'AUTH2_FAIL'});
           setErrorState(error);
           return error;
         },

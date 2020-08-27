@@ -113,7 +113,6 @@ describe('client login flow', () => {
     expect(SMSPageTitle).toBeInTheDocument();
     await userEvent.type(screen.queryByPlaceholderText(/Введите код/i), '1234');
     await waitForElementToBeRemoved(() => screen.queryByPlaceholderText(/Введите код/i), {timeout: 5000})
-
     await waitForLoadingFinish();
     jest.runAllTimers();
     expect(screen.queryByText(/обновляем анкету/i)).toBeInTheDocument()

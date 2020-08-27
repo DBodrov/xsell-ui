@@ -3,8 +3,6 @@ interface IFetchRequestConfig extends RequestInit {
   token?: string;
 }
 
-// const apiURL = process.env.REACT_APP_API_URL;
-
 async function client(
   endpoint: string,
   {body, token, headers: customHeaders, ...customConfig}: IFetchRequestConfig = {},

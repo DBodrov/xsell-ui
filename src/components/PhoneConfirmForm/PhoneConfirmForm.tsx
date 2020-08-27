@@ -49,14 +49,14 @@ export function PhoneConfirmForm() {
       timeout = window.setTimeout(() => handleAuth2SignIn(smsCode), 300);
     }
     if (!showLink) {
-      interval = setInterval(() => {
+      interval = window.setInterval(() => {
         setTimeLeft(t => t - 1);
       }, delay);
     }
 
     return () => {
-      clearTimeout(timeout);
-      clearInterval(interval);
+      window.clearTimeout(timeout);
+      window.clearInterval(interval);
     };
   }, [handleAuth2SignIn, showLink, smsCode, smsCode.length]);
 
