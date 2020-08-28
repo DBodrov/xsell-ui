@@ -15,12 +15,12 @@ export function useMedia(query: string, initialState = false) {
       setState(Boolean(mql.matches));
     }
 
-    mql.addEventListener('change', onChange);
+    mql.addEventListener ? mql.addEventListener('change', onChange) : mql.addListener(onChange);
     setState(mql.matches);
 
     return () => {
       mounted = false;
-      mql.removeEventListener('change', onChange);
+      mql.removeEventListener ? mql.removeEventListener('change', onChange) : mql.removeListener(onChange);
     };
   }, [query]);
 
