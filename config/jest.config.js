@@ -27,7 +27,7 @@ module.exports = {
     '^icons': '<rootDir>/src/icons',
   },
   snapshotSerializers: ['jest-emotion'],
-  setupFiles: [require.resolve('whatwg-fetch'), require.resolve('abortcontroller-polyfill')],
+  setupFiles: [require.resolve('whatwg-fetch')],
   transform: {
     '^.+\\.(js|jsx|mjs|cjs|ts|tsx)$': require.resolve('react-scripts/config/jest/babelTransform'),
     '^.+\\.css$': require.resolve('react-scripts/config/jest/cssTransform.js'),
