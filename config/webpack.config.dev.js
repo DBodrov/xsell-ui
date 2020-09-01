@@ -4,13 +4,14 @@ const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const webpackMerge = require('webpack-merge');
 const chalk = require('chalk');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const Dotenv = require('dotenv-webpack');
 const utils = require('./utilities');
 const {resolveApp} = require('./paths');
 const commonConfig = require('./webpack.config.common');
 
-const ENV = 'test';
+const ENV = 'development';
 process.env.NODE_ENV = ENV;
 process.env.ENV = ENV;
 
@@ -161,6 +162,8 @@ module.exports = webpackMerge.merge(commonConfig, {
       include: 'asyncChunks',
     }),
 
+    new ReactRefreshWebpackPlugin(),
+
     new WebpackBar({
       name: `ENV: ${ENV}  VERSION: ${VERSION}`,
     }),
@@ -184,10 +187,6 @@ module.exports = webpackMerge.merge(commonConfig, {
     stats: 'minimal',
     contentBase: resolveApp('src'),
     proxy: {
-      '/api/*': {
-        target: 'https://cash.otpbank.ru',
-        changeOrigin: true,
-      },
       '/gateway/*': {
         target: 'https://cash.staging.productcloud.ru',
         changeOrigin: true,
