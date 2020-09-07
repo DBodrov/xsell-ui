@@ -74,6 +74,47 @@ test('render Landing4', async () => {
   expect(screen.queryByAltText(/landing picture/i)).toHaveAttribute('src', landing4);
 });
 
+test('handle get app status fail', async () => {
+  jest.useFakeTimers();
+  server.use(
+    rest.post('/gateway/auth-status', (req, res, ctx) => {
+      return res.once(
+        ctx.status(500),
+        ctx.json({
+          code: 'Error',
+        }),
+      );
+    }),
+  );
+
+  renderApp();
+  await waitForLoadingFinish();
+  expect(screen.queryByText(/Что-то пошло не так/i)).toBeInTheDocument()
+});
+
+test('handle initialize fail', async () => {
+  jest.useFakeTimers();
+  server.use(
+    rest.post('/gateway/auth-status', (req, res, ctx) => {
+      return res.once(
+        ctx.status(200),
+        ctx.cookie('userData', '', {maxAge: -1}),
+        ctx.json({
+          status: 'INITIALIZE',
+        }),
+      );
+    }),
+  );
+  server.use(
+    rest.post('/gateway/initialize', (req, res, ctx) => {
+      return res.once(ctx.status(500));
+    }),
+  );
+  renderApp();
+  await waitForLoadingFinish();
+  expect(screen.queryByText(/Что-то пошло не так/i)).toBeInTheDocument()
+});
+
 test('unknown client auth1 login - happy path', async () => {
   initSession({sessionStatus: 'AUTH1_REQUIRED', settings: {}});
   await waitForLoadingFinish();
@@ -138,6 +179,7 @@ describe('client login flow', () => {
     expect(SMSPageTitle).toBeInTheDocument();
   });
 
+
   test('second enter', async () => {
     server.use(
       rest.post('/gateway/auth-status', (req, res, ctx) => {
@@ -166,3 +208,4 @@ describe('client login flow', () => {
     expect(screen.queryByText(/обновляем анкету/i)).toBeInTheDocument();
   });
 });
+

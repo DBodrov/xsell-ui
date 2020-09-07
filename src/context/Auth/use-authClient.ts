@@ -91,7 +91,7 @@ export function useAuthClient() {
           return response;
         },
         error => {
-          console.log(error);
+          console.error(error);
           setState({status: 'rejected'});
           userEvents({category: 'AUTH', action: 'AUTH1_FAIL'});
           setErrorState(error);
