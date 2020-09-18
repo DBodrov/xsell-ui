@@ -30,7 +30,7 @@ export function CompletedPage() {
 
   const downloadAllDocs = useCallback(() => {
     auditService.userEvent({ category: 'FE_REDIRECT', action: 'Download batched documents' }, { toBE: true });
-    UI.downloadFile(`/gateway${batchDocumentLink}`, 'otpbank_documents');
+    UI.downloadFile(`/gateway/doc${batchDocumentLink}`, 'otpbank_documents');
   }, [batchDocumentLink]);
 
   return (
