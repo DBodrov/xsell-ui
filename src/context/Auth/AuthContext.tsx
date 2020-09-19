@@ -18,6 +18,7 @@ export function AuthProvider({children}: any) {
     isIdle,
     isInitialize,
     isLoading,
+    error,
   } = useAuthClient();
 
   const {campaignParams} = useCampaign();
@@ -35,11 +36,12 @@ export function AuthProvider({children}: any) {
   const value = useMemo<IAuthContext>(
     () => ({
       authStatus,
+      error,
       clientSettings: {landingCode},
       handleAuth1SignIn: auth1SignIn,
       handleAuth2SignIn: auth2SignIn,
     }),
-    [authStatus, landingCode, auth1SignIn, auth2SignIn],
+    [authStatus, error, landingCode, auth1SignIn, auth2SignIn],
   );
   if (isIdle || isLoading || isInitialize) return <Spinner withBackdrop message="Загрузка..." />;
 

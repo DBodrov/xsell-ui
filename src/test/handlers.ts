@@ -7,11 +7,19 @@ export const handlers = [
   }),
 
   rest.post('/gateway/auth-status', (req, res, ctx) => {
+    const {cookies} = req;
+    if (cookies['userData'] && cookies['SESSION']) {
+      return res(ctx.status(200), ctx.json({status: 'AUTH2_REQUIRED'}));
+    }
     return res(ctx.status(200), ctx.cookie('userData', '', {maxAge: 0}), ctx.json({status: 'INITIALIZE'}));
   }),
 
   rest.post('/gateway/initialize', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({sessionStatus: 'AUTH1_REQUIRED'}));
+    return res(
+      ctx.status(200),
+      ctx.cookie('SESSION', '__Session_cookie__'),
+      ctx.json({sessionStatus: 'AUTH1_REQUIRED'}),
+    );
   }),
 
   rest.post('/gateway/auth1', (req, res, ctx) => {
@@ -53,17 +61,38 @@ export const handlers = [
   }),
 
   rest.post('/gateway/auth2-retry', (req, res, ctx) => {
+    if (req.body['verificationCode'] === '0000') {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          sessionStatus: 'AUTH2_REQUIRED',
+          verified: false,
+        }),
+      );
+    }
     return res(
       ctx.status(200),
       ctx.json({
-        sessionStatus: 'OK',
         verified: true,
+        passwordLengtH: 4,
+        passwordLifetimeInSeconds: 60,
+        sessionStatus: 'OK',
       }),
     );
   }),
   rest.post('/gateway/auth2', (req, res, ctx) => {
+    if (req.body['verificationCode'] === '0000') {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          sessionStatus: 'AUTH2_REQUIRED',
+          verified: false,
+        }),
+      );
+    }
     return res(
       ctx.status(200),
+      ctx.cookie('userData', '_encripted_user_data_'),
       ctx.json({
         sessionStatus: 'OK',
         verified: true,

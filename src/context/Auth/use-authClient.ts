@@ -10,6 +10,7 @@ const initialState: AuthState = {
   authStatus: undefined,
   landingCode: undefined,
   phone: undefined,
+  phoneVerified: false,
   error: null,
 };
 
@@ -21,7 +22,7 @@ const authReducer = (state: AuthState, changes: AuthState): AuthState => {
 export function useAuthClient() {
   const fetchClient = useFetch();
   const {setErrorState} = useError();
-  const [{status, authStatus, landingCode}, setState] = useReducer(authReducer, initialState);
+  const [{status, authStatus, landingCode, phoneVerified, error}, setState] = useReducer(authReducer, initialState);
 
   const getAuthStatus = useCallback(() => {
     setState({status: 'pending'});
@@ -31,7 +32,7 @@ export function useAuthClient() {
         return response;
       },
       error => {
-        setState({status: 'rejected'});
+        setState({status: 'rejected', error});
         setErrorState(error);
         return error;
       },
@@ -52,7 +53,7 @@ export function useAuthClient() {
           return response;
         },
         error => {
-          setState({status: 'rejected'});
+          setState({status: 'rejected', error});
           setErrorState(error);
           return error;
         },
@@ -63,7 +64,7 @@ export function useAuthClient() {
 
   const auth1SignIn = useCallback(
     (auth1Data: IAuth1Params, isComeback = false, isClient = false) => {
-      setState({status: 'pending'});
+      setState({status: 'pending', error: null});
       const fetchConfig = isComeback
         ? {url: '/gateway/auth1-retry', body: {}}
         : isClient
@@ -84,15 +85,16 @@ export function useAuthClient() {
               phone,
             });
           } else {
-            setState({status: 'rejected'});
-            setErrorState({status: 404, message: 'User not found', code: 'USER_NOT_FOUND'});
+            const error = {status: 404, message: 'User not found', code: 'USER_NOT_FOUND'};
+            setState({status: 'rejected', error});
+            setErrorState(error);
             userEvents({category: 'AUTH', action: 'AUTH1_FAIL_NOT_FOUND'});
           }
           return response;
         },
         error => {
-          console.error(error);
-          setState({status: 'rejected'});
+          //console.log(error);
+          setState({status: 'rejected', error});
           userEvents({category: 'AUTH', action: 'AUTH1_FAIL'});
           setErrorState(error);
 
@@ -105,7 +107,7 @@ export function useAuthClient() {
 
   const auth2SignIn = useCallback(
     (verificationCode: string) => {
-      setState({status: 'pending'});
+      setState({status: 'pending', error: null});
       setErrorState(undefined);
       const phoneNumber = Cookies.getCookie(Cookies.PHONE_NUMBER);
       const isComeback = Cookies.getCookie(Cookies.USER_DATA).length > 0;
@@ -120,19 +122,21 @@ export function useAuthClient() {
             setState({
               status: 'resolved',
               authStatus: sessionStatus,
+              phoneVerified: true,
             });
           } else {
-            setState({status: 'rejected'});
-            userEvents({category: 'AUTH', action: 'AUTH2_FAIL'});
-            setErrorState({
+            const error = {
               status: 400,
               message: 'Неверный код. Чтобы продолжить оформление кредита введите корректный код из СМС',
-            });
+            };
+            setState({status: 'rejected', error});
+            userEvents({category: 'AUTH', action: 'AUTH2_FAIL'});
+            setErrorState(error);
           }
           return data;
         },
         error => {
-          setState({status: 'rejected'});
+          setState({status: 'rejected', error});
           userEvents({category: 'AUTH', action: 'AUTH2_FAIL'});
           setErrorState(error);
           return error;
@@ -154,6 +158,8 @@ export function useAuthClient() {
     logoff,
     authStatus,
     landingCode,
+    phoneVerified,
+    error,
 
     isIdle: status === 'idle',
     isLoading: status === 'pending',

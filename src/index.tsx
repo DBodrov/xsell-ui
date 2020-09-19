@@ -1,16 +1,18 @@
-import React, { StrictMode } from 'react';
+import React, {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
-import { Global } from '@emotion/core';
-import { Environment, auditService } from 'services';
-import { AppProviders } from './context';
-import { App } from './App';
-import { globalStyles } from './globalStyles';
+import {Global} from '@emotion/core';
+import {auditService} from 'services';
+import {server} from './test/dev-server';
+import {AppProviders} from './context';
+import {App} from './App';
+import {globalStyles} from './globalStyles';
 import './global.scss';
 
 auditService.initAudit();
 
-console.info('Version: ', process.env.VERSION);
-console.info('Environment : ', Environment.getEnv());
+if (process.env.USE_API_MOCK === 'true') {
+  server.start();
+}
 
 ReactDOM.render(
   <StrictMode>
@@ -19,5 +21,5 @@ ReactDOM.render(
       <App />
     </AppProviders>
   </StrictMode>,
-  document.getElementById('app')
+  document.getElementById('app'),
 );

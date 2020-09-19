@@ -187,7 +187,7 @@ module.exports = webpackMerge.merge(commonConfig, {
     stats: 'minimal',
     contentBase: resolveApp('src'),
     proxy: {
-      '/gateway/*': {
+      '/gateway': {
         target: 'https://cash.staging.productcloud.ru',
         changeOrigin: true,
         secure: false,

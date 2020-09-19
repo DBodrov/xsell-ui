@@ -9,6 +9,8 @@ import {
 import {AuthStatus} from 'context/Auth';
 import {LandingProps} from '../screens/Landing/types';
 
+jest.setTimeout(30000)
+
 const landing1 = 'https://cash.otpbank.ru/public/images/girl.png';
 const landing2 = 'https://cash.otpbank.ru/public/images/family.png';
 const landing3 = 'https://cash.otpbank.ru/public/images/girl3a.png';
@@ -159,6 +161,7 @@ test('unknown client - not found', async () => {
   await userEvent.type(phoneNumber, '8001234567');
   const birthDate = screen.queryByLabelText(/picker-input/i);
   await userEvent.type(birthDate, '21091975');
+  // screen.debug(birthDate)
   const checkboxes = screen.queryAllByRole('checkbox');
   checkboxes.forEach(checkbox => userEvent.click(checkbox));
   const submitButton = screen.queryByText('Продолжить');
@@ -179,8 +182,7 @@ describe('client login flow', () => {
     expect(SMSPageTitle).toBeInTheDocument();
   });
 
-
-  test('second enter', async () => {
+  test.skip('second enter', async () => {
     server.use(
       rest.post('/gateway/auth-status', (req, res, ctx) => {
         return res(
@@ -202,7 +204,7 @@ describe('client login flow', () => {
     const SMSPageTitle = await screen.findByText(/Подтвердите вход/i);
     expect(SMSPageTitle).toBeInTheDocument();
     await userEvent.type(screen.queryByPlaceholderText(/Введите код/i), '1234');
-    await waitForElementToBeRemoved(() => screen.queryByPlaceholderText(/Введите код/i), {timeout: 5000});
+    await waitForElementToBeRemoved(() => screen.queryByPlaceholderText(/Введите код/i), {timeout: 8000});
     await waitForLoadingFinish();
     jest.runAllTimers();
     expect(screen.queryByText(/обновляем анкету/i)).toBeInTheDocument();

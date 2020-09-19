@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
+import {css} from '@emotion/core';
 
 const baseHeading = css`
   font-family: 'Source Sans Pro', sans-serif;
@@ -13,7 +13,7 @@ export const H1 = styled.h1`
   line-height: 40px;
   @media (max-width: 768px) {
     font-size: 28px;
-    font-weight: 32px;
+    line-height: 32px;
   }
 `;
 

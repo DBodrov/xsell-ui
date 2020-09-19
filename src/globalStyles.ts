@@ -57,7 +57,7 @@ export const globalStyles = css(
       '--color-secondary': '#FF6600',
       '--color-secondary-dark': '#D63D0C',
       '--color-border': '#C5C5C5',
-      '--color-text': '#4A4A4A',
+      '--color-text': '#494949',
       '--color-text-lead': '#767676',
       '--color-background': '#fff',
       '--color-error': '#ff435a',

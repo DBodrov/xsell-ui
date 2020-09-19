@@ -10,7 +10,7 @@ export interface IAuthContext {
   authStatus: 'INITIALIZE' | 'AUTH1_REQUIRED' | 'AUTH2_REQUIRED' | 'OK';
   clientSettings?: TClientSettings;
   user?: TUser;
-  // error: { code: string | number; message: string };
+  error: Record<string, unknown>;
   // isError: boolean;
   handleAuth1SignIn: (auth1Params?: IAuth1Params, isComeback?: boolean, isClient?: boolean) => void;
   handleAuth2SignIn: (code?: string) => void;
@@ -20,6 +20,7 @@ export type AuthState = {
   status: 'idle' | 'pending' | 'resolved' | 'rejected';
   // authData?: { status: AuthStatus; clientSettings?: TClientSettings, user?: TUser};
   authStatus?: AuthStatus;
+  phoneVerified?: boolean;
   landingCode?: TLandingCode;
   phone?: string;
   error?: any;

@@ -1,8 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import {server} from '../src/test/test-server';
-// const abortController = require('abortcontroller-polyfill');
 
-// globalThis.AbortController = abortController;
+jest.setTimeout(30000)
 //mock GA userEvents
 jest.mock('utils/use-page-view');
 const {userEvents} = require('utils/use-page-view');
@@ -30,5 +29,9 @@ globalThis.MutationObserver = class {
 beforeAll(() => server.listen({onUnhandledRequest: 'error'}));
 //beforeAll(() => server.listen());
 afterAll(() => server.close());
-afterEach(() => server.resetHandlers());
-beforeEach(() => jest.useRealTimers());
+afterEach(() => {
+  server.resetHandlers();
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
+beforeEach(() => jest.useFakeTimers());

@@ -4,9 +4,7 @@ import {Spinner} from 'lib/components/Spinner';
 import {useAuth} from './context/Auth';
 // /* webpackPrefetch: true */
 const Auth1Container = React.lazy(() => import(/* webpackPrefetch: true */ './screens/Auth/Auth1Container'));
-const Auth2Container = React.lazy(() =>
-  import(/* webpackPrefetch: true */ './pages/Authentication/Auth2Container'),
-);
+const Auth2Container = React.lazy(() => import(/* webpackPrefetch: true */ './screens/Auth/Auth2Container'));
 const Anketa = React.lazy(() => import(/* webpackPrefetch: true */ './pages/Anketa'));
 
 function AppRoutes() {
