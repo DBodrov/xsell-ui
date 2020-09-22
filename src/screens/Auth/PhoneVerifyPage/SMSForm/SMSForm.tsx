@@ -73,6 +73,7 @@ export function SMSForm() {
       <MaskInput
         hasError={hasError}
         autoFocus
+        type="tel"
         css={{
           textAlign: 'center',
           letterSpacing: 8,
