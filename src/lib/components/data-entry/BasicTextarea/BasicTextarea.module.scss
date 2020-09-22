@@ -27,9 +27,9 @@
 }
 
 .isDisabled {
-  background-color: $gray-1;
+  background-color: #f3f3f3;
   border: 1px $shade-400 solid;
-  color: $text-dark-gray;
+  color: #000;
   cursor: not-allowed;
 
   > * {
@@ -49,7 +49,7 @@
   outline: 0;
   border: 0;
   @include font-base;
-  color: $text-primary;
+  color: #000;
   transition: all 0.2s ease-in-out;
 
   &:focus,
