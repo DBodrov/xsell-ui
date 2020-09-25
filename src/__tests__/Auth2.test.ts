@@ -3,10 +3,10 @@ import {
   screen,
   userEvent,
   renderApp,
-  waitForElementToBeRemoved,
+  // waitForElementToBeRemoved,
   waitForLoadingFinish,
 } from 'utils/test-utils';
-jest.setTimeout(30000);
+//jest.setTimeout(30000);
 const setupServer = () => {
   server.use(
     rest.post('/gateway/auth-status', (req, res, ctx) => {
@@ -22,7 +22,7 @@ const setupServer = () => {
 };
 
 test('re-send sms', async () => {
-  jest.useFakeTimers();
+  //jest.useFakeTimers();
   setupServer();
   renderApp();
   await waitForLoadingFinish();
