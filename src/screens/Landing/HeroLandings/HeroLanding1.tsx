@@ -24,7 +24,7 @@ export function HeroLanding1({onNextPage, notInterested}: HeroLandingProps) {
             Не интересно
           </LinkButton>
         </div>
-        <img src={imageSrc} alt="picture" aria-hidden css={landing1ImageStyles} />
+        <img src={imageSrc} alt="Кредит наличными" aria-hidden css={landing1ImageStyles} />
       </LandingContent>
     </div>
   );

@@ -49,7 +49,7 @@ export function HeroLanding4({onNextPage, notInterested}: HeroLandingProps) {
           <PlankShadow />
           <img src={furnSrc} alt="picture" aria-hidden css={{height: '100%'}} />
         </div>
-        <img src={imageSrc} alt="landing picture" aria-hidden css={landing4GirlImageStyles} />
+        <img src={imageSrc} alt="Кредит наличными" aria-hidden css={landing4GirlImageStyles} />
       </LandingContent>
     </div>
   );

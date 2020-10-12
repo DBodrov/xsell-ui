@@ -40,4 +40,5 @@ export const Cookies = {
   deleteCookie,
   PHONE_NUMBER: '_dcash_tel',
   USER_DATA: 'userData',
+  DIFFERENCE_HAVE: '_diff_have',
 };

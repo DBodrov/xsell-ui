@@ -1,20 +1,21 @@
-import React, { useState, useCallback } from 'react';
+import React, {useState, useCallback} from 'react';
 import cx from 'classnames';
-import { useAnketa, IAnketa } from 'context/Anketa';
-import { BasicButton } from 'lib/components/buttons/BasicButton';
-import { Checkbox } from 'lib/components/data-entry/Checkbox';
-import { LayoutPage } from 'components/Layout';
-import { getMonthlyPayment } from 'services/creditCalc.service';
-import { toRuLocalNumber, correctRusCase } from 'utils/string.utils';
-import { CampaignVariant } from './CampaignVariant';
+import {useAnketa, IAnketa} from 'context/Anketa';
+import {BasicButton} from 'lib/components/buttons/BasicButton';
+import {Checkbox} from 'lib/components/data-entry/Checkbox';
+import {LayoutPage} from 'components/Layout';
+import {getMonthlyPayment} from 'services/creditCalc.service';
+import {toRuLocalNumber, correctRusCase} from 'utils/string.utils';
+//import {Cookies} from 'utils/cookies';
+import {CampaignVariant} from './CampaignVariant';
 import css from './ResultScoringPage.module.scss';
-import { AutoStepper } from 'components/AutoStepper';
+import {AutoStepper} from 'components/AutoStepper';
 
 interface IAgreementLinkFormProps {
   agreementLink: string;
 }
 
-const AgreementLink = ({ agreementLink }: IAgreementLinkFormProps) => (
+const AgreementLink = ({agreementLink}: IAgreementLinkFormProps) => (
   <p>
     Я ознакомлен{' '}
     <a className="as-link" href={agreementLink} type="download" target="_blank" rel="noopener noreferrer">
@@ -36,6 +37,7 @@ export function ResultScoringPage() {
       approvedLoanTermMonths = 0,
       approvedMonthlyPayment = 0,
       batchDocumentLink = undefined,
+      campaignParticipant,
     },
     updateAnketa,
   } = useAnketa();
@@ -45,6 +47,7 @@ export function ResultScoringPage() {
     approvedLoanAmount,
     approvedLoanTermMonths,
     approvedMonthlyPayment,
+    campaignParticipant,
   };
 
   const monthlyPayment =
@@ -52,7 +55,7 @@ export function ResultScoringPage() {
 
   const fullAmount = monthlyPayment * approvedLoanTermMonths || 0;
 
-  const onSignCredit = useCallback(() => updateAnketa(step, { flag: agreement }), [
+  const onSignCredit = useCallback(() => updateAnketa(step, {flag: agreement}), [
     agreement,
     step,
     updateAnketa,
@@ -88,7 +91,8 @@ export function ResultScoringPage() {
           className={css.Triangle}
           shapeRendering="geometricPrecision"
           preserveAspectRatio="none"
-          viewBox="0 0 100 100">
+          viewBox="0 0 100 100"
+        >
           <path d="M 0 0 L 100 0 L 50 100" />
         </svg>
         <div className={css.FormFields}>
@@ -114,6 +118,20 @@ export function ResultScoringPage() {
             * Сегодня, при оформлении онлайн, для вас действует сниженная ставка. Успейте получить кредит на
             выгодных условиях.
           </p>
+          {campaignParticipant ? (
+            <p className={css.TextWithStar} css={{paddingTop: 0}}>
+              ** ставка 8.5% устанавливается в рамках и при соблюдения{' '}
+              <a
+                css={{color: 'var(--color-primary)'}}
+                href="https://www.otpbank.ru/retail/credits/difference/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                условий
+              </a>{' '}
+              акции "разница есть"
+            </p>
+          ) : null}
         </div>
       </div>
     </LayoutPage>

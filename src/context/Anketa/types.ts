@@ -28,6 +28,7 @@ export interface IAnketa {
   bankIdCode: string;
   batchDocumentLink: string;
   birthDate: string;
+  campaignParticipant?: boolean; // признак акции Разница есть
   email: string;
   firstName: string;
   jobLossProtection: boolean;
@@ -63,7 +64,7 @@ export interface IAnketa {
   }[];
 }
 
-export type TLoanParams = { customerTimezoneOffset: number } & Pick<
+export type TLoanParams = {customerTimezoneOffset: number} & Pick<
   IAnketa,
   | 'requestedLoanAmount'
   | 'requestedLoanTermMonths'
@@ -148,9 +149,9 @@ export interface IAnketaContext extends IAnketaState {
 export interface IAnketaUpdatersContext {
   handleUpdateAnketa: (status: TAnketaStep, anketaData: Partial<IAnketa> | any) => void;
   handleSignAgreement: (signData: TContacts) => void;
-  handleVerifySignature: (code: { verificationCode: string }) => void;
+  handleVerifySignature: (code: {verificationCode: string}) => void;
   handleDocumentsSigning: (isSigned: boolean) => void;
-  handleDocumentsVerifySignature: (verificationCode: { code: string }) => void;
+  handleDocumentsVerifySignature: (verificationCode: {code: string}) => void;
   handleGetCustomerCards: () => void;
   handleSendCustomerCard: (cardNumber: string, cardExpirationDate: string) => void;
   handleArchivingAnketa: () => void;

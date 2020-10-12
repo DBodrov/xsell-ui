@@ -30,21 +30,25 @@ function Payment({anketa}: IVariantProps) {
 }
 
 function Rate({anketa}: IVariantProps) {
-  const {approvedInterestRate} = anketa;
+  const {approvedInterestRate, campaignParticipant} = anketa;
   const {campaignParams, CURRENT_CAMPAIGN} = useCampaign();
   const isCampaign = campaignParams?.campaignName === CURRENT_CAMPAIGN;
   const oldRate = calcOldRate(approvedInterestRate);
+
   return (
-    <span className={css.Rate}>
-      {isCampaign ? (
-        <Fragment>
-          Ставка: <span className={css.OldRate}>{oldRate.toFixed(2)}*</span>
-          <span className={css.NewRate}>{approvedInterestRate}%</span> годовых
-        </Fragment>
-      ) : (
-        <span className={css.Rate}>Ставка: {approvedInterestRate}% годовых</span>
-      )}
-    </span>
+    <div css={{display: 'flex', flexFlow: 'column nowrap'}}>
+      <span className={css.Rate}>
+        {isCampaign ? (
+          <div>
+            Ставка: <span className={css.OldRate}>{oldRate.toFixed(2)}*</span>
+            <span className={css.NewRate}>{approvedInterestRate}%</span> годовых
+          </div>
+        ) : (
+          <span className={css.Rate}>Ставка: {approvedInterestRate}% годовых</span>
+        )}
+      </span>
+      {campaignParticipant ? <span>Ставка при выполнении условий акции**: 8,5%</span> : null}
+    </div>
   );
 }
 

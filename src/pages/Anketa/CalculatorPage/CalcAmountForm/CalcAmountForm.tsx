@@ -4,8 +4,10 @@ import {Card} from 'components/Card';
 import {BasicButton} from 'lib/components/buttons';
 import {Range} from 'lib/components/data-entry/Range';
 import {Checkbox} from 'lib/components/data-entry/Checkbox';
+
 import {useCampaign} from 'utils/use-campaign';
 import {useFetch} from 'utils/use-fetch';
+import {Cookies} from 'utils/cookies';
 import {useAnketa} from 'context/Anketa';
 import {useValidationCalc} from './validation.hook';
 import {SmsInfoLink, JobInsuranceLink, LifeInsuranceLink} from './CalcLinks';
@@ -27,13 +29,17 @@ const defaultLoanParams = {
   lifeAndHealthProtection: false,
   smsInforming: false,
   workExperience: undefined,
+  campaignParticipant: false,
   rate: 19.9,
 };
 
 const loanParamsReducer = (s: Partial<TLoanParams>, a: Partial<TLoanParams>) => ({...s, ...a});
 
 export function CalcAmountForm() {
-  const [loanParams, setState] = useReducer(loanParamsReducer, defaultLoanParams);
+  const [loanParams, setState] = useReducer(loanParamsReducer, {
+    ...defaultLoanParams,
+    campaignParticipant: Cookies.getCookie(Cookies.DIFFERENCE_HAVE) === 'true',
+  });
   const {STAFF_CAMPAIGN, campaignParams} = useCampaign();
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
   const {payment, updateLoanParams} = usePayment(isStaff);
@@ -72,10 +78,10 @@ export function CalcAmountForm() {
         },
       );
     };
-    if (isStaff) {
+    if (isStaff && !loanParams.workExperience) {
       getWorkExperience();
     }
-  }, [fetchClient, isStaff]);
+  }, [fetchClient, isStaff, loanParams.workExperience]);
 
   useEffect(() => {
     if (formIsValid) {
@@ -100,12 +106,27 @@ export function CalcAmountForm() {
     [validateLoanParam],
   );
 
-  const setCheckboxes = useCallback((value: boolean, event?: React.ChangeEvent<HTMLInputElement>) => {
-    const fieldName = event?.target?.name;
-    if (fieldName) {
+  const setDifferenceHave = useCallback(
+    (value: boolean, event?: React.ChangeEvent<HTMLInputElement>) => {
+      setState({
+        campaignParticipant: value,
+        lifeAndHealthProtection: value ? value : loanParams.lifeAndHealthProtection,
+      });
+    },
+    [loanParams.lifeAndHealthProtection],
+  );
+
+  const setCheckboxes = useCallback(
+    (value: boolean, event?: React.ChangeEvent<HTMLInputElement>) => {
+      const fieldName = event?.target?.name;
+
+      if (fieldName === 'lifeAndHealthProtection' && value === false) {
+        setDifferenceHave(false);
+      }
       setState({[fieldName]: value});
-    }
-  }, []);
+    },
+    [setDifferenceHave],
+  );
 
   const amountError = readError('requestedLoanAmount');
   const termError = readError('requestedLoanTermMonths');
@@ -180,7 +201,7 @@ export function CalcAmountForm() {
             </div>
             {isStaff && (
               <div className={css.PaymentItem}>
-                <span className={css.PaymentTitle}>Непрерывный стаж**</span>
+                <span className={css.PaymentTitle}>Непрерывный стаж***</span>
                 <span className={css.PaymentValue}>{loanParams.workExperience} мес.</span>
               </div>
             )}
@@ -213,6 +234,16 @@ export function CalcAmountForm() {
               />
               <LifeInsuranceLink htmlFor="lifeAndHealthProtection" />
             </div>
+            <div className={css.CheckboxesItem}>
+              <Checkbox
+                name="campaignParticipant"
+                onChangeHandler={setDifferenceHave}
+                checked={loanParams.campaignParticipant}
+              />
+              <label htmlFor="campaignParticipant">
+                <strong>Акция "Разница есть" **</strong>
+              </label>
+            </div>
           </Card.Body>
         </Card>
       </div>
@@ -231,9 +262,22 @@ export function CalcAmountForm() {
           * Расчет носит предварительный характер. Точная сумма ежемесячного платежа будет определена Банком
           по результатам рассмотрения заявки
         </p>
+        <p className={css.Disclaimer} style={{marginBottom: 0}}>
+          ** После выполнения{' '}
+          <a
+            css={{color: 'var(--color-primary)'}}
+            href="https://www.otpbank.ru/retail/credits/difference/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            условий
+          </a>
+          , в конце срока кредита мы пересчитаем его проценты по ставке 8,5%, и вернем переплату на ваш счет
+        </p>
+
         {isStaff && (
           <p className={css.Disclaimer}>
-            ** Перевод внутри организации через увольнение разрывает непрерывный трудовой стаж.
+            *** Перевод внутри организации через увольнение разрывает непрерывный трудовой стаж.
           </p>
         )}
       </div>

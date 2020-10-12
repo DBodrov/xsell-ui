@@ -9,7 +9,7 @@ import {
 import {AuthStatus} from 'context/Auth';
 import {LandingProps} from '../screens/Landing/types';
 
-jest.setTimeout(30000)
+jest.setTimeout(30000);
 
 const landing1 = 'https://cash.otpbank.ru/public/images/girl.png';
 const landing2 = 'https://cash.otpbank.ru/public/images/family.png';
@@ -46,7 +46,7 @@ test('render default - Landing1', async () => {
   expect(screen.queryByText('Кредит наличными')).toBeInTheDocument();
   expect(screen.queryByRole('button', {name: /Получить онлайн/i})).toBeInTheDocument();
   expect(screen.queryByRole('button', {name: /Не интересно/i})).toBeInTheDocument();
-  expect(screen.queryByAltText(/picture/i)).toHaveAttribute('src', landing1);
+  expect(screen.queryByAltText(/Кредит наличными/i)).toHaveAttribute('src', landing1);
 });
 
 const renderLandings = (landingCode: LandingProps['landingCode']) =>
@@ -55,25 +55,25 @@ const renderLandings = (landingCode: LandingProps['landingCode']) =>
 test('render Landing1', async () => {
   renderLandings('LANDING_TEST_1');
   await waitForLoadingFinish();
-  expect(screen.queryByAltText(/picture/i)).toHaveAttribute('src', landing1);
+  expect(screen.queryByAltText(/Кредит наличными/i)).toHaveAttribute('src', landing1);
 });
 
 test('render Landing2', async () => {
   renderLandings('LANDING_TEST_2');
   await waitForLoadingFinish();
-  expect(screen.queryByAltText(/picture/i)).toHaveAttribute('src', landing2);
+  expect(screen.queryByAltText(/Кредит наличными/i)).toHaveAttribute('src', landing2);
 });
 
 test('render Landing3', async () => {
   renderLandings('LANDING_TEST_3');
   await waitForLoadingFinish();
-  expect(screen.queryByAltText(/picture/i)).toHaveAttribute('src', landing3);
+  expect(screen.queryByAltText(/Кредит наличными/i)).toHaveAttribute('src', landing3);
 });
 
 test('render Landing4', async () => {
   renderLandings('LANDING_TEST_4');
   await waitForLoadingFinish();
-  expect(screen.queryByAltText(/landing picture/i)).toHaveAttribute('src', landing4);
+  expect(screen.queryByAltText(/Кредит наличными/i)).toHaveAttribute('src', landing4);
 });
 
 test('handle get app status fail', async () => {
@@ -91,11 +91,10 @@ test('handle get app status fail', async () => {
 
   renderApp();
   await waitForLoadingFinish();
-  expect(screen.queryByText(/Что-то пошло не так/i)).toBeInTheDocument()
+  expect(screen.queryByText(/Что-то пошло не так/i)).toBeInTheDocument();
 });
 
 describe('Auth1 tests', () => {
-
   test('handle initialize fail', async () => {
     //jest.useFakeTimers();
     server.use(
@@ -116,7 +115,7 @@ describe('Auth1 tests', () => {
     );
     renderApp();
     await waitForLoadingFinish();
-    expect(screen.queryByText(/Что-то пошло не так/i)).toBeInTheDocument()
+    expect(screen.queryByText(/Что-то пошло не так/i)).toBeInTheDocument();
   });
 
   test('unknown client auth1 login - happy path', async () => {
@@ -172,7 +171,7 @@ describe('Auth1 tests', () => {
     const PageTitle = await screen.findByText(/Не можем вас найти/i);
     expect(PageTitle).toBeInTheDocument();
   });
-})
+});
 
 describe('client login flow', () => {
   test('client jump to sms from landing', async () => {
@@ -202,7 +201,7 @@ describe('client login flow', () => {
     await waitForLoadingFinish();
     expect(screen.queryByText(/мы завершили ваш сеанс/i)).toBeInTheDocument();
     const continueButton = screen.queryByRole('button', {name: /Продолжить/i});
-    screen.debug(continueButton)
+    screen.debug(continueButton);
     userEvent.click(continueButton);
     await waitForLoadingFinish();
     const SMSPageTitle = await screen.findByText(/Подтвердите вход/i);
@@ -214,4 +213,3 @@ describe('client login flow', () => {
     expect(screen.queryByText(/обновляем анкету/i)).toBeInTheDocument();
   });
 });
-

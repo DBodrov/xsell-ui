@@ -14,7 +14,6 @@ export const experienceRateMap: TRateOptions[] = [
 
 export function getRate(expMonth: number = 13) {
   const filteredRate = experienceRateMap.filter(option => {
-    console.log(expMonth);
     const min = option.experience[0];
     const max = option.experience[1];
     return expMonth >= min && expMonth <= max;
