@@ -42,6 +42,7 @@ export function CalcAmountForm() {
   });
   const {STAFF_CAMPAIGN, campaignParams} = useCampaign();
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
+  const showDifferenceHave = !isStaff || (isStaff && loanParams?.workExperience < 25);
   const {payment, updateLoanParams} = usePayment(isStaff);
   const fetchClient = useFetch();
   const {step, updateAnketa} = useAnketa();
@@ -234,16 +235,18 @@ export function CalcAmountForm() {
               />
               <LifeInsuranceLink htmlFor="lifeAndHealthProtection" />
             </div>
-            <div className={css.CheckboxesItem}>
-              <Checkbox
-                name="campaignParticipant"
-                onChangeHandler={setDifferenceHave}
-                checked={loanParams.campaignParticipant}
-              />
-              <label htmlFor="campaignParticipant">
-                <strong>Акция "Разница есть" **</strong>
-              </label>
-            </div>
+            {showDifferenceHave ? (
+              <div className={css.CheckboxesItem}>
+                <Checkbox
+                  name="campaignParticipant"
+                  onChangeHandler={setDifferenceHave}
+                  checked={loanParams.campaignParticipant}
+                />
+                <label htmlFor="campaignParticipant">
+                  <strong>Акция "Разница есть" **</strong>
+                </label>
+              </div>
+            ) : null}
           </Card.Body>
         </Card>
       </div>
@@ -262,18 +265,20 @@ export function CalcAmountForm() {
           * Расчет носит предварительный характер. Точная сумма ежемесячного платежа будет определена Банком
           по результатам рассмотрения заявки
         </p>
-        <p className={css.Disclaimer} style={{marginBottom: 0}}>
-          ** После выполнения{' '}
-          <a
-            css={{color: 'var(--color-primary)'}}
-            href="https://www.otpbank.ru/retail/credits/difference/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            условий
-          </a>
-          , в конце срока кредита мы пересчитаем его проценты по ставке 8,5%, и вернем переплату на ваш счет
-        </p>
+        {showDifferenceHave ? (
+          <p className={css.Disclaimer} style={{marginBottom: 0}}>
+            ** После выполнения{' '}
+            <a
+              css={{color: 'var(--color-primary)'}}
+              href="https://www.otpbank.ru/retail/credits/difference/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              условий
+            </a>
+            , в конце срока кредита мы пересчитаем его проценты по ставке 8,5%, и вернем переплату на ваш счет
+          </p>
+        ) : null}
 
         {isStaff && (
           <p className={css.Disclaimer}>

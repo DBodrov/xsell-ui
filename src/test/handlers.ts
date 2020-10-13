@@ -114,7 +114,7 @@ export const handlers = [
   /** ANKETA HANDLERS */
   rest.post('/gateway/credit-application/get-session-app', (req, res, ctx) => {
     //TODO: Anketa steps switch
-    return res(ctx.status(200), ctx.json({status: 'APPROVED', campaignParticipant: true}));
+    return res(ctx.status(200), ctx.json({status: 'LOAN_PARAMS'}));
   }),
 
   rest.post('/gateway/credit-application/agree-to-sign-documents', (req, res, ctx) => {
@@ -198,7 +198,7 @@ export const handlers = [
     return res(ctx.status(200), ctx.json({code: 'OK'}));
   }),
   rest.post('/gateway/customer-profile/get-work-experience', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({workExperienceMonths: 18}));
+    return res(ctx.status(200), ctx.json({workExperienceMonths: 28}));
   }),
   rest.post('/gateway/customer-profile/get-otp-cards', (req, res, ctx) => {
     return res(
