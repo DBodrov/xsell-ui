@@ -3,7 +3,7 @@ locals {
 }
 
 variable "image_version" {
-  type = "strings"
+  type = "string"
   default = "dev"
 }
 
