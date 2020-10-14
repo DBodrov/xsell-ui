@@ -21,6 +21,17 @@ if [[ -f ./k8s ]]; then
   KUBECONFIG=/fake-config-file
 fi
 
+KUBECONFIG=${KUBECONFIG:-config}
+
+if [[ -f "${KUBECONFIG}" ]]; then
+  if [[ ! -z "${K8S_CONFIG}" ]]; then
+    echo "${K8S_CONFIG}" | base64 -d > "${KUBECONFIG}"
+  fi
+else
+  require_environment K8S_CONFIG
+  echo "${K8S_CONFIG}" | base64 -d > "${KUBECONFIG}"
+fi
+
 require_environment K8S_TOKEN
 require_environment K8S_HOST
 require_environment K8S_KEY_PEM
@@ -29,6 +40,7 @@ require_environment K8S_CA_PEM
 require_environment K8S_DEFAULT_NODE_GROUP
 require_environment IMAGE_VERSION
 
+export TF_VAR_kubeconfig="${KUBECONFIG}"
 export TF_VAR_k8s_token="${K8S_TOKEN}"
 export TF_VAR_k8s_host="${K8S_HOST}"
 export TF_VAR_k8s_client_key="${K8S_KEY_PEM}"
