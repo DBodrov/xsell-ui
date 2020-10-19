@@ -4,9 +4,11 @@ import {useAnketa, IAnketa} from 'context/Anketa';
 import {BasicButton} from 'lib/components/buttons/BasicButton';
 import {Checkbox} from 'lib/components/data-entry/Checkbox';
 import {LayoutPage} from 'components/Layout';
+import {LinkButton} from 'components/lib';
+import {RaznitcaModal} from 'components/RaznitcaModal';
 import {getMonthlyPayment} from 'services/creditCalc.service';
 import {toRuLocalNumber, correctRusCase} from 'utils/string.utils';
-//import {Cookies} from 'utils/cookies';
+import {useCampaign} from 'utils/use-campaign';
 import {CampaignVariant} from './CampaignVariant';
 import css from './ResultScoringPage.module.scss';
 import {AutoStepper} from 'components/AutoStepper';
@@ -28,6 +30,7 @@ const AgreementLink = ({agreementLink}: IAgreementLinkFormProps) => (
 
 export function ResultScoringPage() {
   const [agreement, setAgreement] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const {
     step,
@@ -41,6 +44,9 @@ export function ResultScoringPage() {
     },
     updateAnketa,
   } = useAnketa();
+
+  const {campaignParams, CURRENT_CAMPAIGN} = useCampaign();
+  const isCampaign = campaignParams?.campaignName === CURRENT_CAMPAIGN;
 
   const resultScoring: Partial<IAnketa> = {
     approvedInterestRate,
@@ -114,26 +120,24 @@ export function ResultScoringPage() {
             value="Подписать"
             disabled={!agreement}
           />
-          <p className={css.TextWithStar}>
-            * Сегодня, при оформлении онлайн, для вас действует сниженная ставка. Успейте получить кредит на
-            выгодных условиях.
-          </p>
+          {isCampaign ? (
+            <p className={css.TextWithStar}>
+              * Сегодня, при оформлении онлайн, для вас действует сниженная ставка. Успейте получить кредит на
+              выгодных условиях.
+            </p>
+          ) : null}
           {campaignParticipant ? (
             <p className={css.TextWithStar} css={{paddingTop: 0}}>
-              ** ставка 8.5% устанавливается в рамках и при соблюдения{' '}
-              <a
-                css={{color: 'var(--color-primary)'}}
-                href="https://www.otpbank.ru/retail/credits/difference/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              ** ставка 8.5% устанавливается в рамках и при соблюдении{' '}
+              <LinkButton css={{color: 'var(--color-primary)'}} onClick={() => setIsOpen(true)}>
                 условий
-              </a>{' '}
+              </LinkButton>{' '}
               акции "разница есть"
             </p>
           ) : null}
         </div>
       </div>
+      <RaznitcaModal isOpen={isOpen} setOpenState={setIsOpen} />
     </LayoutPage>
   );
 }

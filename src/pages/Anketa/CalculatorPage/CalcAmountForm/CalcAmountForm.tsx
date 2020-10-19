@@ -1,13 +1,14 @@
 import React, {useEffect, useCallback, useReducer} from 'react';
 import cN from 'classnames/bind';
 import {Card} from 'components/Card';
+import {LinkButton} from 'components/lib';
+import {RaznitcaModal} from 'components/RaznitcaModal';
 import {BasicButton} from 'lib/components/buttons';
 import {Range} from 'lib/components/data-entry/Range';
 import {Checkbox} from 'lib/components/data-entry/Checkbox';
 
 import {useCampaign} from 'utils/use-campaign';
 import {useFetch} from 'utils/use-fetch';
-import {Cookies} from 'utils/cookies';
 import {useAnketa} from 'context/Anketa';
 import {useValidationCalc} from './validation.hook';
 import {SmsInfoLink, JobInsuranceLink, LifeInsuranceLink} from './CalcLinks';
@@ -19,12 +20,12 @@ const cx = cN.bind(css);
 const timezone = new Date().getTimezoneOffset() / -60;
 let timeout: any;
 
-export type TLoanParams = typeof defaultLoanParams;
+export type TLoanParams = Partial<typeof defaultLoanParams>;
 
 const defaultLoanParams = {
   customerTimezoneOffset: timezone,
   requestedLoanAmount: 300000,
-  requestedLoanTermMonths: 21,
+  requestedLoanTermMonths: 24,
   jobLossProtection: false,
   lifeAndHealthProtection: false,
   smsInforming: false,
@@ -38,28 +39,38 @@ const loanParamsReducer = (s: Partial<TLoanParams>, a: Partial<TLoanParams>) => 
 export function CalcAmountForm() {
   const [loanParams, setState] = useReducer(loanParamsReducer, {
     ...defaultLoanParams,
-    campaignParticipant: Cookies.getCookie(Cookies.DIFFERENCE_HAVE) === 'true',
   });
+  const [, forceUpdate] = React.useState({});
+  const [isOpen, setIsOpen] = React.useState(false);
+
   const {STAFF_CAMPAIGN, campaignParams} = useCampaign();
+
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
   const showDifferenceHave = !isStaff || (isStaff && loanParams?.workExperience < 25);
+
   const {payment, updateLoanParams} = usePayment(isStaff);
   const fetchClient = useFetch();
   const {step, updateAnketa} = useAnketa();
 
-  const {validateLoanParam, readError, formIsValid} = useValidationCalc(isStaff);
+  const {validateLoanParam, readError, formIsValid, validateBeforeSubmit} = useValidationCalc(isStaff, loanParams.campaignParticipant);
   const maxAmount = isStaff ? 3000000 : 1000000;
 
+  //TODO: Костыльная валидация
   const handleSubmit: React.MouseEventHandler = useCallback(
     event => {
       event.preventDefault();
+      const errors = validateBeforeSubmit(loanParams);
+      // console.log(errors);
+      const formIsValid = Object.keys(errors.current).length === 0;
       if (formIsValid) {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {rate, ...anketa} = loanParams;
         updateAnketa(step, anketa);
+      } else {
+        forceUpdate({});
       }
     },
-    [formIsValid, loanParams, step, updateAnketa],
+    [loanParams, step, updateAnketa, validateBeforeSubmit],
   );
 
   useEffect(() => {
@@ -113,6 +124,7 @@ export function CalcAmountForm() {
         campaignParticipant: value,
         lifeAndHealthProtection: value ? value : loanParams.lifeAndHealthProtection,
       });
+      // validateLoanParam('requestedLoanTermMonths', loanParams.requestedLoanTermMonths);
     },
     [loanParams.lifeAndHealthProtection],
   );
@@ -165,9 +177,9 @@ export function CalcAmountForm() {
               caption="мес."
               onChangeHandler={setTerm}
               value={loanParams.requestedLoanTermMonths}
-              minText="12 месяцев"
+              minText={loanParams.campaignParticipant ? '24 месяца' : '12 месяцев'}
               maxText="60 месяцев"
-              min={12}
+              min={loanParams.campaignParticipant ? 24 : 12}
               max={60}
               step={12}
               hasError={termError?.length > 0}
@@ -268,14 +280,9 @@ export function CalcAmountForm() {
         {showDifferenceHave ? (
           <p className={css.Disclaimer} style={{marginBottom: 0}}>
             ** После выполнения{' '}
-            <a
-              css={{color: 'var(--color-primary)'}}
-              href="https://www.otpbank.ru/retail/credits/difference/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <LinkButton css={{color: 'var(--color-primary)'}} onClick={() => setIsOpen(true)}>
               условий
-            </a>
+            </LinkButton>
             , в конце срока кредита мы пересчитаем его проценты по ставке 8,5%, и вернем переплату на ваш счет
           </p>
         ) : null}
@@ -286,6 +293,7 @@ export function CalcAmountForm() {
           </p>
         )}
       </div>
+      <RaznitcaModal isOpen={isOpen} setOpenState={setIsOpen} />
     </div>
   );
 }

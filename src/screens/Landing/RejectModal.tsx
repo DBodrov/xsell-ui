@@ -22,6 +22,7 @@ function QuestionForm({isMobile, onAnswer}: any) {
       </H5>
       <div css={{display: 'flex', flexFlow: 'column nowrap', margin: 'auto', width: 272}}>
         <Button
+          autoFocus
           variant="primary"
           outline
           flat
