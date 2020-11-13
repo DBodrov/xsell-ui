@@ -24,7 +24,8 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(6, 2rem);
-  gap: 1px;
+  row-gap: 1px;
+  column-gap: 1px;
   width: 100%;
   height: calc(100% - 3rem);
   padding-top: 3px;

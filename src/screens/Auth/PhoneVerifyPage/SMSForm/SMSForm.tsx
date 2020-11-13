@@ -1,5 +1,5 @@
 import React from 'react';
-import {Span, MaskInput} from 'neutrino-ui';
+import {Span, InputMask} from 'neutrino-ui';
 import {HeroSubText, LinkButton} from 'components/lib';
 import {onlyDigit} from 'utils/string.utils';
 import {isProduction} from 'utils/environment';
@@ -70,17 +70,21 @@ export function SMSForm() {
       </HeroSubText>
       <Span css={{alignSelf: 'flex-start'}}>Код отправлен на номер</Span>
       <Span css={{alignSelf: 'flex-start'}}>{maskedPhoneNumber()}</Span>
-      <MaskInput
-        hasError={hasError}
+      <InputMask
         autoFocus
-        type="tel"
         css={{
           textAlign: 'center',
           letterSpacing: 8,
           fontSize: 28,
           height: 48,
+          width: '100%',
           margin: '8px 0',
-          '&:hover, &:focus': {borderColor: !hasError && '#000'},
+          borderRadius: 4,
+          border: hasError ? '1px var(--color-error) solid' : '1px var(--color-primary) solid',
+          '&:hover, &:focus': {
+            border: !hasError ? '1px #000 solid' : '1px var(--color-error) solid',
+            outline: 0,
+          },
         }}
         name="smsCode"
         mask="9999"
