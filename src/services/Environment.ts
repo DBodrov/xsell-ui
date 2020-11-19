@@ -1,5 +1,3 @@
-import { TSessionStatus } from 'typings';
-
 class EnvironmentBuilder {
   HOST_API: string;
 
@@ -45,29 +43,29 @@ class EnvironmentBuilder {
 
   isTestMode = () => this.isLocalBuild || this.isDevMode;
 
-  getSessionStage = () => process.env.SESSION_STAGE;
+  //getSessionStage = () => process.env.SESSION_STAGE;
 }
 
 const env = new EnvironmentBuilder();
 export const API_URL = env.ApiURL();
-export const SESSION_STAGE = (env.getSessionStage() as TSessionStatus) || null;
+// export const SESSION_STAGE = (env.getSessionStage() as TSessionStatus) || null;
 export const TestMode = env.isTestMode();
 export const ProdMode = env.isProdMode();
 export const StagingMode = env.isStagingMode();
 export const JestEnv = env.isJestEnv;
 
-export const getEnv = () => {
-  if (TestMode) {
-    return 'TestMode';
-  }
-  if (ProdMode) {
-    return 'Production';
-  }
-  if (StagingMode) {
-    return 'Staging';
-  }
-  if (JestEnv) {
-    return 'JestEnv';
-  }
-  return 'Unknown';
-};
+// export const getEnv = () => {
+//   if (TestMode) {
+//     return 'TestMode';
+//   }
+//   if (ProdMode) {
+//     return 'Production';
+//   }
+//   if (StagingMode) {
+//     return 'Staging';
+//   }
+//   if (JestEnv) {
+//     return 'JestEnv';
+//   }
+//   return 'Unknown';
+// };

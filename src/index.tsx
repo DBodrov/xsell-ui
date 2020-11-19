@@ -9,8 +9,7 @@ import {globalStyles} from './globalStyles';
 import './global.scss';
 
 auditService.initAudit();
-
-if (process.env.USE_API_MOCK === 'true') {
+if (process.env.NODE_ENV === 'development' && process.env.USE_API_MOCK === 'true') {
   server.start();
 }
 
