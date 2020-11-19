@@ -207,5 +207,13 @@ module.exports = webpackMerge.merge(commonConfig, {
       chunkFilename: 'static/css/[name].[contenthash].chunk.css',
       ignoreOrder: true,
     }),
+
+    new webpack.DefinePlugin({
+      'process.env.VERSION': JSON.stringify(VERSION),
+      'process.env.ENV': JSON.stringify(ENV),
+      'process.env.NODE_ENV': JSON.stringify(ENV),
+      'process.env.RTL_SKIP_AUTO_CLEANUP': JSON.stringify('false') //workaround
+
+    }),
   ],
 });
