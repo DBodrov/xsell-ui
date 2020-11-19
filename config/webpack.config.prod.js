@@ -43,16 +43,20 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
       loader: require.resolve('postcss-loader'),
       options: {
         postcssOptions: {
-          plugins: () => [
-            require('postcss-flexbugs-fixes'),
-            require('postcss-preset-env')({
-              autoprefixer: {
-                flexbox: 'no-2009',
-                grid: true,
+          plugins: [
+            'postcss-import',
+            'postcss-flexbugs-fixes',
+            [
+              'postcss-preset-env',
+              {
+                autoprefixer: {
+                  flexbox: 'no-2009',
+                  grid: true,
+                },
               },
-              stage: 3,
-            }),
+            ],
           ],
+          stage: 3,
         },
         sourceMap: false,
       },
@@ -155,7 +159,7 @@ module.exports = webpackMerge.merge(commonConfig, {
     runtimeChunk: {
       name: 'runtime',
     },
-    noEmitOnErrors: true,
+    emitOnErrors: false,
     minimize: true,
     minimizer: [
       new TerserPlugin({}),
@@ -201,15 +205,7 @@ module.exports = webpackMerge.merge(commonConfig, {
     new MiniCssExtractPlugin({
       filename: 'static/css/[name].[contenthash].css',
       chunkFilename: 'static/css/[name].[contenthash].chunk.css',
-      esModule: true,
       ignoreOrder: true,
-    }),
-
-    new webpack.DefinePlugin({
-      'process.env': {
-        VERSION: JSON.stringify(VERSION),
-        ENV: JSON.stringify(ENV),
-      },
     }),
   ],
 });

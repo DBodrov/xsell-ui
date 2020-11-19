@@ -10,8 +10,8 @@
   },
   "scripts": {
     "start": "webpack serve",
-    "build": "rimraf dist && cross-env ENV=production webpack -p --config config/webpack.config.prod.js",
-    "build:stage": "rimraf dist && cross-env ENV=staging webpack -p --config config/webpack.config.prod.js",
+    "build": "rimraf dist && cross-env ENV=production webpack --config config/webpack.config.prod.js",
+    "build:stage": "rimraf dist && cross-env ENV=staging webpack --config config/webpack.config.prod.js",
     "build:local": "rimraf production && cross-env ENV=local webpack -p --config config/webpack.config.prod.js",
     "lint:tsc": "tsc --noEmit && eslint '*/**/*.{js,ts,tsx}'",
     "lint": "eslint src/**/*.{ts,tsx}",
