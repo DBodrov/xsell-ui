@@ -174,13 +174,6 @@ module.exports = webpackMerge.merge(commonConfig, {
       name: `ENV: ${ENV}  VERSION: ${VERSION}`,
     }),
 
-    new webpack.DefinePlugin({
-      'process.env': {
-        VERSION: JSON.stringify(VERSION),
-        ENV: JSON.stringify(ENV),
-      },
-    }),
-
     new Dotenv(),
   ],
 
