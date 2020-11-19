@@ -26,7 +26,7 @@ module.exports = {
     '^utils/(.*)': '<rootDir>/src/utils/$1',
     '^icons': '<rootDir>/src/icons',
   },
-  snapshotSerializers: ['jest-emotion'],
+  snapshotSerializers: ['@emotion/jest'],
   setupFiles: [require.resolve('whatwg-fetch')],
   transform: {
     '^.+\\.(js|jsx|mjs|cjs|ts|tsx)$': require.resolve('react-scripts/config/jest/babelTransform'),
