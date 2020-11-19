@@ -43,3 +43,4 @@ reports/*
 cypress/screenshots
 
 .env
+/.npmrc

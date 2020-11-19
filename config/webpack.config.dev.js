@@ -36,16 +36,22 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
     {
       loader: require.resolve('postcss-loader'),
       options: {
-        ident: 'postcss',
-        plugins: () => [
-          require('postcss-flexbugs-fixes'),
-          require('postcss-preset-env')({
-            autoprefixer: {
-              flexbox: 'no-2009',
-            },
-            stage: 3,
-          }),
-        ],
+        postcssOptions: {
+          plugins: [
+            'postcss-import',
+            'postcss-flexbugs-fixes',
+            [
+              'postcss-preset-env',
+              {
+                autoprefixer: {
+                  flexbox: 'no-2009',
+                  grid: true,
+                },
+              },
+            ],
+          ],
+          stage: 3,
+        },
         sourceMap: true,
       },
     },
@@ -63,7 +69,7 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
 
 module.exports = webpackMerge.merge(commonConfig, {
   mode: 'development',
-  devtool: 'inline-source-map',
+  devtool: 'cheap-source-map',
   bail: true,
   target: 'web',
 
@@ -144,7 +150,7 @@ module.exports = webpackMerge.merge(commonConfig, {
     runtimeChunk: {
       name: 'runtime',
     },
-    noEmitOnErrors: true,
+    emitOnErrors: false,
     minimizer: [new OptimizeCSSAssetsPlugin({})],
   },
   plugins: [

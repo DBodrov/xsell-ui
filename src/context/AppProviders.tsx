@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { ThemeProvider } from 'emotion-theming';
+import { ThemeProvider } from '@emotion/react';
 import { ProdMode } from 'services/Environment';
 import { theme } from '../globalStyles';
 import { AuthProvider } from './Auth';

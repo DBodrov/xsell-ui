@@ -1,4 +1,4 @@
-import {css} from '@emotion/core';
+import {css} from '@emotion/react';
 import {createTheme} from 'neutrino-ui';
 import SourceRegularTTF from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-regular.ttf';
 import SourceRegularWoff from 'assets/fonts/source-sans-pro-v12-latin_cyrillic-regular.woff';

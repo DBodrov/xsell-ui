@@ -1,6 +1,6 @@
 import React, {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
-import {Global} from '@emotion/core';
+import {Global} from '@emotion/react';
 import {auditService} from 'services';
 import {server} from './test/dev-server';
 import {AppProviders} from './context';
