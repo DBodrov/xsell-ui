@@ -56,23 +56,14 @@ export interface IAnketa {
   creditBureauConsentDistanceAgree: boolean;
   agreementSignatureIsVerified: boolean;
   documentsSignatureIsVerified: boolean;
-  // requiredPhoto: boolean; // ad-hoc for photo a/b testing
-  customerOtpCards: {
-    bankCardId: string;
-    bankCardNumber: string;
-    cardExpirationDt: string;
-  }[];
+  customerOtpCards: TCustomerCard[];
 }
 
-export type TLoanParams = {customerTimezoneOffset: number} & Pick<
-  IAnketa,
-  | 'requestedLoanAmount'
-  | 'requestedLoanTermMonths'
-  | 'jobLossProtection'
-  | 'lifeAndHealthProtection'
-  | 'smsInforming'
-  | 'smsInforming'
->;
+export type TCustomerCard = {
+  bankCardId: string;
+  bankCardNumber: string;
+  cardExpirationDt: string;
+};
 
 export type TJobInfo = Pick<
   IAnketa,
