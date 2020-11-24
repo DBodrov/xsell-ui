@@ -4,6 +4,7 @@ import {ProtectedRoute} from 'components/ProtectedRoute';
 import {CalculatorPage} from './CalculatorPage';
 import {PassportPage} from './PassportPage';
 import {JobInfo} from './JobInfo';
+import {JobInfoPage} from 'screens/Anketa/JobInfoPage'
 import {AgreementPage} from './AgreementSMSPage';
 import {AdvanceScoringRefusalPage} from './AdvanceScoringRefusalPage';
 import {ResultScoringPage} from './ResultScoringPage';
@@ -35,7 +36,7 @@ export function AnketaRoutes() {
       </ProtectedRoute>
       {/* Необходимо подтверждение адреса регистрации, который есть у банка */}
       <ProtectedRoute path={routeMap.REGISTRATION_ADDRESS}>
-        <JobInfo />
+        <JobInfoPage />
       </ProtectedRoute>
       {/* Паспорт ввел не правильно / Адрес изменился */}
       <ProtectedRoute path={routeMap.CHANGED_REGISTRATION_ADDRESS}>

@@ -4,7 +4,7 @@ import {Forma, SimpleField, FormaButton} from 'lib/components/Forma2';
 import {useCampaign} from 'utils/use-campaign';
 import {useAnketa, TJobInfo} from 'context/Anketa';
 import {OTP_INN} from 'utils/externals';
-import {WorkIndustryField} from './WorkIndustryField';
+import {WorkIndustryField} from './components';
 import css from './JobInfoForm.module.scss';
 
 interface IJobInfoFormProps {
@@ -144,7 +144,11 @@ export function JobInfoForm({onConfirmArchiving}: IJobInfoFormProps) {
           placeholder="Рублей в месяц"
         />
 
+        <input type="number" name="" id=""/>
+
         <WorkIndustryField />
+
+        <input type="text" name="" id=""/>
 
         <SimpleField
           type="mask"

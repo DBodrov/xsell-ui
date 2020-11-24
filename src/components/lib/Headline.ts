@@ -2,9 +2,10 @@ import styled from '@emotion/styled';
 import {css} from '@emotion/react';
 
 const baseHeading = css`
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: Squad, sans-serif;
   font-style: normal;
   font-weight: bold;
+  color: #000;
 `;
 
 export const H1 = styled.h1`

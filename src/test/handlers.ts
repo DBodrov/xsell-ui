@@ -14,7 +14,7 @@ export const handlers = [
     if (cookies['userData'] && cookies['SESSION']) {
       return res(ctx.status(200), ctx.json({status: 'AUTH2_REQUIRED'}));
     }
-    return res(ctx.status(200), ctx.cookie('userData', '', {maxAge: 0}), ctx.json({status: 'INITIALIZE'}));
+    return res(ctx.status(200), ctx.cookie('userData', '', {maxAge: 0}), ctx.json({status: 'OK'}));
   }),
 
   rest.post('/gateway/initialize', (req, res, ctx) => {
@@ -111,10 +111,11 @@ export const handlers = [
       }),
     );
   }),
+
   /** ANKETA HANDLERS */
   rest.post('/gateway/credit-application/get-session-app', (req, res, ctx) => {
     //TODO: Anketa steps switch
-    return res(ctx.status(200), ctx.json({status: 'LOAN_PARAMS', campaignParticipant: false}));
+    return res(ctx.status(200), ctx.json({status: 'REGISTRATION_ADDRESS', campaignParticipant: false}));
   }),
 
   rest.post('/gateway/credit-application/agree-to-sign-documents', (req, res, ctx) => {

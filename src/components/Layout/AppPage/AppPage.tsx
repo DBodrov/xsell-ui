@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { useLocation } from 'react-router-dom';
-import { AppPageHeader } from './AppPageHeader';
+import {useLocation} from 'react-router-dom';
+import {AppPageHeader} from './AppPageHeader';
 
-const AppPageMobileLayout = styled.div`
+const AppPageMobileLayout = styled.div<{noStepper: boolean}>`
   display: grid;
-  grid-template: auto 1fr / 1fr;
+  grid-template: ${props => props.noStepper ? 'auto 1fr / 1fr' : 'auto 4px 1fr / 1fr'};
   max-width: 704px;
   width: 100%;
   height: 100%;
@@ -23,12 +23,11 @@ const Step = styled.div`
   &::last-of-type {
     margin-right: 0;
   }
-  background-color: ${(props: { isActive: boolean }) =>
-    props.isActive ? 'var(--color-primary)' : '#8e939f'};
+  background-color: ${(props: {isActive: boolean}) => (props.isActive ? 'var(--color-primary)' : '#8e939f')};
 `;
 
 function Stepper() {
-  const { state: { step = 1 } = {} } = useLocation<{ step: number }>();
+  const {state: {step = 1} = {}} = useLocation<{step: number}>();
 
   return (
     <div
@@ -38,7 +37,8 @@ function Stepper() {
         columnGap: 10,
         placeItems: 'center',
         padding: '5px 10px',
-      }}>
+      }}
+    >
       <Step isActive={step >= 1} />
       <Step isActive={step >= 2} />
       <Step isActive={step >= 3} />
@@ -52,13 +52,12 @@ type Props = {
   children: React.ReactNode;
   noStepper?: boolean;
 };
-export function AppPage({ children, noStepper }: Props) {
+
+export function AppPage({children, noStepper}: Props) {
   return (
-    <AppPageMobileLayout>
-      <div>
-        <AppPageHeader />
-        {!noStepper && <Stepper />}
-      </div>
+    <AppPageMobileLayout noStepper={noStepper}>
+      <AppPageHeader />
+      {!noStepper && <Stepper />}
       {children}
     </AppPageMobileLayout>
   );
