@@ -12,10 +12,10 @@ export const H1 = styled.h1`
   ${baseHeading};
   font-size: 32px;
   line-height: 40px;
-  @media (max-width: 768px) {
+  /* @media (max-width: 768px) {
     font-size: 28px;
     line-height: 32px;
-  }
+  } */
 `;
 
 export const H2 = styled.h2`

@@ -1,5 +1,6 @@
 import {rest} from 'msw';
 import {AuthStatus} from 'context/Auth';
+import {anketa} from 'context/__mocks__/anketa-mock';
 
 export const handlers = [
   rest.post('/gateway/reject-offer', async (req, res, ctx) => {
@@ -115,7 +116,7 @@ export const handlers = [
   /** ANKETA HANDLERS */
   rest.post('/gateway/credit-application/get-session-app', (req, res, ctx) => {
     //TODO: Anketa steps switch
-    return res(ctx.status(200), ctx.json({status: 'REGISTRATION_ADDRESS', campaignParticipant: false}));
+    return res(ctx.status(200), ctx.json(anketa));
   }),
 
   rest.post('/gateway/credit-application/agree-to-sign-documents', (req, res, ctx) => {

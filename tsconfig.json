@@ -13,6 +13,7 @@
     "outDir": "./dist",
     "lib": ["dom", "es2015"],
     "experimentalDecorators": true,
+    "typeRoots": ["node_modules/@types", "src/types"],
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
@@ -35,7 +36,7 @@
       "icons": ["src/icons"]
     }
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "compileOnSave": true,
   "exclude": ["node_modules", "config"]
 }

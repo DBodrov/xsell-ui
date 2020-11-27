@@ -25,7 +25,7 @@ export function AppPageHeader() {
     <Header>
       <TopHead>
         <OtpLogo />
-        <div
+        {/* <div
           css={{
             display: 'flex',
             flexFlow: 'row nowrap',
@@ -37,7 +37,7 @@ export function AppPageHeader() {
           <span css={{ color: '#C5C5C5', fontSize: 10, paddingLeft: 10 }}>
             Гарантируем безопасность ваших данных
           </span>
-        </div>
+        </div> */}
       </TopHead>
     </Header>
   );

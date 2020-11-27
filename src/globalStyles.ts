@@ -61,6 +61,7 @@ export const globalStyles = css(
       '--color-text-lead': '#767676',
       '--color-background': '#fff',
       '--color-error': '#ff435a',
+      '--color-text-label': '#7D828B',
     },
     'html, body': {
       margin: 0,
@@ -82,9 +83,9 @@ export const theme = createTheme({
   colors: {
     mainColors: {
       primary: '#52ae30',
-      primaryDark: '#74BF1E',
+      primaryDark: '#18740B',
       secondary: '#FF6600',
-      secondaryDark: '#FF802B',
+      secondaryDark: '#D63D0C',
     },
   },
   globals: {

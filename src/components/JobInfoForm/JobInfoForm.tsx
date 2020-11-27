@@ -144,11 +144,7 @@ export function JobInfoForm({onConfirmArchiving}: IJobInfoFormProps) {
           placeholder="Рублей в месяц"
         />
 
-        <input type="number" name="" id=""/>
-
         <WorkIndustryField />
-
-        <input type="text" name="" id=""/>
 
         <SimpleField
           type="mask"

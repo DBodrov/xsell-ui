@@ -3,6 +3,7 @@ import {AllProviders} from 'utils/test-utils';
 // import {TLandingCode} from 'context/Auth';
 // import {LoginPage} from 'screens/Auth/LoginPage';
 import {JobInfo} from 'pages/Anketa/JobInfo';
+import {anketa} from './anketa-mock'
 
 // const landingMap: Record<string, TLandingCode> = {
 //   '1': 'LANDING_TEST_1',
@@ -18,7 +19,7 @@ export function TestApp() {
   };
   // console.log(search);
   return (
-    <AllProviders anketaContext={{updateAnketa: sendPassport, step: 'REGISTRATION_ADDRESS', anketa: {registrationAddress: 'РФ, Москва, улица Мира, 107'}}}>
+    <AllProviders anketaContext={{updateAnketa: sendPassport, step: 'REGISTRATION_ADDRESS', anketa}}>
       <JobInfo />
     </AllProviders>
   );
