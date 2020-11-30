@@ -7,6 +7,10 @@ variable "image_version" {
   default = "dev"
 }
 
+variable "namespace" {
+  type = string
+}
+
 module "x-sell-ui" {
   source = "../modules/x-sell-ui"
   image_version = var.image_version
@@ -14,5 +18,6 @@ module "x-sell-ui" {
   host = "cash.dev.productcloud.ru"
   tls_secret_name = "cash-otpcloud-ru-tls"
   use_letsencrypt = true
+  namespace = "x-sell-dev"
 }
 
