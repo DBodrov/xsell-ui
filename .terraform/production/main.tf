@@ -10,6 +10,9 @@ variable "k8s_default_node_group" {
   type = string
 }
 
+variable "namespace" {
+  type = string
+}
 
 module "x-sell-ui" {
   source = "../modules/x-sell-ui"
@@ -18,5 +21,6 @@ module "x-sell-ui" {
   host = "cash.otpbank.ru"
   tls_secret_name = "tls-secret"
   use_letsencrypt = false
+  namespace = "x-sell-dev"
 }
 
