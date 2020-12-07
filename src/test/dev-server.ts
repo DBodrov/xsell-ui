@@ -1,5 +1,5 @@
 import {setupWorker} from 'msw';
-import {handlers} from './handlers';
+import {handlers} from './dev-handlers';
 
 export const server = setupWorker(...handlers);
 

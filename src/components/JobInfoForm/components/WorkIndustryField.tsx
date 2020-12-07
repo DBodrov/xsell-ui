@@ -1,6 +1,8 @@
 import React from 'react';
-import {Select, SelectOptions, SelectChangeTypes, ISelectState} from 'neutrino-ui';
+import {css} from '@emotion/react';
+import {ToggleProvider, useToggle, ToggleArrowIcon, Dropdown} from 'neutrino-ui';
 import {ErrorText, Label, useForma} from 'lib/components/Forma2';
+import {SelectBox} from './styles';
 
 const workIndustryList = [
   {id: 'RGB_INDUSTRY_9', title: 'Ресторанный бизнес/Общественное питание'},
@@ -36,101 +38,91 @@ const workIndustryList = [
   {id: 'OTHER', title: 'Другие сферы'},
 ];
 
-const selectReducer = (state: ISelectState, changes: ISelectState) => {
-  // console.log('===reducer===', state, changes);
-  switch (changes.type) {
-    case SelectChangeTypes.selectClick:
-      return {
-        ...state,
-        ...changes,
-        isOpen: !state.isOpen,
-      };
-    case SelectChangeTypes.scroll:
-      return {
-        ...state,
-        ...changes,
-        isOpen: state.isOpen,
-      };
-    case SelectChangeTypes.clickOutside:
-      return {
-        ...state,
-        ...changes,
-        isOpen: false,
-      };
-    default:
-      return {
-        ...state,
-        ...changes,
-      };
-  }
-};
-
 const getDisplayValue = (id?: string) => workIndustryList.find(item => item?.id === id)?.title ?? '';
 
-type Props = {};
-const fieldName = 'workIndustry';
+const FIELDNAME = 'workIndustry';
 
 export function WorkIndustryField() {
+  return (
+    <ToggleProvider>
+      <SelectIndustry />
+    </ToggleProvider>
+  );
+}
+
+function SelectIndustry() {
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const {handleChange, errors, touched, values, handleTouch} = useForma();
-  const hasError = errors[fieldName]?.length > 0;
-  const hasTouched = touched[fieldName];
-  const value = values[fieldName];
+  const inputRect = inputRef?.current?.getBoundingClientRect();
+  const {handleChange, errors, values, handleTouch} = useForma();
+  const {isOpen, handleToggle, handleClose} = useToggle();
+  const hasError = errors[FIELDNAME]?.length > 0;
+  const value = values[FIELDNAME];
 
   const handleItemClick = React.useCallback(
     (event: React.MouseEvent<HTMLLIElement>) => {
       const id = event?.currentTarget?.dataset?.value;
-      handleChange(fieldName, id);
+      handleChange(FIELDNAME, id);
       inputRef.current.focus();
+      handleClose();
     },
-    [handleChange],
+    [handleChange, handleClose],
   );
 
   const handleInputBlur = React.useCallback(() => {
-    handleTouch(fieldName);
+    handleTouch(FIELDNAME);
   }, [handleTouch]);
+
+  React.useEffect(() => {
+    const handleClickOutside = (e: PointerEvent | MouseEvent) => {
+      if (e.target instanceof HTMLElement && isOpen) {
+        const options = dropdownRef?.current;
+        if (options?.contains(e.target)) {
+          return;
+        }
+        handleClose();
+      }
+    };
+
+    const handleScroll = (e?: Event) =>
+      window.requestAnimationFrame(() => {
+        if (e.target instanceof HTMLElement && isOpen) {
+          const optionsList = dropdownRef?.current;
+          if (optionsList?.contains(e.target)) {
+            return;
+          }
+          handleClose();
+        }
+      });
+
+    if (isOpen) {
+      document.addEventListener('click', handleClickOutside);
+      window.addEventListener('scroll', handleScroll, true);
+    }
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [handleClose, isOpen]);
 
   return (
     <div css={{marginBottom: '1.5rem'}}>
       <Label htmlFor="workIndustry" text="Отрасль занятости" />
-      <Select
-        stateReducer={selectReducer}
-        width="100%"
-        height="2.5rem"
-        css={{
-          padding: '0 8px',
-          border: `1px ${
-            hasError ? 'var(--color-error)' : hasTouched ? 'var(--color-primary)' : 'var(--color-border)'
-          } solid`,
-          borderRadius: 4,
-          marginBottom: 4,
-          '&:hover': {
-            borderColor: hasError ? 'var(--color-error)' : 'var(--color-primary)',
-          },
-        }}
-      >
-        <input
+      <div css={{position: 'relative'}}>
+        <SelectBox
           readOnly
           ref={inputRef}
           placeholder="Выберите из списка"
-          css={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'pre',
-            width: '100%',
-            height: '100%',
-            border: 0,
-            outline: 0,
-            cursor: 'pointer',
-          }}
+          css={[css({border: `1px ${isOpen ? 'var(--color-primary)' : hasError ? 'var(--color-error)' : 'var(--color-border)'} solid`})]}
           value={getDisplayValue(value)}
           onBlur={handleInputBlur}
+          onClick={handleToggle}
         />
+        <div css={{position: 'absolute', top: '35%', right: 10}}>
+          <ToggleArrowIcon />
+        </div>
 
-        <SelectOptions>
+        <Dropdown isOpen={isOpen} parentBound={isOpen ? inputRect : undefined} ref={dropdownRef}>
           <ul
             css={{
               margin: 0,
@@ -165,9 +157,9 @@ export function WorkIndustryField() {
               );
             })}
           </ul>
-        </SelectOptions>
-      </Select>
-      {hasError && <ErrorText errorMessage={errors[fieldName]} />}
+        </Dropdown>
+      </div>
+      {hasError && <ErrorText errorMessage={errors[FIELDNAME]} />}
     </div>
   );
 }

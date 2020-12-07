@@ -50,7 +50,7 @@ export interface IAnketa {
   smsInforming: boolean;
   workPlace: string;
   workIndustry: string;
-  workInn: number;
+  workInn: string;
   registrationAddressChanged: boolean;
   creditBureauConsentAgree: boolean;
   creditBureauConsentDistanceAgree: boolean;
