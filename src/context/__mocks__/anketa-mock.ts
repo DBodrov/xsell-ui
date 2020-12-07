@@ -2,7 +2,7 @@ export const anketa = {
   accountNumber: 'string',
   additionalMonthlyIncomeAmount: 0,
   additionalPhone: 'string',
-  agreementFormLink: 'string',
+  agreementFormLink: '/string',
   approvedInterestRate: 0,
   approvedLoanAmount: 0,
   approvedLoanTermMonths: 0,

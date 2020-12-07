@@ -79,6 +79,7 @@ module.exports = webpackMerge.merge(commonConfig, {
     filename: 'static/js/[name].bundle.js',
     chunkFilename: 'static/js/[name].chunk.js',
     publicPath: '/',
+    assetModuleFilename: 'static/media/[name].[hash:8].[ext]',
   },
 
   module: {

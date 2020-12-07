@@ -1,9 +1,8 @@
 import React from 'react';
 import {css} from '@emotion/react';
 import {ToggleProvider, useToggle, ToggleArrowIcon, Dropdown} from 'neutrino-ui';
-import {ErrorText, useForma} from 'lib/components/Forma2';
 import {workIndustryList} from '../utils';
-import {Label, FormField} from '../styles';
+import {Label, FormField, ErrorText} from '../styles';
 import {SelectBox} from './styles';
 
 const getDisplayValue = (id?: string) => workIndustryList.find(item => item?.id === id)?.title ?? '';
@@ -11,7 +10,10 @@ const getDisplayValue = (id?: string) => workIndustryList.find(item => item?.id 
 type Props = {
   industryId?: string;
   onChangeIndustry: (id: string) => void;
-}
+  onBlurHandler: (value: string, e?: React.FocusEvent<HTMLInputElement>) => void;
+  hasError: boolean;
+  errorText?: string;
+};
 
 export function WorkIndustryField(props: Props) {
   return (
@@ -21,14 +23,14 @@ export function WorkIndustryField(props: Props) {
   );
 }
 
-function SelectIndustry({industryId, onChangeIndustry}: Props) {
+function SelectIndustry({industryId, onChangeIndustry, onBlurHandler, hasError, errorText}: Props) {
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const inputRect = inputRef?.current?.getBoundingClientRect();
   //const {handleChange, errors, values, handleTouch} = useForma();
   const {isOpen, handleToggle, handleClose} = useToggle();
   // const hasError = errors[FIELDNAME]?.length > 0;
-  const hasError = false;
+
   // const value = values[FIELDNAME];
   const value = '';
 
@@ -42,9 +44,15 @@ function SelectIndustry({industryId, onChangeIndustry}: Props) {
     [handleClose, onChangeIndustry],
   );
 
-  const handleInputBlur = React.useCallback(() => {
-    // handleTouch(FIELDNAME);
-  }, []);
+  const handleInputBlur = React.useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      if (e.relatedTarget instanceof HTMLElement && dropdownRef && dropdownRef?.current?.contains(e.relatedTarget)) {
+        return;
+      }
+      onBlurHandler(industryId, e);
+    },
+    [industryId, onBlurHandler],
+  );
 
   React.useEffect(() => {
     const handleClickOutside = (e: PointerEvent | MouseEvent) => {
@@ -85,12 +93,16 @@ function SelectIndustry({industryId, onChangeIndustry}: Props) {
         <SelectBox
           readOnly
           ref={inputRef}
+          name="workIndustry"
           placeholder="выберите из списка"
           css={[
             css({
               border: `1px ${
-                isOpen ? 'var(--color-primary)' : hasError ? 'var(--color-error)' : 'var(--color-border)'
+                isOpen ? 'var(--color-primary)' : hasError ? 'var(--color-secondary)' : 'var(--color-border)'
               } solid`,
+              '&:hover, &:focus': {
+                borderColor: hasError ? 'var(--color-secondary)' : 'var(--color-primary)',
+              },
             }),
           ]}
           value={getDisplayValue(industryId)}
@@ -98,7 +110,7 @@ function SelectIndustry({industryId, onChangeIndustry}: Props) {
           onClick={handleToggle}
         />
         <div css={{position: 'absolute', top: '35%', right: 10}}>
-          <ToggleArrowIcon fill="var(--color-primary)"/>
+          <ToggleArrowIcon fill={hasError ? 'var(--color-secondary)' : 'var(--color-primary)'} />
         </div>
 
         <Dropdown isOpen={isOpen} parentBound={isOpen ? inputRect : undefined} ref={dropdownRef}>
@@ -138,6 +150,7 @@ function SelectIndustry({industryId, onChangeIndustry}: Props) {
           </ul>
         </Dropdown>
       </div>
+      {hasError ? <ErrorText>{errorText}</ErrorText> : null}
     </FormField>
   );
 }

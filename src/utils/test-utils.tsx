@@ -71,6 +71,9 @@ export const providersRender = (
 const waitForLoadingFinish = () =>
   waitForElementToBeRemoved(() => screen.queryByText(/Загрузка/i), {timeout: 5000});
 
+  const waitForAnketaLoadingFinish = () =>
+  waitForElementToBeRemoved(() => screen.queryByText(/Обновляем анкету/i), {timeout: 5000});
+
 const renderApp = () =>
   render(
     <AppProviders>
@@ -80,4 +83,4 @@ const renderApp = () =>
 
 export * from '@testing-library/react';
 
-export {renderApp, userEvent, waitForLoadingFinish};
+export {renderApp, userEvent, waitForLoadingFinish, waitForAnketaLoadingFinish};

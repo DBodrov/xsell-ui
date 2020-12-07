@@ -21,10 +21,10 @@ export const fieldStyles = css`
   transition: border 200ms ease-in;
   font: 600 1rem/24px 'Source Sans Pro';
   border-radius: 8px;
-  border: 1px var(--color-border) solid;
 `;
 
 export const innFieldStyles = css`
+  border: 1px var(--color-border) solid;
   outline: 0;
   &:focus,
   &:hover {
@@ -43,4 +43,10 @@ export const Label = styled.label`
   font: normal 400 14px/20px 'Source Sans Pro';
   color: var(--color-text-label);
   margin-bottom: 8px;
+`;
+
+export const ErrorText = styled.span`
+  font-size: 12px;
+  color: var(--color-text-error);
+  margin-top: 8px;
 `;
