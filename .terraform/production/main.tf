@@ -21,6 +21,6 @@ module "x-sell-ui" {
   host = "cash.otpbank.ru"
   tls_secret_name = "tls-secret"
   use_letsencrypt = false
-  namespace = "x-sell-dev"
+  namespace = "x-sell"
 }
 

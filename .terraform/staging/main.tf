@@ -22,6 +22,6 @@ module "x-sell-ui" {
   host = "cash.staging.productcloud.ru"
   tls_secret_name = "cash-otpcloud-ru-tls"
   use_letsencrypt = true
-  namespace = "x-sell-dev"
+  namespace = "x-sell"
 }
 
