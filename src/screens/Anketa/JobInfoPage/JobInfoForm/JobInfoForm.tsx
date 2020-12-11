@@ -46,6 +46,7 @@ export function JobInfoForm(props: any) {
   );
 
   const handleChangeInn = React.useCallback((inn: string) => {
+    console.log('change inn', inn);
     dispatch({workInn: inn})}, [dispatch]);
 
   const handleChangeIndustry = React.useCallback((id: string) => dispatch({workIndustry: id}), [dispatch]);
@@ -87,6 +88,7 @@ export function JobInfoForm(props: any) {
         <Label htmlFor="workPlace">Место работы</Label>
         <Input
           type="text"
+          id="workPlace"
           name="workPlace"
           hasError={hasError('workPlace')}
           onChangeHandler={handleChangeTextField}
