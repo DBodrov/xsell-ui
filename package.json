@@ -28,7 +28,7 @@
   "dependencies": {
     "axios": "^0.21.0",
     "classnames": "^2.2.6",
-    "neutrino-ui": "^1.1.0",
+    "neutrino-ui": "^1.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-ga": "^3.3.0",

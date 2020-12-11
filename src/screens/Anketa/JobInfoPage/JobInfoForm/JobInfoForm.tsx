@@ -46,7 +46,6 @@ export function JobInfoForm(props: any) {
   );
 
   const handleChangeInn = React.useCallback((inn: string) => {
-    console.log('change inn', inn);
     dispatch({workInn: inn})}, [dispatch]);
 
   const handleChangeIndustry = React.useCallback((id: string) => dispatch({workIndustry: id}), [dispatch]);
@@ -99,9 +98,10 @@ export function JobInfoForm(props: any) {
         {hasError('workPlace') ? <ErrorText>{errorState.workPlace}</ErrorText> : null}
       </FormField>
       <FormField>
-        <Label>Весь ежемесячный доход (руб)</Label>
+        <Label htmlFor="mainMonthlyIncomeAmount">Весь ежемесячный доход (руб)</Label>
         <InputNumber
           name="mainMonthlyIncomeAmount"
+          id="mainMonthlyIncomeAmount"
           onChangeHandler={handleChangeTextField}
           value={formData.mainMonthlyIncomeAmount}
           css={[fieldStyles, errorStyleInputNumber('mainMonthlyIncomeAmount')]}
@@ -117,11 +117,12 @@ export function JobInfoForm(props: any) {
         )}
       </FormField>
       <FormField>
-        <Label>Стаж на последнем месте (месяцев)</Label>
+        <Label htmlFor="lastWorkExperienceMonths">Стаж на последнем месте (месяцев)</Label>
         <InputNumber
           name="lastWorkExperienceMonths"
           onChangeHandler={handleChangeTextField}
           value={formData.lastWorkExperienceMonths}
+          id="lastWorkExperienceMonths"
           css={[
             fieldStyles,
             errorStyleInputNumber('lastWorkExperienceMonths')
@@ -141,6 +142,8 @@ export function JobInfoForm(props: any) {
       />
       <FormField css={{gridColumn: '1/3', '@media (min-width: 768px)': {maxWidth: 608}}}>
         <Checkbox
+          id="creditBureauConsentAgree"
+          role="checkbox"
           variant="primary"
           onChangeHandler={handleChangeAgreement}
           checked={formData.creditBureauConsentAgree}

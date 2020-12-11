@@ -2,6 +2,8 @@
 /// <reference types="react" />
 /// <reference types="react-dom" />
 /// <reference types="@emotion/react/types/css-prop" />
+/// <reference types="@testing-library/jest-dom" />
+
 
 declare module '*.svg';
 declare module '*.png';
