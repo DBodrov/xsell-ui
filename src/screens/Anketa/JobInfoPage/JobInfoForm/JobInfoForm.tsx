@@ -73,7 +73,7 @@ export function JobInfoForm(props: any) {
           maskPlaceholder="_"
           onChangeHandler={handleChangeInn}
           value={formData.workInn}
-          id="workInn"
+          aria-label="ИНН работодателя"
           css={[
             fieldStyles,
             innFieldStyles,
@@ -87,8 +87,8 @@ export function JobInfoForm(props: any) {
         <Label htmlFor="workPlace">Место работы</Label>
         <Input
           type="text"
-          id="workPlace"
           name="workPlace"
+          aria-label="Место работы"
           hasError={hasError('workPlace')}
           onChangeHandler={handleChangeTextField}
           onBlurHandler={validateRequiredField}
@@ -101,7 +101,7 @@ export function JobInfoForm(props: any) {
         <Label htmlFor="mainMonthlyIncomeAmount">Весь ежемесячный доход (руб)</Label>
         <InputNumber
           name="mainMonthlyIncomeAmount"
-          id="mainMonthlyIncomeAmount"
+          aria-label="Весь ежемесячный доход (руб)"
           onChangeHandler={handleChangeTextField}
           value={formData.mainMonthlyIncomeAmount}
           css={[fieldStyles, errorStyleInputNumber('mainMonthlyIncomeAmount')]}
@@ -122,7 +122,7 @@ export function JobInfoForm(props: any) {
           name="lastWorkExperienceMonths"
           onChangeHandler={handleChangeTextField}
           value={formData.lastWorkExperienceMonths}
-          id="lastWorkExperienceMonths"
+          aria-label="Стаж на последнем месте (месяцев)"
           css={[
             fieldStyles,
             errorStyleInputNumber('lastWorkExperienceMonths')
@@ -142,8 +142,6 @@ export function JobInfoForm(props: any) {
       />
       <FormField css={{gridColumn: '1/3', '@media (min-width: 768px)': {maxWidth: 608}}}>
         <Checkbox
-          id="creditBureauConsentAgree"
-          role="checkbox"
           variant="primary"
           onChangeHandler={handleChangeAgreement}
           checked={formData.creditBureauConsentAgree}

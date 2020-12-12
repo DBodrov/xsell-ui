@@ -20,15 +20,15 @@
     "test": "jest --config config/jest.config.js",
     "cypress": "cypress open",
     "cypress:headless": "cypress run --browser chrome --headless",
-    "test:e2e": "start-server-and-test start 8080 cypress",
-    "test:e2e:ci": "start-server-and-test start 8080 cypress:headless",
+    "e2e": "start-server-and-test start 8080 cypress",
+    "e2e:ci": "start-server-and-test start 8080 cypress:headless",
     "version": "git add -A",
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "axios": "^0.21.0",
     "classnames": "^2.2.6",
-    "neutrino-ui": "^1.2.0",
+    "neutrino-ui": "^1.2.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-ga": "^3.3.0",
