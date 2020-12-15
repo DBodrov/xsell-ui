@@ -9,18 +9,19 @@ export function AnketaRouter() {
   const history = useHistory();
   const location = useLocation();
   const {step} = useAnketa();
-  const route = anketaRoutesMap.get(step);
   usePageView();
 
-  useEffect(() => {
-    history.push(route.url, {step: route.step});
-  }, [history, route.step, route.url]);
 
   useEffect(() => {
-    if (location.pathname === '/anketa') {
+    if (step) {
+      const route = step && anketaRoutesMap.get(step);
       history.push(route.url, {step: route.step});
+
+      if (location.pathname === '/anketa') {
+        history.push(route.url, {step: route.step});
+      }
     }
-  }, [history, location.pathname, route.step, route.url]);
+  }, [history, location.pathname, step]);
 
   return <AnketaRoutes />;
 }

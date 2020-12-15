@@ -1,15 +1,23 @@
-import {server, rest, statusHandler, anketaHandler} from 'src/test/dev-server';
-import {anketa} from 'context/__mocks__/anketa-mock';
+//import {server, rest, statusHandler, anketaHandler} from 'src/test/dev-server';
+import {anketa as response} from 'context/__mocks__/anketa-mock';
 
 const viewportsList: Cypress.ViewportPreset[] = ['iphone-7', 'macbook-15'];
 
-viewportsList.forEach(viewport => {
+describe('anketa registration step', () => {
   it('render registration step', () => {
-    cy.viewport(viewport);
+    cy.viewport('iphone-7');
     cy.visit('/');
     cy.window().then(window => {
-      const {server, rest, anketaHandler, statusHandler} = (window as any).msw;
-      server.use(statusHandler('OK'), anketaHandler('REGISTRATION_ADDRESS'));
+      const {server, rest} = (window as any).msw;
+      const anketa = {...response, status: 'REGISTRATION_ADDRESS'};
+      server.use(
+        rest.post('/gateway/auth-status', (req, res, ctx) => {
+          return res.once(ctx.status(200), ctx.json({status: 'OK'}));
+        }),
+        rest.post('/gateway/credit-application/get-session-app', (req, res, ctx) => {
+          return res.once(ctx.status(200), ctx.json(anketa));
+        }),
+      );
     });
     cy.findByText(/Проверьте свои данные/i).should('exist');
 
@@ -32,5 +40,4 @@ viewportsList.forEach(viewport => {
     cy.findByRole('checkbox').click();
     cy.findByRole('button', {name: /Все данные верны/i}).should('not.be.disabled');
   });
-
-})
+});

@@ -219,14 +219,14 @@ export const handlers = [
   }),
 ];
 
-export const statusHandler = (status: AuthStatus = 'INITIALIZE') =>
-  rest.post('/gateway/auth-status', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({status}));
-  });
+export const statusHandler = (status: AuthStatus = 'INITIALIZE') => {
+  return rest.post('/gateway/auth-status', (req, res, ctx) => {
+    return res.once(ctx.status(200), ctx.json({status}));
+  })};
 
 
 export const anketaHandler = (step: TAnketaStep) => {
   const updatedAnketa = {...anketa, status: step}
   return rest.post('/gateway/credit-application/get-session-app', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(updatedAnketa));
+    return res.once(ctx.status(200), ctx.json(updatedAnketa));
   })};
