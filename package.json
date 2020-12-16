@@ -10,6 +10,7 @@
   },
   "scripts": {
     "start": "webpack serve",
+    "start:mock": "webpack serve --env USE_API_MOCKS=true",
     "build": "rimraf dist && cross-env ENV=production webpack --config config/webpack.config.prod.js",
     "build:stage": "rimraf dist && cross-env ENV=staging webpack --config config/webpack.config.prod.js",
     "build:local": "rimraf production && cross-env ENV=local webpack -p --config config/webpack.config.prod.js",
@@ -21,8 +22,8 @@
     "test:all": "npm run test && npm run e2e:ci",
     "cypress": "cypress open",
     "cypress:headless": "cypress run --browser chrome --headless",
-    "e2e": "start-server-and-test start 8080 cypress",
-    "e2e:ci": "start-server-and-test start 8080 cypress:headless",
+    "e2e": "start-server-and-test start:mock 8080 cypress",
+    "e2e:ci": "start-server-and-test start:mock 8080 cypress:headless",
     "version": "git add -A",
     "postversion": "git push && git push --tags"
   },
