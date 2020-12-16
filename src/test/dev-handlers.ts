@@ -1,5 +1,7 @@
 import {rest} from 'msw';
 import {AuthStatus} from 'context/Auth';
+import {TAnketaStep} from 'context/Anketa';
+import {anketa} from 'context/__mocks__/anketa-mock';
 
 export const handlers = [
   rest.post('/gateway/reject-offer', async (req, res, ctx) => {
@@ -14,7 +16,7 @@ export const handlers = [
     if (cookies['userData'] && cookies['SESSION']) {
       return res(ctx.status(200), ctx.json({status: 'AUTH2_REQUIRED'}));
     }
-    return res(ctx.status(200), ctx.cookie('userData', '', {maxAge: 0}), ctx.json({status: 'INITIALIZE'}));
+    return res(ctx.status(200), ctx.cookie('userData', '', {maxAge: 0}), ctx.json({status: 'OK'}));
   }),
 
   rest.post('/gateway/initialize', (req, res, ctx) => {
@@ -111,10 +113,11 @@ export const handlers = [
       }),
     );
   }),
+
   /** ANKETA HANDLERS */
   rest.post('/gateway/credit-application/get-session-app', (req, res, ctx) => {
     //TODO: Anketa steps switch
-    return res(ctx.status(200), ctx.json({status: 'LOAN_PARAMS', campaignParticipant: false}));
+    return res(ctx.status(200), ctx.json(anketa));
   }),
 
   rest.post('/gateway/credit-application/agree-to-sign-documents', (req, res, ctx) => {
@@ -216,7 +219,14 @@ export const handlers = [
   }),
 ];
 
-export const statusHandler = (status: AuthStatus = 'INITIALIZE') =>
-  rest.post('/gateway/auth-status', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({status}));
-  });
+export const statusHandler = (status: AuthStatus = 'INITIALIZE') => {
+  return rest.post('/gateway/auth-status', (req, res, ctx) => {
+    return res.once(ctx.status(200), ctx.json({status}));
+  })};
+
+
+export const anketaHandler = (step: TAnketaStep) => {
+  const updatedAnketa = {...anketa, status: step}
+  return rest.post('/gateway/credit-application/get-session-app', (req, res, ctx) => {
+    return res.once(ctx.status(200), ctx.json(updatedAnketa));
+  })};

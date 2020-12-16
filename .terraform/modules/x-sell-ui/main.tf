@@ -18,10 +18,14 @@ variable "use_letsencrypt" {
   type = bool
 }
 
+variable "namespace" {
+  type = string
+}
+
 resource "kubernetes_deployment" "x-sell-ui" {
   metadata {
     name = "x-sell-ui"
-    namespace = "x-sell"
+    namespace = var.namespace
     labels = {
       app = "x-sell-ui"
     }
@@ -61,7 +65,7 @@ resource "kubernetes_deployment" "x-sell-ui" {
 resource "kubernetes_service" "x-sell-ui" {
   metadata {
     name = "x-sell-ui"
-    namespace = "x-sell"
+    namespace = var.namespace
   }
   spec {
     selector = {
@@ -77,7 +81,7 @@ resource "kubernetes_service" "x-sell-ui" {
 resource "kubernetes_ingress" "x-sell-ui" {
   metadata {
     name = "x-sell-ui"
-    namespace = "x-sell"
+    namespace = var.namespace
     annotations = {
       "nginx.ingress.kubernetes.io/rewrite-target" = "/"
       "ingress.kubernetes.io/ssl-redirect" = "False"
