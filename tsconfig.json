@@ -13,7 +13,14 @@
     "outDir": "./dist",
     "lib": ["dom", "es2015"],
     "experimentalDecorators": true,
-    "typeRoots": ["node_modules/@types", "src/types"],
+    "typeRoots": [
+      "node_modules/@types",
+      "src/types",
+      "node_modules/cypress",
+      "node_modules/@testing-library/cypress",
+      "node_modules/@testing-library/jest-dom"
+    ],
+    "types": ["node", "jest", "@testing-library/jest-dom"],
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
@@ -36,7 +43,7 @@
       "icons": ["src/icons"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "cypress/**/*"],
   "compileOnSave": true,
   "exclude": ["node_modules", "config"]
 }

@@ -32,7 +32,8 @@ test('address was changed', async () => {
         const updatedAnketa = {...anketa, status: 'CHANGED_REGISTRATION_ADDRESS'};
         return res(ctx.status(200), ctx.json(updatedAnketa));
       }
-      return res(ctx.status(200), ctx.json(anketa));
+      const registrationStep = {...anketa, status: 'REGISTRATION_ADDRESS'}
+      return res(ctx.status(200), ctx.json(registrationStep));
     }),
   );
   renderApp();
@@ -45,7 +46,7 @@ test('address was changed', async () => {
   expect(screen.queryByText(/Похоже, что место вашей прописки изменилось/i)).toBeInTheDocument();
 });
 
-test.skip('submit form', async () => {
+test('submit form', async () => {
   server.use(statusHandler('OK'), anketaHandler('REGISTRATION_ADDRESS'));
   renderApp();
   await waitForLoadingFinish();
@@ -54,9 +55,6 @@ test.skip('submit form', async () => {
   expect(updateAddressButton).toBeInTheDocument();
   const innField = screen.queryByLabelText(/ИНН работодателя/i);
   expect(innField).toBeInTheDocument();
-  userEvent.type(innField, '1');
-  // const inputEvent = createEvent.input(innField, {target: {value: '1234567890'}})
-  // fireEvent(innField, inputEvent);
-  screen.debug(innField);
-  expect(innField).toHaveValue('1234567890');
+  userEvent.type(innField, '123456789012');
+  expect(innField).toHaveValue('123456789012');
 });

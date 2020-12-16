@@ -73,7 +73,7 @@ export function JobInfoForm(props: any) {
           maskPlaceholder="_"
           onChangeHandler={handleChangeInn}
           value={formData.workInn}
-          id="workInn"
+          aria-label="ИНН работодателя"
           css={[
             fieldStyles,
             innFieldStyles,
@@ -88,6 +88,7 @@ export function JobInfoForm(props: any) {
         <Input
           type="text"
           name="workPlace"
+          aria-label="Место работы"
           hasError={hasError('workPlace')}
           onChangeHandler={handleChangeTextField}
           onBlurHandler={validateRequiredField}
@@ -97,9 +98,10 @@ export function JobInfoForm(props: any) {
         {hasError('workPlace') ? <ErrorText>{errorState.workPlace}</ErrorText> : null}
       </FormField>
       <FormField>
-        <Label>Весь ежемесячный доход (руб)</Label>
+        <Label htmlFor="mainMonthlyIncomeAmount">Весь ежемесячный доход (руб)</Label>
         <InputNumber
           name="mainMonthlyIncomeAmount"
+          aria-label="Весь ежемесячный доход (руб)"
           onChangeHandler={handleChangeTextField}
           value={formData.mainMonthlyIncomeAmount}
           css={[fieldStyles, errorStyleInputNumber('mainMonthlyIncomeAmount')]}
@@ -115,11 +117,12 @@ export function JobInfoForm(props: any) {
         )}
       </FormField>
       <FormField>
-        <Label>Стаж на последнем месте (месяцев)</Label>
+        <Label htmlFor="lastWorkExperienceMonths">Стаж на последнем месте (месяцев)</Label>
         <InputNumber
           name="lastWorkExperienceMonths"
           onChangeHandler={handleChangeTextField}
           value={formData.lastWorkExperienceMonths}
+          aria-label="Стаж на последнем месте (месяцев)"
           css={[
             fieldStyles,
             errorStyleInputNumber('lastWorkExperienceMonths')

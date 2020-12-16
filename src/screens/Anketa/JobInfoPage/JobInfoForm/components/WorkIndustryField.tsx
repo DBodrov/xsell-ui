@@ -92,6 +92,7 @@ function SelectIndustry({industryId, onChangeIndustry, onBlurHandler, hasError, 
       <div css={{position: 'relative'}}>
         <SelectBox
           readOnly
+          aria-label="Отрасль занятости"
           ref={inputRef}
           name="workIndustry"
           placeholder="выберите из списка"

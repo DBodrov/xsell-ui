@@ -67,140 +67,146 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
   return loaders;
 };
 
-module.exports = webpackMerge.merge(commonConfig, {
-  mode: 'development',
-  devtool: 'cheap-source-map',
-  bail: true,
-  target: 'web',
+module.exports = env => {
+  console.log(env);
+  return webpackMerge.merge(commonConfig, {
+    mode: 'development',
+    devtool: 'inline-source-map',
+    bail: true,
+    target: 'web',
 
-  output: {
-    path: resolveApp('dist'),
-    pathinfo: true,
-    filename: 'static/js/[name].bundle.js',
-    chunkFilename: 'static/js/[name].chunk.js',
-    publicPath: '/',
-    assetModuleFilename: 'static/media/[name].[hash:8].[ext]',
-  },
+    output: {
+      path: resolveApp('dist'),
+      pathinfo: true,
+      filename: 'static/js/[name].bundle.js',
+      chunkFilename: 'static/js/[name].chunk.js',
+      publicPath: '/',
+      assetModuleFilename: 'static/media/[name].[hash:8].[ext]',
+    },
 
-  module: {
-    rules: [
-      {
-        test: utils.jsxRegex,
-        exclude: /node_modules/,
-        use: 'babel-loader',
-        // use: ['babel-loader', 'eslint-loader'],
-      },
-      {
-        test: utils.tsxRegex,
-        exclude: /node_modules/,
-        use: 'babel-loader',
-      },
-      {
-        test: utils.cssRegex,
-        exclude: utils.cssModuleRegex,
-        use: getStyleLoaders({
-          importLoaders: 1,
-        }),
-      },
-      {
-        test: utils.cssModuleRegex,
-        use: getStyleLoaders({
-          importLoaders: 1,
-          modules: true,
-          localIdentName: '[path][name]__[local]--[hash:base64:5]',
-        }),
-      },
-      {
-        test: utils.sassRegex,
-        exclude: utils.sassModuleRegex,
-        use: getStyleLoaders({importLoaders: 2, sourceMap: true}, 'sass-loader'),
-      },
-      {
-        test: utils.sassModuleRegex,
-        use: getStyleLoaders(
-          {
-            importLoaders: 2,
-            modules: {
-              mode: 'local',
-              localIdentName: '[name]__[local]--[hash:base64:5]',
-              // context: path.resolve(__dirname, 'src'),
-              // hashPrefix: 'my-custom-hash',
+    module: {
+      rules: [
+        {
+          test: utils.jsxRegex,
+          exclude: /node_modules/,
+          use: 'babel-loader',
+          // use: ['babel-loader', 'eslint-loader'],
+        },
+        {
+          test: utils.tsxRegex,
+          exclude: /node_modules/,
+          use: 'babel-loader',
+        },
+        {
+          test: utils.cssRegex,
+          exclude: utils.cssModuleRegex,
+          use: getStyleLoaders({
+            importLoaders: 1,
+          }),
+        },
+        {
+          test: utils.cssModuleRegex,
+          use: getStyleLoaders({
+            importLoaders: 1,
+            modules: true,
+            localIdentName: '[path][name]__[local]--[hash:base64:5]',
+          }),
+        },
+        {
+          test: utils.sassRegex,
+          exclude: utils.sassModuleRegex,
+          use: getStyleLoaders({importLoaders: 2, sourceMap: true}, 'sass-loader'),
+        },
+        {
+          test: utils.sassModuleRegex,
+          use: getStyleLoaders(
+            {
+              importLoaders: 2,
+              modules: {
+                mode: 'local',
+                localIdentName: '[name]__[local]--[hash:base64:5]',
+                // context: path.resolve(__dirname, 'src'),
+                // hashPrefix: 'my-custom-hash',
+              },
             },
+            'sass-loader',
+          ),
+        },
+      ],
+    },
+
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'async',
           },
-          'sass-loader',
-        ),
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true,
+          },
+        },
       },
+      runtimeChunk: {
+        name: 'runtime',
+      },
+      emitOnErrors: false,
+      minimizer: [new OptimizeCSSAssetsPlugin({})],
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        title: `${APP_NAME} || ${ENV.toUpperCase()}`,
+        filename: 'index.html',
+        template: resolveApp('src/index.html'),
+        favicon: resolveApp('src/favicon.ico'),
+        inject: true,
+        hash: true,
+        chunksSortMode: 'none',
+      }),
+      new PreloadWebpackPlugin({
+        rel: 'preload',
+        include: 'asyncChunks',
+      }),
+
+      new ReactRefreshWebpackPlugin(),
+      new webpack.EnvironmentPlugin({
+        USE_API_MOCKS: env.USE_API_MOCKS || 'false'
+      }),
+
+      new WebpackBar({
+        name: `ENV: ${ENV}  VERSION: ${VERSION}`,
+      }),
+
+      new Dotenv(),
+      new webpack.DefinePlugin({
+        'process.env.VERSION': JSON.stringify(VERSION),
+        'process.env.ENV': JSON.stringify(ENV),
+        'process.env.NODE_ENV': JSON.stringify(ENV),
+      }),
+
     ],
-  },
 
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'async',
-        },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true,
-        },
-      },
-    },
-    runtimeChunk: {
-      name: 'runtime',
-    },
-    emitOnErrors: false,
-    minimizer: [new OptimizeCSSAssetsPlugin({})],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: `${APP_NAME} || ${ENV.toUpperCase()}`,
-      filename: 'index.html',
-      template: resolveApp('src/index.html'),
-      favicon: resolveApp('src/favicon.ico'),
-      inject: true,
-      hash: true,
-      chunksSortMode: 'none',
-    }),
-    new PreloadWebpackPlugin({
-      rel: 'preload',
-      include: 'asyncChunks',
-    }),
-
-    new ReactRefreshWebpackPlugin(),
-
-    new WebpackBar({
-      name: `ENV: ${ENV}  VERSION: ${VERSION}`,
-    }),
-
-    new Dotenv(),
-    new webpack.DefinePlugin({
-      'process.env.VERSION': JSON.stringify(VERSION),
-      'process.env.ENV': JSON.stringify(ENV),
-      'process.env.NODE_ENV': JSON.stringify(ENV),
-    }),
-
-  ],
-
-  devServer: {
-    historyApiFallback: true,
-    host: '0.0.0.0',
-    port: 8080,
-    hot: true,
-    noInfo: true,
-    stats: 'minimal',
-    contentBase: resolveApp('src'),
-    proxy: {
-      '/gateway': {
-        target: 'https://cash.staging.productcloud.ru',
-        changeOrigin: true,
-        secure: false,
-        headers: {
-          Host: 'cash.staging.productcloud.ru',
+    devServer: {
+      historyApiFallback: true,
+      host: '0.0.0.0',
+      port: 8080,
+      hot: true,
+      noInfo: true,
+      stats: 'minimal',
+      contentBase: resolveApp('src'),
+      proxy: {
+        '/gateway': {
+          target: 'https://cash.staging.productcloud.ru',
+          changeOrigin: true,
+          secure: false,
+          headers: {
+            Host: 'cash.staging.productcloud.ru',
+          },
         },
       },
     },
-  },
-});
+  });
+}
