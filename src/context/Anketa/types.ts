@@ -11,7 +11,6 @@ type AnketaHandlers = {
   archivingAnketa: (step: TAnketaStep) => void;
   refusePhotoPassport: () => void;
   verifySignature: (step: TAnketaStep, payload: Record<string, unknown>) => void;
-  fetchCustomerCards: () => void;
 };
 
 export type TAnketaContext = IAnketaState['data'] & AnketaHandlers;
@@ -29,6 +28,7 @@ export interface IAnketa {
   batchDocumentLink: string;
   birthDate: string;
   campaignParticipant?: boolean; // признак акции Разница есть
+  dboActivated?: boolean;
   email: string;
   firstName: string;
   jobLossProtection: boolean;
@@ -56,13 +56,13 @@ export interface IAnketa {
   creditBureauConsentDistanceAgree: boolean;
   agreementSignatureIsVerified: boolean;
   documentsSignatureIsVerified: boolean;
-  customerOtpCards: TCustomerCard[];
+  // customerOtpCards: TCustomerCard[];
 }
 
 export type TCustomerCard = {
-  bankCardId: string;
-  bankCardNumber: string;
-  cardExpirationDt: string;
+  id: string;
+  number: string;
+  expirationDate: string;
 };
 
 export type TJobInfo = Pick<

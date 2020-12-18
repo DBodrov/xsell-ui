@@ -213,6 +213,11 @@ export const handlers = [
             number: '1234567890123456',
             expirationDate: '09/23',
           },
+          {
+            id: '2',
+            number: '9876543200001234',
+            expirationDate: '01/25',
+          },
         ],
       }),
     );

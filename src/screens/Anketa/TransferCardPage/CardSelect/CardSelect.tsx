@@ -1,56 +1,21 @@
 import React from 'react';
 import {css} from '@emotion/react';
-import styled from '@emotion/styled';
 import {ToggleProvider, useToggle, ToggleArrowIcon, Span, Dropdown} from 'neutrino-ui';
-import {TCustomerCard} from 'context/Anketa';
 import {MasterCardIcon} from 'icons';
+import {TCardSelectInputProps, TCardSelectProps} from './types';
+import {CardInputBox, CardsList, CustomerCard} from './styles';
 
-type TCardSelectProps = {
-  cardsList?: TCustomerCard[];
-  currentCardId?: string;
-  onSelectCard: (cardId: string) => void;
-};
-
-const CustomerCard = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  height: 60px;
-  width: 100%;
-  min-width: 238px;
-  padding: 12px;
-`;
-
-const CardInputBox = styled(CustomerCard)`
-  border: 1px var(--color-border) solid;
-  border-radius: 4px;
-  &:hover {
-    border-color: var(--color-primary);
-    cursor: pointer;
+function maskCardNumber(cardNumber: string): string {
+  if (cardNumber) {
+    const lastNumBlock = cardNumber.slice(-4);
+    return `**** **** **** ${lastNumBlock}`;
   }
-`;
+  return '';
+}
 
-const CardsList = styled.ul`
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 100%;
-  max-height: 300px;
-  overflow: auto;
-  margin: 0;
-  padding: 0;
-  border: 1px var(--color-border) solid;
-  border-radius: 4px;
-  background-color: var(--color-background);
-`;
 
-type TCardSelectInputProps = {
-  value?: string;
-};
 function CardSelectInputComponent(
-  {value}: TCardSelectInputProps,
+  {value, noCards}: TCardSelectInputProps,
   ref: React.ForwardRefExoticComponent<HTMLDivElement>,
 ) {
   const {isOpen, handleToggle} = useToggle();
@@ -61,20 +26,20 @@ function CardSelectInputComponent(
     <CardInputBox
       ref={cardBoxRef}
       css={{borderColor: isOpen ? 'var(--color-primary)' : 'var(--color-border)'}}
-      onClick={handleToggle}
+      onClick={noCards ? undefined: handleToggle}
     >
       {value ? (
         <>
           <MasterCardIcon />
-          <div>
-            <Span>Ваша карта</Span>
-            <Span>{value}</Span>
+          <div css={{display: 'flex', flexFlow: 'column nowrap', paddingLeft: 8}}>
+            <Span css={{fontSize: 14}}>Ваша карта</Span>
+            <Span css={{fontSize: 14}}>{value}</Span>
           </div>
         </>
       ) : null}
       <div
         css={{
-          display: 'flex',
+          display: noCards ? 'none' : 'flex',
           flexFlow: 'column nowrap',
           justifyContent: 'center',
           alignItems: 'center',
@@ -93,27 +58,70 @@ const CardSelectInput = React.forwardRef(CardSelectInputComponent);
 
 function SelectCard(props: TCardSelectProps) {
   const {cardsList, onSelectCard, currentCardId} = props;
-  const {isOpen} = useToggle();
+  const {isOpen, handleClose} = useToggle();
   const cardInputRef = React.useRef<HTMLDivElement>(null);
   const dropDownRef = React.useRef<HTMLDivElement>(null);
   const cardInputRect = cardInputRef?.current?.getBoundingClientRect();
 
-  const handleSelectCard = React.useCallback((e: React.PointerEvent<HTMLLIElement>) => {
-    onSelectCard(String(e.currentTarget.value));
-  }, [onSelectCard])
+  const handleSelectCard = React.useCallback(
+    (e: React.PointerEvent<HTMLLIElement>) => {
+      onSelectCard(String(e.currentTarget.value));
+      handleClose();
+    },
+    [handleClose, onSelectCard],
+  );
 
-  //const [] = React.useState();
-  const cardNumber = cardsList?.find(card => card.bankCardId === currentCardId)?.bankCardNumber;
+  const cardNumber = cardsList?.find(card => card.id === currentCardId)?.number;
+
+  React.useEffect(() => {
+    const handleClickOutside = (e: PointerEvent | MouseEvent) => {
+      if (e.target instanceof HTMLElement && isOpen) {
+        const optionsList = dropDownRef?.current;
+        const cardInput = cardInputRef?.current;
+        if (optionsList?.contains(e.target) || cardInput?.contains(e.target)) {
+          return;
+        }
+        handleClose();
+      }
+    };
+
+    const handleScroll = (e: Event) =>
+      window.requestAnimationFrame(() => {
+        if (e.target instanceof HTMLElement && isOpen) {
+          const optionsList = dropDownRef?.current;
+          if (optionsList?.contains(e.target)) {
+            return;
+          }
+          handleClose();
+        }
+      });
+
+    const handleResize = () => {
+      handleClose();
+    }
+
+    if (isOpen) {
+      document.addEventListener('click', handleClickOutside);
+      window.addEventListener('scroll', handleScroll, true);
+      window.addEventListener('resize', handleResize, true);
+    }
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [handleClose, isOpen]);
+
   return (
     <div css={{position: 'relative', width: '100%'}}>
-      <CardSelectInput value={cardNumber} ref={cardInputRef} />
+      <CardSelectInput value={maskCardNumber(cardNumber)} ref={cardInputRef} noCards={!cardsList || cardsList.length === 0}/>
       <Dropdown isOpen={isOpen} parentBound={isOpen ? cardInputRect : undefined} ref={dropDownRef}>
         <CardsList>
           {cardsList?.map(card => {
             return (
-              <li key={card.bankCardId} value={card.bankCardId} onClick={handleSelectCard}>
+              <li css={{width: '100%'}} key={card.id} value={card.id} onClick={handleSelectCard}>
                 <CustomerCard
                   css={css`
+                    background-color: ${card.id === currentCardId ? '#f3f3f3' : '#fff'};
                     &:hover {
                       cursor: pointer;
                       background-color: #f3f3f3;
@@ -121,6 +129,10 @@ function SelectCard(props: TCardSelectProps) {
                   `}
                 >
                   <MasterCardIcon />
+                  <div css={{display: 'flex', flexFlow: 'column nowrap', paddingLeft: 8}}>
+                    <Span css={{fontSize: 14}}>Ваша карта</Span>
+                    <Span css={{fontSize: 14}}>{maskCardNumber(card.number)}</Span>
+                  </div>
                 </CustomerCard>
               </li>
             );

@@ -1,11 +1,11 @@
-import React, { useContext, createContext, useMemo, useEffect } from 'react';
-import { Spinner } from 'lib/components/Spinner';
-import { useAnketaClient } from './use-anketaClient';
-import { TAnketaContext } from './types';
+import React, {useContext, createContext, useMemo, useEffect} from 'react';
+import {Spinner} from 'lib/components/Spinner';
+import {useAnketaClient} from './use-anketaClient';
+import {TAnketaContext} from './types';
 
 export const AnketaContext = createContext<TAnketaContext | undefined>(undefined);
 
-export function AnketaProvider({ children }: any) {
+export function AnketaProvider({children}: any) {
   const {
     getAnketa,
     data,
@@ -15,7 +15,6 @@ export function AnketaProvider({ children }: any) {
     archivingAnketa,
     refusePhotoPassport,
     verifySignature,
-    fetchCustomerCards,
   } = useAnketaClient();
 
   useEffect(() => {
@@ -30,9 +29,8 @@ export function AnketaProvider({ children }: any) {
       archivingAnketa,
       refusePhotoPassport,
       verifySignature,
-      fetchCustomerCards,
     }),
-    [archivingAnketa, data, fetchCustomerCards, refusePhotoPassport, updateAnketa, verifySignature]
+    [archivingAnketa, data, refusePhotoPassport, updateAnketa, verifySignature],
   );
 
   if (isIdle || isLoading) {

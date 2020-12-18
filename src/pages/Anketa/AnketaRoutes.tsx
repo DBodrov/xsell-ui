@@ -4,7 +4,7 @@ import {ProtectedRoute} from 'components/ProtectedRoute';
 import {CalculatorPage} from './CalculatorPage';
 import {PassportPage} from './PassportPage';
 import {JobInfo} from './JobInfo';
-import {JobInfoPage} from 'screens/Anketa/JobInfoPage'
+import {JobInfoPage} from 'screens/Anketa/JobInfoPage';
 import {AgreementPage} from './AgreementSMSPage';
 import {AdvanceScoringRefusalPage} from './AdvanceScoringRefusalPage';
 import {ResultScoringPage} from './ResultScoringPage';
@@ -21,7 +21,8 @@ import {PassportPhotoPage} from '../PassportPhotoPage';
 import {PendingDocumentsPage} from './PendingDocumentsPage';
 
 import {routeMap} from './anketa.routingMap';
-import {TransferPage} from './TransferPage';
+// import {TransferPage} from './TransferPage';
+import {TransferDetailsPage} from 'screens/Anketa/TransferDetailsPage';
 
 export function AnketaRoutes() {
   return (
@@ -73,7 +74,7 @@ export function AnketaRoutes() {
         <AdvanceScoringRefusalPage />
       </ProtectedRoute>
       <ProtectedRoute exact path={routeMap.TRANSFER_DETAILS}>
-        <TransferPage />
+        <TransferDetailsPage />
       </ProtectedRoute>
       {/* скоринг: одобрение или нет решения */}
       <ProtectedRoute exact path={routeMap.PENDING_SCORING}>
