@@ -69,10 +69,10 @@ export const providersRender = (
 ) => render(<AllProviders {...providersProps}>{children}</AllProviders>, {...options});
 
 const waitForLoadingFinish = () =>
-  waitForElementToBeRemoved(() => screen.queryByText(/Загрузка/i), {timeout: 5000});
+  waitForElementToBeRemoved(() => screen.queryByText(/Загрузка/i), {timeout: 15000});
 
   const waitForAnketaLoadingFinish = () =>
-  waitForElementToBeRemoved(() => screen.queryByText(/Обновляем анкету/i), {timeout: 5000});
+  waitForElementToBeRemoved(() => screen.queryByText(/Обновляем анкету/i), {timeout: 15000});
 
 const renderApp = () =>
   render(
