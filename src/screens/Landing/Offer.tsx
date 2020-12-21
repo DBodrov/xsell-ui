@@ -1,11 +1,10 @@
 import React from 'react';
-import {H2, LinkButton} from 'components/lib';
-import {RaznitcaModal} from 'components/RaznitcaModal';
+import {H2} from 'components/lib';
 import {MoneyATM, HourglassIcon, PercentCircle, UserBoxIcon, CCOnHand, PhonespeakerIcon} from 'icons';
 import {OfferContent, OfferList, LandingContent, List, ListItem} from './styles';
 
 export function Offer() {
-  const [isOpen, setIsOpen] = React.useState(false);
+
   return (
     <LandingContent>
       <OfferContent>
@@ -20,7 +19,15 @@ export function Offer() {
               <PercentCircle css={{minWidth: 24}} />
               <span css={{paddingLeft: 16}}>
                 Ставка 8,5% при участии в акции “Разница есть” и при соблюдении{' '}
-                <LinkButton css={{color: 'var(--color-primary)'}} onClick={() => setIsOpen(true)}>условий</LinkButton>
+                <a
+                  href="https://cash.otpbank.ru/public/rule.pdf"
+                  css={{color: 'var(--color-primary)'}}
+                  type="download"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  условий
+                </a>
               </span>
             </ListItem>
             <ListItem>
@@ -47,7 +54,6 @@ export function Offer() {
           </List>
         </OfferList>
       </OfferContent>
-      <RaznitcaModal isOpen={isOpen} setOpenState={setIsOpen}/>
     </LandingContent>
   );
 }
