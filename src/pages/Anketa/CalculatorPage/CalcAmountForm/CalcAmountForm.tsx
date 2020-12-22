@@ -1,8 +1,6 @@
 import React, {useEffect, useCallback, useReducer} from 'react';
 import cN from 'classnames/bind';
 import {Card} from 'components/Card';
-import {LinkButton} from 'components/lib';
-import {RaznitcaModal} from 'components/RaznitcaModal';
 import {BasicButton} from 'lib/components/buttons';
 import {Range} from 'lib/components/data-entry/Range';
 import {Checkbox} from 'lib/components/data-entry/Checkbox';
@@ -41,7 +39,6 @@ export function CalcAmountForm() {
     ...defaultLoanParams,
   });
   const [, forceUpdate] = React.useState({});
-  const [isOpen, setIsOpen] = React.useState(false);
 
   const {STAFF_CAMPAIGN, campaignParams} = useCampaign();
 
@@ -52,7 +49,10 @@ export function CalcAmountForm() {
   const fetchClient = useFetch();
   const {step, updateAnketa} = useAnketa();
 
-  const {validateLoanParam, readError, formIsValid, validateBeforeSubmit} = useValidationCalc(isStaff, loanParams.campaignParticipant);
+  const {validateLoanParam, readError, formIsValid, validateBeforeSubmit} = useValidationCalc(
+    isStaff,
+    loanParams.campaignParticipant,
+  );
   const maxAmount = isStaff ? 3000000 : 1000000;
 
   //TODO: Костыльная валидация
@@ -280,9 +280,15 @@ export function CalcAmountForm() {
         {showDifferenceHave ? (
           <p className={css.Disclaimer} style={{marginBottom: 0}}>
             ** После выполнения{' '}
-            <LinkButton css={{color: 'var(--color-primary)'}} onClick={() => setIsOpen(true)}>
+            <a
+              href="https://cash.otpbank.ru/public/rule.pdf"
+              css={{color: 'var(--color-primary)'}}
+              type="download"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               условий
-            </LinkButton>
+            </a>
             , в конце срока кредита мы пересчитаем его проценты по ставке 8,5%, и вернем переплату на ваш счет
           </p>
         ) : null}
@@ -293,7 +299,6 @@ export function CalcAmountForm() {
           </p>
         )}
       </div>
-      <RaznitcaModal isOpen={isOpen} setOpenState={setIsOpen} />
     </div>
   );
 }

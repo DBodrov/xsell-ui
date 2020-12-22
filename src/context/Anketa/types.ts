@@ -28,7 +28,7 @@ export interface IAnketa {
   batchDocumentLink: string;
   birthDate: string;
   campaignParticipant?: boolean; // признак акции Разница есть
-  dboActivated?: boolean;
+  dboActivated?: boolean; // признак наличия активированного ДБО у клиента
   email: string;
   firstName: string;
   jobLossProtection: boolean;
