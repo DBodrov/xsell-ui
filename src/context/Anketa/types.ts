@@ -101,6 +101,8 @@ export type TAnketaStep =
   | 'TRANSFER_DETAILS'
   // только для фронта - отправка карты
   | 'TRANSFER_DETAILS_CARDS'
+  // только для фронта - отправка перевод через СБП
+  | 'TRANSFER_DETAILS_SBP'
   // Необходимо заполнить реквизиты для перевода (номер счета, БИК)
   // | 'TRANSFER_CHOSEN'
   // скоринг: одобрение или нет решения

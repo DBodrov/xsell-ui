@@ -14,6 +14,7 @@ export const anketaUpdateAPI: Partial<Record<TAnketaStep | string, string>> = {
   PASSPORT_PHOTO: `${BASE_URL}/update-session-app-confirm-upload-passport-photo`,
   TRANSFER_DETAILS: `${BASE_URL}/update-session-app-account-transfer-details`,
   TRANSFER_DETAILS_CARDS: `${BASE_URL}/update-session-app-card-transfer-details`,
+  TRANSFER_DETAILS_SBP: `${BASE_URL}/update-session-app-outer-card-transfer-details`,
   AGREEMENT_SMS_CODE: `${BASE_URL}/verify-agreement-signature`,
   APPROVED: `${BASE_URL}/agree-to-sign-documents`,
   SIGNATURE_SMS_CODE: `${BASE_URL}/verify-signature-code`,
@@ -52,7 +53,7 @@ export function useAnketaClient() {
   }, [errorHandler, fetchClient]);
 
   const updateAnketa = useCallback(
-    (step: TAnketaStep, anketa: Partial<IAnketa> | Record<string, unknown>) => {
+    (step: TAnketaStep | string, anketa: Partial<IAnketa> | Record<string, unknown>) => {
       setState({status: 'pending'});
       setErrorState(undefined);
       fetchClient(anketaUpdateAPI[step], {body: anketa}).then(

@@ -1,23 +1,23 @@
-import React, { useState, useCallback } from 'react';
-import { BasicButton } from 'lib/components/buttons';
-import { BasicModal } from 'lib/components/BasicModal';
-import { BasicInput } from 'lib/components/data-entry/BasicInput';
-import { LayoutPage } from 'components/Layout';
-import { Card } from 'components/Card';
-import { List } from 'components/List';
-import { auditService, UI } from 'services';
-import { useAnketa } from 'context/Anketa';
-import { toCapitalize } from 'utils/string.utils';
-import { OPROSSO_FORM } from 'utils/externals';
+import React, {useState, useCallback} from 'react';
+import {BasicButton} from 'lib/components/buttons';
+import {BasicModal} from 'lib/components/BasicModal';
+import {BasicInput} from 'lib/components/data-entry/BasicInput';
+import {LayoutPage} from 'components/Layout';
+import {Card} from 'components/Card';
+import {List} from 'components/List';
+import {auditService, UI} from 'services';
+import {useAnketa} from 'context/Anketa';
+import {toCapitalize} from 'utils/string.utils';
+import {OPROSSO_FORM} from 'utils/externals';
+
+import {CCOnHand, PercentCircle} from 'icons';
 
 import personIcon from 'assets/images/person.svg';
 import docsCheckIcon from 'assets/images/docs-check.svg';
-import billIcon from 'ui-kit/assets/icons/otp/bill.svg';
-import hourglassIcon from 'ui-kit/assets/icons/otp/hourglass.svg';
 
 import css from './ExecutionPage.module.scss';
-import { useSendDocs } from './send-docs.hook';
-import { AutoStepper } from 'components/AutoStepper';
+import {useSendDocs} from './send-docs.hook';
+import {AutoStepper} from 'components/AutoStepper';
 
 interface IFormScreen {
   isLoading: boolean;
@@ -27,7 +27,7 @@ interface IFormScreen {
 }
 
 const toPoll = () => {
-  auditService.userEvent({ category: 'FE_REDIRECT', action: 'Redirect to poll' }, { toBE: true });
+  auditService.userEvent({category: 'FE_REDIRECT', action: 'Redirect to poll'}, {toBE: true});
   window.location.href = OPROSSO_FORM;
 };
 
@@ -39,7 +39,7 @@ const SuccessScreen = () => (
   </React.Fragment>
 );
 
-const FormScreen = ({ isLoading, currentEmail, handleChange, handleSendDocs }: IFormScreen) => (
+const FormScreen = ({isLoading, currentEmail, handleChange, handleSendDocs}: IFormScreen) => (
   <React.Fragment>
     <h3 className={css.PageTitle}>Документы на электронную почту</h3>
     <div className={css.Description}>
@@ -75,10 +75,10 @@ const FormScreen = ({ isLoading, currentEmail, handleChange, handleSendDocs }: I
 export function ExecutionPage() {
   const {
     step,
-    anketa: { firstName, middleName, batchDocumentLink, email },
+    anketa: {firstName, middleName, batchDocumentLink, email},
   } = useAnketa();
 
-  const { submitForm, pageState } = useSendDocs();
+  const {submitForm, pageState} = useSendDocs();
 
   const [isModalOpen, setModalState] = useState(false);
   const [currentEmail, setEmail] = useState(email || '');
@@ -88,13 +88,13 @@ export function ExecutionPage() {
   const handleChange = useCallback((value: string) => setEmail(value), []);
 
   const handleSendDocs = useCallback(() => {
-    submitForm({ email: currentEmail });
+    submitForm({email: currentEmail});
   }, [currentEmail, submitForm]);
 
   const customerName = `${toCapitalize(firstName)} ${toCapitalize(middleName)}`;
 
   const downloadAllDocs = useCallback(() => {
-    auditService.userEvent({ category: 'FE_REDIRECT', action: 'Download batched documents' }, { toBE: true });
+    auditService.userEvent({category: 'FE_REDIRECT', action: 'Download batched documents'}, {toBE: true});
     UI.downloadFile(`/gateway/doc${batchDocumentLink}`, 'otpbank_documents');
   }, [batchDocumentLink]);
 
@@ -111,14 +111,16 @@ export function ExecutionPage() {
             <h3 className={css.PageTitle}>Спасибо, что выбрали нас!</h3>
             <List>
               <List.ListItem>
-                <img src={billIcon} alt="X" />
-                <span>Оформление вашего кредита успешно завершено.</span>
+                <CCOnHand fill="var(--color-primary)" />
+                <span css={{color: '#000'}}>
+                  Напоминаем, что бесплатный перевод доступен через Сервис Быстрых Платежей (СБП).
+                </span>
               </List.ListItem>
               <List.ListItem>
-                <img src={hourglassIcon} alt="X" />
-                <span>
-                  Напоминаем, что срок перевода денежных средств на счет в сторонней кредитной организации
-                  составляет до 3 рабочих дней.
+                <PercentCircle fill="var(--color-primary)" />
+                <span css={{color: '#000'}}>
+                  За использование сервиса по прямому переводу с карты на карту взимается комиссия в размере
+                  2% от суммы перевода.
                 </span>
               </List.ListItem>
             </List>
@@ -155,7 +157,8 @@ export function ExecutionPage() {
           clickClose
           escClose
           showClose
-          placement="bottom">
+          placement="bottom"
+        >
           {!pageState.data && !pageState.hasError && (
             <FormScreen
               isLoading={pageState.isFetching}

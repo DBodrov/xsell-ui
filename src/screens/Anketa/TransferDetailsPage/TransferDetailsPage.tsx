@@ -2,7 +2,8 @@ import React from 'react';
 import {Spinner} from 'lib/components/Spinner';
 import {useAnketa} from 'context/Anketa';
 import {TransferCardPage} from '../TransferCardPage';
-import {AccountPage} from 'pages/Anketa/AccountPage';
+import {TransferAccountPage} from '../TransferAccountPage';
+import {TransferSBPPage} from '../TransferSBPPage';
 import {useTransferClient} from './use-transfer-client';
 
 export function TransferDetailsPage() {
@@ -10,37 +11,40 @@ export function TransferDetailsPage() {
   const {cards, isSuccess, isIdle, isLoading, isError, fetchOTPCards} = useTransferClient();
   const [page, setPage] = React.useState('default');
 
+  const hasCards = cards?.length > 0;
+  const hasDbo = anketa?.dboActivated;
+
   React.useEffect(() => {
     if (!cards && !isSuccess && !isError) {
       fetchOTPCards();
     }
     if (cards && anketa && isSuccess) {
       let currentPage = 'default';
-      if (cards.length === 0 && !anketa.dboActivated) {
+      if (!hasCards && !hasDbo) {
         currentPage = 'account';
-      } else if (anketa.dboActivated) {
+      } else if (hasDbo) {
         currentPage = 'sbp';
-      } else if (cards.length > 0 && !anketa.dboActivated) {
+      } else if (hasCards && !hasDbo) {
         currentPage = 'cards'
       }
       setPage(currentPage);
     }
-  }, [anketa, cards, fetchOTPCards, isError, isSuccess]);
+  }, [anketa, cards, fetchOTPCards, hasCards, hasDbo, isError, isSuccess]);
 
   if (isIdle || isLoading) {
     return <Spinner withBackdrop message="Получаем данные..." />;
   }
 
   if (page === 'account' || page === 'default') {
-    return <AccountPage />
+    return <TransferAccountPage hasCards={hasCards} hasDbo={hasDbo} onChangePage={setPage} />
   }
 
   if (page === 'cards') {
-    return <TransferCardPage cards={cards} hasDbo={true}/>
+    return <TransferCardPage cards={cards} hasDbo={true} onChangePage={setPage}/>
   }
 
   if (page === 'sbp') {
-    return <span>SBP page...</span>
+    return <TransferSBPPage onChangePage={setPage} hasCards={hasCards} />
   }
 
   return <span>fallback page</span>

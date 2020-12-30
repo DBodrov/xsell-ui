@@ -1,53 +1,57 @@
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 import {Span, Button} from 'neutrino-ui';
-import {useAnketa, TCustomerCard} from 'context/Anketa';
-import {CardSelect} from './CardSelect';
+import {useAnketa} from 'context/Anketa';
 import {AppPage} from 'components/Layout';
 import {H1, H2} from 'components/lib';
+import {BanksLogosBlock} from './BanksLogosBlock';
 import {Page} from './styles';
-import {MoneyATM} from 'icons';
+
 
 type Props = {
-  cards?: TCustomerCard[];
-  hasDbo?: boolean;
+  hasCards: boolean;
   onChangePage: (page: string) => void;
-};
+}
 
-export function TransferCardPage({cards, hasDbo, onChangePage}: Props) {
+export function TransferSBPPage({onChangePage, hasCards}: Props) {
   const {updateAnketa} = useAnketa();
-  const [currentCardId, setCardId] = useState(undefined);
 
-  const handleSetCard = React.useCallback((cardId: string) => {
-    setCardId(cardId);
-  }, []);
-
-  const handleChooseCard = useCallback(() => {
-    const card = cards.find(c => c.id === currentCardId);
-
-    const {expirationDate, number} = card;
-    updateAnketa('TRANSFER_DETAILS_CARDS', {cardExpirationDate: expirationDate, cardNumber: number});
-  }, [cards, currentCardId, updateAnketa]);
+  const handleSendSBPTransfer = () => {
+    updateAnketa('TRANSFER_DETAILS_SBP', {});
+  }
 
   return (
     <AppPage>
       <Page css={{backgroundColor: '#f0f0f0'}}>
-        <H1>Способ получения денег на карту</H1>
+        <H1>Перевод по номеру телефона</H1>
         <div
           css={{
             backgroundColor: '#fff',
             border: '1px #c5c5c5 solid',
             borderRadius: 4,
-            padding: '1rem',
-            marginBottom: 8,
+            padding: '32px 25px',
+            margin: '14px 0',
             width: '100%',
           }}
         >
-          <Span css={{fontWeight: 600}}>НА СУЩЕСТВУЮЩУЮ КАРТУ</Span>
-          <CardSelect cardsList={cards} onSelectCard={handleSetCard} currentCardId={currentCardId} />
-          <div css={{display: 'flex', marginTop: '1rem'}}>
-            <MoneyATM fill="var(--color-primary)" />
-            <Span css={{paddingLeft: 16}}>Деньги будут отправлены на вашу карту в банке ОТП.</Span>
-          </div>
+          <H2>Куда перевести?</H2>
+          <Span
+            css={{
+              display: 'block',
+              marginTop: 16,
+              fontSize: 18,
+              lineHeight: '24px',
+              fontWeight: 700,
+              color: '#000',
+            }}
+          >
+            СБП работает в больше чем 180 крупнейших банков РФ
+          </Span>
+          <BanksLogosBlock />
+          <Span>
+            Для перевода применяется СБП (сервис быстрых платежей). Деньги будут зачислены на карту ОТП Банка.
+            Далее в мобильном приложении вы сможете перевести деньги в любой банк, где у вас есть счёт, по
+            номеру вашего телефона.
+          </Span>
         </div>
         <Button
           css={{
@@ -58,11 +62,10 @@ export function TransferCardPage({cards, hasDbo, onChangePage}: Props) {
             fontWeight: 700,
             fontSize: 14,
           }}
-          onClick={handleChooseCard}
+          onClick={handleSendSBPTransfer}
           type="button"
           variant="primary"
           flat
-          disabled={!currentCardId}
         >
           Далее
         </Button>
@@ -85,7 +88,7 @@ export function TransferCardPage({cards, hasDbo, onChangePage}: Props) {
         >
           Перевод на счёт в другой банк
         </Button>
-        {hasDbo ? (
+        {hasCards ? (
           <Button
             css={{
               width: '100%',
@@ -96,13 +99,13 @@ export function TransferCardPage({cards, hasDbo, onChangePage}: Props) {
               fontWeight: 700,
               fontSize: 14,
             }}
-            onClick={() => onChangePage('sbp')}
+            onClick={() => onChangePage('cards')}
             type="button"
             variant="primary"
             outline
             flat
           >
-            Перевод по номеру телефона
+            Перевод на карту
           </Button>
         ) : null}
       </Page>

@@ -52,7 +52,9 @@ export function AnketaRoutes() {
       <ProtectedRoute exact path={routeMap.PASSPORT_PHOTO}>
         <ConfirmPhotoPassportPage />
       </ProtectedRoute>
-      <ProtectedRoute path={`${routeMap.PASSPORT_PHOTO}/upload`} component={PhotoUploadPage} />
+      <ProtectedRoute exact path={`${routeMap.PASSPORT_PHOTO}/upload`}>
+        <PhotoUploadPage />
+      </ProtectedRoute>
       <ProtectedRoute path={`${routeMap.PASSPORT_PHOTO}/person`} component={PassportPhotoPage} />
       <ProtectedRoute path={`${routeMap.PASSPORT_PHOTO}/registration`} component={PassportRegPhotoPage} />
       {/* Необходимо получить согласие клиента на его проверку в БКИ */}

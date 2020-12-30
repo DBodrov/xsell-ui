@@ -49,7 +49,7 @@ function CardSelectInputComponent(
           borderLeft: '1px var(--color-border) solid',
         }}
       >
-        <ToggleArrowIcon width="24" height="24" fill="#9E9E9E" />
+        <ToggleArrowIcon width="12" height="12" fill="#9E9E9E" />
       </div>
     </CardInputBox>
   );
