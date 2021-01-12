@@ -13,7 +13,7 @@ export function Suggest(props: SuggestProps) {
         const unmatchedBicPart = bic?.split(searchQuery);
         if (unmatchedBicPart.length > 1) {
             return (
-                <span>
+                <span data-bic={bic}>
                     <strong>{searchQuery}</strong>
                     {unmatchedBicPart[1]}
                 </span>

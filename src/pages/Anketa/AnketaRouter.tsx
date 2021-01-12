@@ -15,9 +15,9 @@ export function AnketaRouter() {
   useEffect(() => {
     //console.log('router', step, location.pathname);
     //FIXME: Костыль для фоток
-    if (location.pathname === '/anketa/photo/upload') {
-      return;
-    }
+    // if (location.pathname === '/anketa/photo/upload') {
+    //   return;
+    // }
     if (step) {
       const route = step && anketaRoutesMap.get(step);
       history.push(route.url, {step: route.step});

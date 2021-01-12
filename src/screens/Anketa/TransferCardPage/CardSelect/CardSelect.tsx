@@ -24,6 +24,7 @@ function CardSelectInputComponent(
   React.useImperativeHandle(ref, () => cardBoxRef.current, []);
   return (
     <CardInputBox
+      aria-label="card-input"
       ref={cardBoxRef}
       css={{borderColor: isOpen ? 'var(--color-primary)' : 'var(--color-border)'}}
       onClick={noCards ? undefined: handleToggle}
@@ -118,7 +119,7 @@ function SelectCard(props: TCardSelectProps) {
         <CardsList>
           {cardsList?.map(card => {
             return (
-              <li css={{width: '100%'}} key={card.id} value={card.id} onClick={handleSelectCard}>
+              <li role="menuitem" css={{width: '100%'}} key={card.id} value={card.id} onClick={handleSelectCard}>
                 <CustomerCard
                   css={css`
                     background-color: ${card.id === currentCardId ? '#f3f3f3' : '#fff'};

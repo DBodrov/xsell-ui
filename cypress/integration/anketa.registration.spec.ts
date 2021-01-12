@@ -3,6 +3,15 @@ import {anketa as response} from 'context/__mocks__/anketa-mock';
 
 const viewportsList: Cypress.ViewportPreset[] = ['iphone-7', 'macbook-15'];
 
+const Status = {
+  current: null,
+};
+
+beforeEach(() => {
+  Status.current = null;
+  console.log('BEFORE EACH', Status);
+});
+
 describe('anketa registration step', () => {
   viewportsList.forEach((vp) => {
 

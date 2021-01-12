@@ -36,7 +36,7 @@ export function TransferDetailsPage() {
   }
 
   if (page === 'account' || page === 'default') {
-    return <TransferAccountPage hasCards={hasCards} hasDbo={hasDbo} onChangePage={setPage} />
+    return <TransferAccountPage />
   }
 
   if (page === 'cards') {
