@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Route, Switch, useHistory} from 'react-router-dom';
 import {Spinner} from 'lib/components/Spinner';
 import {useAuth} from './context/Auth';
-// /* webpackPrefetch: true */
+
 const Auth1Container = React.lazy(() => import(/* webpackPrefetch: true */ './screens/Auth/Auth1Container'));
 const Auth2Container = React.lazy(() => import(/* webpackPrefetch: true */ './screens/Auth/Auth2Container'));
 const Anketa = React.lazy(() => import(/* webpackPrefetch: true */ './pages/Anketa'));
