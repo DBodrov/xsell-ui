@@ -2,19 +2,6 @@
 @import '~lib/ui-kit/main';
 @import '~ui-kit/reset';
 
-// html,
-// body {
-//   @include font-base;
-//   height: 100vh;
-// }
-
-// body {
-//   background-color: $body-color;
-//   @media (max-width: $bp-md) {
-//     background-color: $white;
-//   }
-// }
-
 h1,
 .h1 {
   @include font-base(42px);
