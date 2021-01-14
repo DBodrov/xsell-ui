@@ -3,7 +3,6 @@ import {Switch} from 'react-router-dom';
 import {ProtectedRoute} from 'components/ProtectedRoute';
 import {CalculatorPage} from './CalculatorPage';
 import {PassportPage} from './PassportPage';
-import {JobInfo} from './JobInfo';
 import {JobInfoPage} from 'screens/Anketa/JobInfoPage';
 import {AgreementPage} from './AgreementSMSPage';
 import {AdvanceScoringRefusalPage} from './AdvanceScoringRefusalPage';
@@ -21,7 +20,6 @@ import {PassportPhotoPage} from '../PassportPhotoPage';
 import {PendingDocumentsPage} from './PendingDocumentsPage';
 
 import {routeMap} from './anketa.routingMap';
-// import {TransferPage} from './TransferPage';
 import {TransferDetailsPage} from 'screens/Anketa/TransferDetailsPage';
 
 export function AnketaRoutes() {
@@ -35,18 +33,14 @@ export function AnketaRoutes() {
       <ProtectedRoute path={routeMap.PASSPORT}>
         <PassportPage />
       </ProtectedRoute>
-      {/* Необходимо подтверждение адреса регистрации, который есть у банка */}
+      {/* Необходимо подтверждение адреса регистрации, который есть у банка
+      + Необходимо ввести анкетные данные клиента (работа, стаж, заработная плата и тд)*/}
       <ProtectedRoute path={routeMap.REGISTRATION_ADDRESS}>
         <JobInfoPage />
       </ProtectedRoute>
       {/* Паспорт ввел не правильно / Адрес изменился */}
       <ProtectedRoute path={routeMap.CHANGED_REGISTRATION_ADDRESS}>
         <RegistrationChanged />
-      </ProtectedRoute>
-      {/* Необходимо ввести анкетные данные клиента (работа, стаж, заработная плата и тд) */}
-      {/* DEPRICATED */}
-      <ProtectedRoute path={routeMap.DETAILS}>
-        <JobInfo />
       </ProtectedRoute>
       {/* Фото */}
       <ProtectedRoute exact path={routeMap.PASSPORT_PHOTO}>

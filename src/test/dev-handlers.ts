@@ -116,7 +116,6 @@ export const handlers = [
 
   /** ANKETA HANDLERS */
   rest.post('/gateway/credit-application/get-session-app', (req, res, ctx) => {
-    //TODO: Anketa steps switch
     return res(ctx.status(200), ctx.json(anketa));
   }),
 

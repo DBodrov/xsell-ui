@@ -105,3 +105,34 @@ it('Account page test', () => {
   cy.findByRole('button', {name: /отправить заявку/i}).click();
   cy.findByText(/Согласие на запрос кредитной истории/i).should('exist');
 });
+
+it('Redirect from SBP to Cards page', () => {
+  cy.viewport('iphone-7');
+  cy.visit('/');
+  cy.window().then(window => {
+    const {server, rest} = (window as any).msw;
+    const anketa = {...response, status: 'TRANSFER_DETAILS', dboActivated: true};
+    server.use(
+      rest.post('/gateway/auth-status', (req, res, ctx) => {
+        return res.once(ctx.status(200), ctx.json({status: 'OK'}));
+      }),
+      rest.post('/gateway/credit-application/get-session-app', (req, res, ctx) => {
+        let updatedAnketa = {...anketa};
+        if (Status.current) {
+          updatedAnketa = {...anketa, status: Status.current};
+        }
+        return res(ctx.status(200), ctx.json(updatedAnketa));
+      }),
+      rest.post('/gateway/credit-application/update-session-app-outer-card-transfer-details', (req, res, ctx) => {
+        Status.current = 'AGREEMENT_SMS_CODE';
+        return res(ctx.status(200), ctx.json({code: 'OK'}));
+      }),
+    );
+  });
+  cy.findByRole('button', {name: /Перевод на карту/i}).click();
+  cy.findByText(/Способ получения денег на карту/i).should('exist');
+  cy.findByRole('button', {name: /Перевод по номеру телефона/i}).click();
+  cy.findByText(/Перевод по номеру телефона/i).should('exist');
+  cy.findByRole('button', {name: /Перевод на счёт в другой/i}).click();
+  cy.findByText(/Реквизиты для перевода/i).should('exist');
+});
