@@ -173,7 +173,7 @@ module.exports = env => {
 
       new ReactRefreshWebpackPlugin(),
       new webpack.EnvironmentPlugin({
-        USE_API_MOCKS: env.USE_API_MOCKS || 'false'
+        USE_API_MOCKS: env.USE_API_MOCKS ?? 'false'
       }),
 
       new WebpackBar({

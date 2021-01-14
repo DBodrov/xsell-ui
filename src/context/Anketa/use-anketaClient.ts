@@ -4,7 +4,7 @@ import {useError, ErrorState} from '../Error';
 import {IAnketaState, TAnketaStep, IAnketa} from './types';
 
 const BASE_URL = '/gateway/credit-application';
-const PROFILE_URL = '/gateway/customer-profile';
+// const PROFILE_URL = '/gateway/customer-profile';
 
 export const anketaUpdateAPI: Partial<Record<TAnketaStep | string, string>> = {
   LOAN_PARAMS: `${BASE_URL}/update-session-app-loan-params`,
@@ -14,6 +14,7 @@ export const anketaUpdateAPI: Partial<Record<TAnketaStep | string, string>> = {
   PASSPORT_PHOTO: `${BASE_URL}/update-session-app-confirm-upload-passport-photo`,
   TRANSFER_DETAILS: `${BASE_URL}/update-session-app-account-transfer-details`,
   TRANSFER_DETAILS_CARDS: `${BASE_URL}/update-session-app-card-transfer-details`,
+  TRANSFER_DETAILS_SBP: `${BASE_URL}/update-session-app-outer-card-transfer-details`,
   AGREEMENT_SMS_CODE: `${BASE_URL}/verify-agreement-signature`,
   APPROVED: `${BASE_URL}/agree-to-sign-documents`,
   SIGNATURE_SMS_CODE: `${BASE_URL}/verify-signature-code`,
@@ -52,7 +53,7 @@ export function useAnketaClient() {
   }, [errorHandler, fetchClient]);
 
   const updateAnketa = useCallback(
-    (step: TAnketaStep, anketa: Partial<IAnketa> | Record<string, unknown>) => {
+    (step: TAnketaStep | string, anketa: Partial<IAnketa> | Record<string, unknown>) => {
       setState({status: 'pending'});
       setErrorState(undefined);
       fetchClient(anketaUpdateAPI[step], {body: anketa}).then(
@@ -122,30 +123,30 @@ export function useAnketaClient() {
     );
   }, [errorHandler, fetchClient, getAnketa]);
 
-  const fetchCustomerCards = useCallback(() => {
-    setState({status: 'pending'});
-    fetchClient(`${PROFILE_URL}/get-otp-cards`, {body: {}}).then(
-      response => {
-        if ('customerOtpCards' in response) {
-          setState({
-            status: 'resolved',
-            data: {
-              ...data,
-              anketa: {...data.anketa, customerOtpCards: response?.customerOtpCards},
-            },
-          });
-        } else {
-          setState({
-            status: 'resolved',
-            data: {...data, anketa: {...data.anketa, customerOtpCards: []}},
-          });
-        }
-        // console.log(response);
-        return response;
-      },
-      error => errorHandler(error),
-    );
-  }, [data, errorHandler, fetchClient]);
+  // const fetchCustomerCards = useCallback(() => {
+  //   setState({status: 'pending'});
+  //   fetchClient(`${PROFILE_URL}/get-otp-cards`, {body: {}}).then(
+  //     response => {
+  //       if ('customerOtpCards' in response) {
+  //         setState({
+  //           status: 'resolved',
+  //           data: {
+  //             ...data,
+  //             anketa: {...data.anketa, customerOtpCards: response?.customerOtpCards},
+  //           },
+  //         });
+  //       } else {
+  //         setState({
+  //           status: 'resolved',
+  //           data: {...data, anketa: {...data.anketa, customerOtpCards: []}},
+  //         });
+  //       }
+  //       // console.log(response);
+  //       return response;
+  //     },
+  //     error => errorHandler(error),
+  //   );
+  // }, [data, errorHandler, fetchClient]);
 
   return {
     getAnketa,
@@ -153,7 +154,7 @@ export function useAnketaClient() {
     archivingAnketa,
     refusePhotoPassport,
     verifySignature,
-    fetchCustomerCards,
+    // fetchCustomerCards,
     data,
     status,
 

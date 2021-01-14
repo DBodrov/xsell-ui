@@ -2,7 +2,7 @@ import React from 'react';
 import {AllProviders} from 'utils/test-utils';
 // import {TLandingCode} from 'context/Auth';
 // import {LoginPage} from 'screens/Auth/LoginPage';
-import {JobInfo} from 'pages/Anketa/JobInfo';
+import {TransferCardPage} from 'screens/Anketa/TransferCardPage';
 import {anketa} from './anketa-mock'
 
 // const landingMap: Record<string, TLandingCode> = {
@@ -20,7 +20,7 @@ export function TestApp() {
   // console.log(search);
   return (
     <AllProviders anketaContext={{updateAnketa: sendPassport, step: 'REGISTRATION_ADDRESS', anketa}}>
-      <JobInfo />
+      <TransferCardPage />
     </AllProviders>
   );
 }

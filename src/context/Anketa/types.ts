@@ -11,7 +11,6 @@ type AnketaHandlers = {
   archivingAnketa: (step: TAnketaStep) => void;
   refusePhotoPassport: () => void;
   verifySignature: (step: TAnketaStep, payload: Record<string, unknown>) => void;
-  fetchCustomerCards: () => void;
 };
 
 export type TAnketaContext = IAnketaState['data'] & AnketaHandlers;
@@ -57,23 +56,14 @@ export interface IAnketa {
   creditBureauConsentDistanceAgree: boolean;
   agreementSignatureIsVerified: boolean;
   documentsSignatureIsVerified: boolean;
-  // requiredPhoto: boolean; // ad-hoc for photo a/b testing
-  customerOtpCards: {
-    bankCardId: string;
-    bankCardNumber: string;
-    cardExpirationDt: string;
-  }[];
+  // customerOtpCards: TCustomerCard[];
 }
 
-export type TLoanParams = {customerTimezoneOffset: number} & Pick<
-  IAnketa,
-  | 'requestedLoanAmount'
-  | 'requestedLoanTermMonths'
-  | 'jobLossProtection'
-  | 'lifeAndHealthProtection'
-  | 'smsInforming'
-  | 'smsInforming'
->;
+export type TCustomerCard = {
+  id: string;
+  number: string;
+  expirationDate: string;
+};
 
 export type TJobInfo = Pick<
   IAnketa,
@@ -111,6 +101,8 @@ export type TAnketaStep =
   | 'TRANSFER_DETAILS'
   // только для фронта - отправка карты
   | 'TRANSFER_DETAILS_CARDS'
+  // только для фронта - отправка перевод через СБП
+  | 'TRANSFER_DETAILS_SBP'
   // Необходимо заполнить реквизиты для перевода (номер счета, БИК)
   // | 'TRANSFER_CHOSEN'
   // скоринг: одобрение или нет решения

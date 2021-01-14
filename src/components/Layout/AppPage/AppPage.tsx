@@ -36,7 +36,7 @@ function Stepper() {
         gridTemplate: '4px / repeat(5, 1fr)',
         columnGap: 10,
         placeItems: 'center',
-        padding: '5px 10px',
+        padding: '0 10px',
       }}
     >
       <Step isActive={step >= 1} />

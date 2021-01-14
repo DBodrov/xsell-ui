@@ -3,8 +3,7 @@ import {Switch} from 'react-router-dom';
 import {ProtectedRoute} from 'components/ProtectedRoute';
 import {CalculatorPage} from './CalculatorPage';
 import {PassportPage} from './PassportPage';
-import {JobInfo} from './JobInfo';
-import {JobInfoPage} from 'screens/Anketa/JobInfoPage'
+import {JobInfoPage} from 'screens/Anketa/JobInfoPage';
 import {AgreementPage} from './AgreementSMSPage';
 import {AdvanceScoringRefusalPage} from './AdvanceScoringRefusalPage';
 import {ResultScoringPage} from './ResultScoringPage';
@@ -21,7 +20,7 @@ import {PassportPhotoPage} from '../PassportPhotoPage';
 import {PendingDocumentsPage} from './PendingDocumentsPage';
 
 import {routeMap} from './anketa.routingMap';
-import {TransferPage} from './TransferPage';
+import {TransferDetailsPage} from 'screens/Anketa/TransferDetailsPage';
 
 export function AnketaRoutes() {
   return (
@@ -34,7 +33,8 @@ export function AnketaRoutes() {
       <ProtectedRoute path={routeMap.PASSPORT}>
         <PassportPage />
       </ProtectedRoute>
-      {/* Необходимо подтверждение адреса регистрации, который есть у банка */}
+      {/* Необходимо подтверждение адреса регистрации, который есть у банка
+      + Необходимо ввести анкетные данные клиента (работа, стаж, заработная плата и тд)*/}
       <ProtectedRoute path={routeMap.REGISTRATION_ADDRESS}>
         <JobInfoPage />
       </ProtectedRoute>
@@ -42,16 +42,13 @@ export function AnketaRoutes() {
       <ProtectedRoute path={routeMap.CHANGED_REGISTRATION_ADDRESS}>
         <RegistrationChanged />
       </ProtectedRoute>
-      {/* Необходимо ввести анкетные данные клиента (работа, стаж, заработная плата и тд) */}
-      {/* DEPRICATED */}
-      <ProtectedRoute path={routeMap.DETAILS}>
-        <JobInfo />
-      </ProtectedRoute>
       {/* Фото */}
       <ProtectedRoute exact path={routeMap.PASSPORT_PHOTO}>
         <ConfirmPhotoPassportPage />
       </ProtectedRoute>
-      <ProtectedRoute path={`${routeMap.PASSPORT_PHOTO}/upload`} component={PhotoUploadPage} />
+      <ProtectedRoute exact path={`${routeMap.PASSPORT_PHOTO}/upload`}>
+        <PhotoUploadPage />
+      </ProtectedRoute>
       <ProtectedRoute path={`${routeMap.PASSPORT_PHOTO}/person`} component={PassportPhotoPage} />
       <ProtectedRoute path={`${routeMap.PASSPORT_PHOTO}/registration`} component={PassportRegPhotoPage} />
       {/* Необходимо получить согласие клиента на его проверку в БКИ */}
@@ -73,7 +70,7 @@ export function AnketaRoutes() {
         <AdvanceScoringRefusalPage />
       </ProtectedRoute>
       <ProtectedRoute exact path={routeMap.TRANSFER_DETAILS}>
-        <TransferPage />
+        <TransferDetailsPage />
       </ProtectedRoute>
       {/* скоринг: одобрение или нет решения */}
       <ProtectedRoute exact path={routeMap.PENDING_SCORING}>
