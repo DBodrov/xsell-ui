@@ -60,9 +60,9 @@ export interface IAnketa {
 }
 
 export type TCustomerCard = {
-  id: string;
-  number: string;
-  expirationDate: string;
+  bankCardId: string;
+  bankCardNumber: string;
+  cardExpirationDt: string;
 };
 
 export type TJobInfo = Pick<

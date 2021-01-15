@@ -72,7 +72,7 @@ function SelectCard(props: TCardSelectProps) {
     [handleClose, onSelectCard],
   );
 
-  const cardNumber = cardsList?.find(card => card.id === currentCardId)?.number;
+  const cardNumber = cardsList?.find(card => card.bankCardId === currentCardId)?.bankCardNumber;
 
   React.useEffect(() => {
     const handleClickOutside = (e: PointerEvent | MouseEvent) => {
@@ -119,10 +119,10 @@ function SelectCard(props: TCardSelectProps) {
         <CardsList>
           {cardsList?.map(card => {
             return (
-              <li role="menuitem" css={{width: '100%'}} key={card.id} value={card.id} onClick={handleSelectCard}>
+              <li role="menuitem" css={{width: '100%'}} key={card.bankCardId} value={card.bankCardId} onClick={handleSelectCard}>
                 <CustomerCard
                   css={css`
-                    background-color: ${card.id === currentCardId ? '#f3f3f3' : '#fff'};
+                    background-color: ${card.bankCardId === currentCardId ? '#f3f3f3' : '#fff'};
                     &:hover {
                       cursor: pointer;
                       background-color: #f3f3f3;
@@ -132,7 +132,7 @@ function SelectCard(props: TCardSelectProps) {
                   <MasterCardIcon />
                   <div css={{display: 'flex', flexFlow: 'column nowrap', paddingLeft: 8}}>
                     <Span css={{fontSize: 14}}>Ваша карта</Span>
-                    <Span css={{fontSize: 14}}>{maskCardNumber(card.number)}</Span>
+                    <Span css={{fontSize: 14}}>{maskCardNumber(card.bankCardNumber)}</Span>
                   </div>
                 </CustomerCard>
               </li>
