@@ -211,14 +211,14 @@ export const handlers = [
       ctx.json({
         customerOtpCards: [
           {
-            id: '1',
-            number: '1234567890123456',
-            expirationDate: '2020-12-25',
+            bankCardId: '1',
+            bankCardNumber: '1234567890123456',
+            cardExpirationDt: '2020-12-25',
           },
           {
-            id: '2',
-            number: '9876543200001234',
-            expirationDate: '2023-10-02',
+            bankCardId: '2',
+            bankCardNumber: '9876543200001234',
+            cardExpirationDt: '2023-10-02',
           },
         ],
       }),

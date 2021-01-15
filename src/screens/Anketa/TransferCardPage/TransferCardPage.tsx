@@ -22,10 +22,10 @@ export function TransferCardPage({cards, hasDbo, onChangePage}: Props) {
   }, []);
 
   const handleChooseCard = useCallback(() => {
-    const card = cards.find(c => c.id === currentCardId);
+    const card = cards.find(c => c.bankCardId === currentCardId);
 
-    const {expirationDate, number} = card;
-    updateAnketa('TRANSFER_DETAILS_CARDS', {cardExpirationDate: expirationDate, cardNumber: number});
+    const {bankCardNumber, cardExpirationDt} = card;
+    updateAnketa('TRANSFER_DETAILS_CARDS', {cardExpirationDate: cardExpirationDt, cardNumber: bankCardNumber});
   }, [cards, currentCardId, updateAnketa]);
 
   return (
