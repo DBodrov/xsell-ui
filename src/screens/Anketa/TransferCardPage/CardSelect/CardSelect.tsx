@@ -66,7 +66,8 @@ function SelectCard(props: TCardSelectProps) {
 
   const handleSelectCard = React.useCallback(
     (e: React.PointerEvent<HTMLLIElement>) => {
-      onSelectCard(String(e.currentTarget.value));
+      const cardId = e.currentTarget.dataset.card;
+      onSelectCard(cardId);
       handleClose();
     },
     [handleClose, onSelectCard],
@@ -119,7 +120,7 @@ function SelectCard(props: TCardSelectProps) {
         <CardsList>
           {cardsList?.map(card => {
             return (
-              <li role="menuitem" css={{width: '100%'}} key={card.bankCardId} value={card.bankCardId} onClick={handleSelectCard}>
+              <li role="menuitem" css={{width: '100%'}} key={card.bankCardId} data-card={card.bankCardId} onClick={handleSelectCard}>
                 <CustomerCard
                   css={css`
                     background-color: ${card.bankCardId === currentCardId ? '#f3f3f3' : '#fff'};

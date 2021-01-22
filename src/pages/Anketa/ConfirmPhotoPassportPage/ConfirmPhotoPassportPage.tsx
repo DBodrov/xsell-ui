@@ -9,7 +9,7 @@ import infoIcon from 'assets/images/info.svg';
 import css from './ConfirmPhotoPassportPage.module.scss';
 
 export function ConfirmPhotoPassportPage() {
-  //const [showUploadPage, setShow] = React.useState(false);
+  const [showUploadPage, setShow] = React.useState(false);
   const history = useHistory();
   const {refusePhotoPassport} = useAnketa();
 
