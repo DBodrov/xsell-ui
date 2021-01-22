@@ -13,8 +13,7 @@ import {ExecutionFailedPage} from './ExecutionFailedPage';
 import {CompletedPage} from './CompletedPage';
 import {RegistrationChanged} from './RegistrationChanged';
 import {PendingScoringPage} from './PendingScoringPage';
-import {ConfirmPhotoPassportPage} from './ConfirmPhotoPassportPage';
-import {PhotoUploadPage} from '../PhotoUploadPage';
+import {PhotoPassportPage} from 'screens/Anketa/PhotoPassportPage';
 import {PassportRegPhotoPage} from '../PassportRegPhotoPage';
 import {PassportPhotoPage} from '../PassportPhotoPage';
 import {PendingDocumentsPage} from './PendingDocumentsPage';
@@ -44,10 +43,7 @@ export function AnketaRoutes() {
       </ProtectedRoute>
       {/* Фото */}
       <ProtectedRoute exact path={routeMap.PASSPORT_PHOTO}>
-        <ConfirmPhotoPassportPage />
-      </ProtectedRoute>
-      <ProtectedRoute exact path={`${routeMap.PASSPORT_PHOTO}/upload`}>
-        <PhotoUploadPage />
+        <PhotoPassportPage />
       </ProtectedRoute>
       <ProtectedRoute path={`${routeMap.PASSPORT_PHOTO}/person`} component={PassportPhotoPage} />
       <ProtectedRoute path={`${routeMap.PASSPORT_PHOTO}/registration`} component={PassportRegPhotoPage} />
