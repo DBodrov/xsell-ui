@@ -11,7 +11,7 @@ export const anketa = {
   batchDocumentLink: 'string',
   birthDate: '2020-11-27',
   campaignParticipant: true,
-  dboActivated: true,
+  dboActivated: false,
   email: 'string',
   firstName: 'string',
   jobLossProtection: true,

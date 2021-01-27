@@ -40,7 +40,7 @@ export function TransferDetailsPage() {
   }
 
   if (page === 'cards') {
-    return <TransferCardPage cards={cards} hasDbo={true} onChangePage={setPage}/>
+    return <TransferCardPage cards={cards} hasDbo={hasDbo} onChangePage={setPage}/>
   }
 
   if (page === 'sbp') {
