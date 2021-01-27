@@ -26,7 +26,7 @@
     "e2e": "start-server-and-test start:mock 8080 cypress",
     "e2e:ci": "start-server-and-test start:mock 8080 cypress:headless",
     "version": "git add -A",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push"
   },
   "dependencies": {
     "axios": "^0.21.1",
