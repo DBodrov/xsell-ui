@@ -5,16 +5,28 @@ import {OTP_INN} from 'utils/externals';
 import {isEmptyString} from 'utils/string.utils';
 
 type TJobinfo = {
-  workPlace?: string;
-  workIndustry?: string;
-  workInn?: string;
-  lastWorkExperienceMonths?: number;
-  mainMonthlyIncomeAmount?: number;
-  creditBureauConsentAgree: boolean;
+  formData: {
+    workPlace?: string;
+    workIndustry?: string;
+    workInn?: string;
+    lastWorkExperienceMonths?: string;
+    mainMonthlyIncomeAmount?: string;
+    creditBureauConsentAgree?: boolean;
+  };
+  errorState: {
+    workPlace?: string;
+    workIndustry?: string;
+    workInn?: string;
+    lastWorkExperienceMonths?: string;
+    mainMonthlyIncomeAmount?: string;
+    creditBureauConsentAgree?: string;
+  };
+  touchedState: typeof initTouchedState;
 };
 
 const jobInfoReducer = (s: TJobinfo, changes: Partial<TJobinfo>) => {
   const updatedState = {...s, ...changes};
+  // console.log(updatedState)
   return updatedState;
 };
 
@@ -33,7 +45,20 @@ const initTouchedState = {
   workInn: false,
   lastWorkExperienceMonths: false,
   mainMonthlyIncomeAmount: false,
-}
+};
+
+const initState: TJobinfo = {
+  formData: {
+    workPlace: '',
+    workIndustry: undefined,
+    workInn: '',
+    lastWorkExperienceMonths: '',
+    mainMonthlyIncomeAmount: '',
+    creditBureauConsentAgree: false,
+  },
+  touchedState: initTouchedState,
+  errorState: initErrorState,
+};
 
 const validationSchema = {
   workPlace: {
@@ -65,17 +90,8 @@ const validationSchema = {
 };
 
 export function useJobinfoForm(isStaffCampaign = false) {
-  const [formData, dispatch] = React.useReducer(jobInfoReducer, {
-    workPlace: '',
-    workIndustry: undefined,
-    workInn: undefined,
-    lastWorkExperienceMonths: undefined,
-    mainMonthlyIncomeAmount: undefined,
-    creditBureauConsentAgree: false,
-  });
+  const [{formData, errorState, touchedState}, dispatch] = React.useReducer(jobInfoReducer, initState);
 
-  const [touched, setTouched] = React.useState(initTouchedState);
-  const [errorState, setError] = React.useState(initErrorState);
 
   const {updateAnketa, step} = useAnketa();
   const fetchClient = useFetch();
@@ -87,65 +103,103 @@ export function useJobinfoForm(isStaffCampaign = false) {
   const validateRequiredField = React.useCallback(
     (value: string, e: React.FocusEvent<HTMLInputElement>): boolean => {
       const field = e.currentTarget.name;
-      setTouched(t => ({...t, [field]: true}));
       const val = formData[field];
       const schema = validationSchema[field];
       if (!val) {
-        setError(e => ({...e, [field]: schema.isRequired.error}));
+        dispatch({
+          touchedState: {...touchedState, [field]: true},
+          errorState: {...errorState, [field]: schema.isRequired.error},
+        });
         return false;
       } else {
-        setError(e => ({...e, [field]: ''}));
+        dispatch({
+          touchedState: {...touchedState, [field]: true},
+          errorState: {...errorState, [field]: ''},
+        });
         return true;
       }
+    },
+    [errorState, formData, touchedState],
+  );
+
+  const validateMinValue = React.useCallback(
+    (value: number, e?: React.FocusEvent<HTMLInputElement>) => {
+      const field = e.currentTarget.name;
+      const val = Number(formData[field]);
+      const schema = validationSchema[field];
+      const isValid = val >= schema.min.options;
+      return isValid;
     },
     [formData],
   );
 
-  const validateMinValue = React.useCallback((value: number, e?: React.FocusEvent<HTMLInputElement>) => {
-    const field = e.currentTarget.name;
-    setTouched(t => ({...t, [field]: true}));
-    const val = Number(formData[field]);
-    const schema = validationSchema[field];
-    const isValid = val >= schema.min.options;
-    setError(e => ({...e, [field]: isValid ? '' : schema.min.error}));
-    return isValid;
-  }, [formData]);
+  const validateMaxValue = React.useCallback(
+    (value: number, e?: React.FocusEvent<HTMLInputElement>) => {
+      const field = e.currentTarget.name;
+      const val = Number(formData[field]);
+      const schema = validationSchema[field];
+      const isValid = val <= schema.max.options;
+      return isValid;
+    },
+    [formData],
+  );
 
-  const validateMaxValue = React.useCallback((value: number, e?: React.FocusEvent<HTMLInputElement>) => {
-    const field = e.currentTarget.name;
-    const val = Number(formData[field]);
-    const schema = validationSchema[field];
-    const isValid = val <= schema.max.options;
-    setError(e => ({...e, [field]: isValid ? '' : schema.max.error}));
-    return isValid;
-  }, [formData]);
+  const validateMonthlyAmount = React.useCallback(
+    (value: number, e?: React.FocusEvent<HTMLInputElement>) => {
+      const isMinValid = validateMinValue(null, e);
+      const field = e.currentTarget.name;
+      const schema = validationSchema[field];
+      if (!isMinValid) {
+        dispatch({
+          touchedState: {...touchedState, [field]: true},
+          errorState: {...errorState, [field]: schema.min.error},
+        });
+      }
+      if (isMinValid) {
+        const isMaxValid = validateMaxValue(null, e);
+        dispatch({
+          touchedState: {...touchedState, [field]: true},
+          errorState: {...errorState, [field]: isMaxValid ? '' : schema.max.error},
+        })
+      }
+    },
+    [errorState, touchedState, validateMaxValue, validateMinValue],
+  );
 
-  const validateMonthlyAmount = React.useCallback((value: number, e?: React.FocusEvent<HTMLInputElement>) => {
+  const validateLastWorkExpirience = React.useCallback((value: number, e?: React.FocusEvent<HTMLInputElement>) => {
     const isMinValid = validateMinValue(null, e);
-    if (isMinValid) {
-      validateMaxValue(null, e);
-    }
-  }, [validateMaxValue, validateMinValue])
+    const schema = validationSchema.lastWorkExperienceMonths;
+    dispatch({
+      touchedState: {...touchedState, lastWorkExperienceMonths: true},
+      errorState: {...errorState, lastWorkExperienceMonths: isMinValid ? '' : schema.min.error},
+    })
+  }, [errorState, touchedState, validateMinValue]);
 
   const validateInn = React.useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
-      const requiredValid = validateRequiredField(null, e);
       const schema = validationSchema.workInn;
-      if (requiredValid) {
-        const inn = formData.workInn.replace(/_/gi, '');
+      if (formData?.workInn) {
+        const inn = formData.workInn;
         const lengthValid = inn.length === 10 || inn.length === 12;
-        setError(e => ({...e, workInn: lengthValid ? '' : schema.customCheck.error}));
-        return lengthValid;
+        dispatch({
+          touchedState: {...touchedState, workInn: true},
+          errorState: {...errorState, workInn: lengthValid ? '' : schema.customCheck.error},
+        });
+      } else {
+        dispatch({
+          touchedState: {...touchedState, workInn: true},
+          errorState: {...errorState, workInn: schema.isRequired.error},
+        });
       }
     },
-    [formData.workInn, validateRequiredField],
+    [errorState, formData.workInn, touchedState],
   );
 
   const formValid = React.useCallback(() => {
-    const isAllTouched = Object.values(touched).every(Boolean);
-    const noErrors = Object.values(errorState).every(isEmptyString)
+    const isAllTouched = Object.values(touchedState).every(Boolean);
+    const noErrors = Object.values(errorState).every(isEmptyString);
     return isAllTouched && noErrors && formData.creditBureauConsentAgree;
-  }, [errorState, formData.creditBureauConsentAgree, touched]);
+  }, [errorState, formData.creditBureauConsentAgree, touchedState]);
 
   const handleFormSubmit = React.useCallback(() => {
     const jobInfo = {...formData, workInn: formData.workInn.replace(/_/gi, '')};
@@ -158,10 +212,12 @@ export function useJobinfoForm(isStaffCampaign = false) {
         response => {
           const {workExperienceMonths} = response;
           dispatch({
-            workPlace: 'ОТП Банк',
-            lastWorkExperienceMonths: workExperienceMonths,
-            workIndustry: 'RGB_INDUSTRY_18$1',
-            workInn: OTP_INN,
+            formData: {
+              workPlace: 'ОТП Банк',
+              lastWorkExperienceMonths: workExperienceMonths,
+              workIndustry: 'RGB_INDUSTRY_18$1',
+              workInn: OTP_INN,
+            },
           });
           return response;
         },
@@ -185,6 +241,8 @@ export function useJobinfoForm(isStaffCampaign = false) {
     validateInn,
     validateMinValue,
     validateMonthlyAmount,
-    formValid
+    validateLastWorkExpirience,
+    formValid,
   };
 }
+

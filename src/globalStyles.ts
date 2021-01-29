@@ -90,6 +90,9 @@ export const theme = createTheme({
     },
     feedbackColors: {
       error: '#FF6600'
+    },
+    pageElementsColors: {
+      border: 'var(--color-border)'
     }
   },
   globals: {
