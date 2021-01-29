@@ -1,8 +1,9 @@
 import React from 'react';
 import {css} from '@emotion/react';
-import {Input, InputMask, InputNumber, Span, Checkbox, Button} from 'neutrino-ui';
+import {Input, InputNumber, Span, Checkbox, Button} from 'neutrino-ui';
 import {useAnketa} from 'context/Anketa';
 import {useCampaign} from 'utils/use-campaign';
+import {onlyDigit, maxLengthString} from 'utils/string.utils';
 import {SecuritySign} from 'components/lib';
 import {CustomerAddress, WorkIndustryField} from './components';
 import {fallbackAgreementLink} from './utils';
@@ -25,30 +26,45 @@ export function JobInfoForm(props: any) {
     errorState,
     validateRequiredField,
     validateInn,
-    validateMinValue,
     validateMonthlyAmount,
     formValid,
+    validateLastWorkExpirience
   } = useJobinfoForm(isStaff);
 
   const handleChangeTextField = React.useCallback(
     (value: string, e?: React.ChangeEvent<HTMLInputElement>) => {
       const fieldName = e?.currentTarget?.name;
-      dispatch({[fieldName]: value});
+      dispatch({formData: {...formData, [fieldName]: value}});
     },
-    [dispatch],
+    [dispatch, formData],
   );
+
 
   const handleChangeAgreement = React.useCallback(
     (isAgree: boolean) => {
-      dispatch({creditBureauConsentAgree: isAgree});
+      dispatch({formData: {...formData, creditBureauConsentAgree: isAgree}});
     },
-    [dispatch],
+    [dispatch, formData],
   );
 
-  const handleChangeInn = React.useCallback((inn: string) => {
-    dispatch({workInn: inn})}, [dispatch]);
+  const handleChangeInn = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const inn = onlyDigit(event.currentTarget.value);
+      const fullInn = maxLengthString(inn, 12)
 
-  const handleChangeIndustry = React.useCallback((id: string) => dispatch({workIndustry: id}), [dispatch]);
+      dispatch({formData: {...formData, workInn: fullInn}});
+    },
+    [dispatch, formData],
+  );
+
+  const handleBlurInn = (event: React.FocusEvent<HTMLInputElement>) => {
+    validateInn(event);
+  };
+
+  const handleChangeIndustry = React.useCallback(
+    (id: string) => dispatch({formData: {...formData, workIndustry: id}}),
+    [dispatch, formData],
+  );
 
   const hasError = (fieldName: keyof typeof formData) => {
     return Boolean(errorState[fieldName]);
@@ -67,19 +83,22 @@ export function JobInfoForm(props: any) {
       <CustomerAddress address={registrationAddress} onChangeAddress={handleChangeAddress} />
       <FormField>
         <Label htmlFor="workInn">ИНН работодателя</Label>
-        <InputMask
-          name="workInn"
-          mask="999999999999"
-          maskPlaceholder="_"
-          onChangeHandler={handleChangeInn}
-          value={formData.workInn}
-          aria-label="ИНН работодателя"
+        <input
+          type="tel"
           css={[
             fieldStyles,
             innFieldStyles,
-            errorStyleInputNumber('workInn')
+            errorStyleInputNumber('workInn'),
+            css({
+              '&::-webkit-inner-spin-button': {
+                display: 'none',
+              },
+            }),
           ]}
-          onBlur={validateInn}
+          onChange={handleChangeInn}
+          onBlur={handleBlurInn}
+          value={formData.workInn}
+          id="workInn"
         />
         {hasError('workInn') ? <ErrorText>{errorState.workInn}</ErrorText> : null}
       </FormField>
@@ -88,6 +107,7 @@ export function JobInfoForm(props: any) {
         <Input
           type="text"
           name="workPlace"
+          id="workPlace"
           aria-label="Место работы"
           hasError={hasError('workPlace')}
           onChangeHandler={handleChangeTextField}
@@ -101,6 +121,7 @@ export function JobInfoForm(props: any) {
         <Label htmlFor="mainMonthlyIncomeAmount">Весь ежемесячный доход (руб)</Label>
         <InputNumber
           name="mainMonthlyIncomeAmount"
+          id="mainMonthlyIncomeAmount"
           aria-label="Весь ежемесячный доход (руб)"
           onChangeHandler={handleChangeTextField}
           value={formData.mainMonthlyIncomeAmount}
@@ -120,14 +141,12 @@ export function JobInfoForm(props: any) {
         <Label htmlFor="lastWorkExperienceMonths">Стаж на последнем месте (месяцев)</Label>
         <InputNumber
           name="lastWorkExperienceMonths"
+          id="lastWorkExperienceMonths"
           onChangeHandler={handleChangeTextField}
           value={formData.lastWorkExperienceMonths}
           aria-label="Стаж на последнем месте (месяцев)"
-          css={[
-            fieldStyles,
-            errorStyleInputNumber('lastWorkExperienceMonths')
-          ]}
-          onBlurHandler={validateMinValue}
+          css={[fieldStyles, errorStyleInputNumber('lastWorkExperienceMonths')]}
+          onBlurHandler={validateLastWorkExpirience}
         />
         {hasError('lastWorkExperienceMonths') ? (
           <ErrorText>{errorState.lastWorkExperienceMonths}</ErrorText>
