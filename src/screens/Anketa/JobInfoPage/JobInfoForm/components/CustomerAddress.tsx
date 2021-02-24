@@ -23,7 +23,7 @@ export function CustomerAddress(props: Props) {
         </div>
       </FormField>
       <FormField>
-        <Span css={{padding: '22px 0 0', marginBottom: 16, '@media (max-width: 767px)': {padding: 0}}}>
+        <Span css={{padding: '22px 0 0', marginBottom: 16, '@media (max-width: 704px)': {padding: 0}}}>
           Проверьте ваш текущий адрес. Если адрес изменился, то обновите его.
         </Span>
         <Button

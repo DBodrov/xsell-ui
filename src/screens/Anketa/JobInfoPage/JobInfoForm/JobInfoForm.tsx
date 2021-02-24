@@ -159,7 +159,7 @@ export function JobInfoForm(props: any) {
         hasError={hasError('workIndustry')}
         errorText={errorState.workIndustry}
       />
-      <FormField css={{gridColumn: '1/3', '@media (min-width: 768px)': {maxWidth: 608}}}>
+      <FormField css={{gridColumn: '1/3', '@media (min-width: 704px)': {maxWidth: 608}}}>
         <Checkbox
           variant="primary"
           onChangeHandler={handleChangeAgreement}

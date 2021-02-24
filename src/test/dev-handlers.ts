@@ -16,14 +16,14 @@ export const handlers = [
     if (cookies['userData'] && cookies['SESSION']) {
       return res(ctx.status(200), ctx.json({status: 'AUTH2_REQUIRED'}));
     }
-    return res(ctx.status(200), ctx.cookie('userData', '', {maxAge: 0}), ctx.json({status: 'OK'}));
+    return res(ctx.status(200), ctx.cookie('userData', '', {maxAge: 0}), ctx.json({status: 'AUTH1_REQUIRED'}));
   }),
 
   rest.post('/gateway/initialize', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.cookie('SESSION', '__Session_cookie__'),
-      ctx.json({sessionStatus: 'AUTH1_REQUIRED'}),
+      ctx.json({sessionStatus: 'AUTH1_REQUIRED', settings: {}}),
     );
   }),
 
@@ -59,7 +59,7 @@ export const handlers = [
       ctx.json({
         passwordLength: 4,
         passwordLifetimeInSeconds: 60,
-        sessionStatus: 'AUTH2_REQUIRED',
+        sessionStatus: 'AUTH1_REQUIRED',
         verified: true,
       }),
     );

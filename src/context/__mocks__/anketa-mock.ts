@@ -35,3 +35,8 @@ export const anketa = {
   workInn: 'string',
   workPlace: 'string',
 };
+
+export const getAnketa = (changes: Partial<typeof anketa>) => {
+  const updatedAnketa = {...anketa, ...changes};
+  return updatedAnketa;
+}
