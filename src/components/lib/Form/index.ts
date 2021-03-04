@@ -37,6 +37,7 @@ export const FormField = styled.div`
   flex-flow: column nowrap;
   max-width: 288px;
   margin-bottom: 24px;
+  width: 100%;
 `;
 
 export const Label = styled.label`

@@ -47,4 +47,4 @@ export const countryCodeStyle = css`
   font: 600 1rem/24px 'Source Sans Pro';
 `;
 
-export const birthDateStyles = css([birthDateFieldStyles, borderFieldStyles, placeholderStyles]);
+export const birthDateStyles = css([birthDateFieldStyles, placeholderStyles]);
