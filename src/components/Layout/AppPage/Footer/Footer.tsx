@@ -1,6 +1,5 @@
 import React from 'react';
 import {Span} from 'neutrino-ui';
-import {useAuth} from 'context/Auth';
 import {LinkButton} from 'components/lib';
 import {ArchiveModal} from './ArchiveModal';
 import {FooterSection,  FooterDisclaimer} from './styles';
