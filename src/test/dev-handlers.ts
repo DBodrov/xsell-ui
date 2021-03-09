@@ -16,7 +16,7 @@ export const handlers = [
     if (cookies['userData'] && cookies['SESSION']) {
       return res(ctx.status(200), ctx.json({status: 'AUTH2_REQUIRED'}));
     }
-    return res(ctx.status(200), ctx.cookie('userData', '', {maxAge: 0}), ctx.json({status: 'AUTH1_REQUIRED'}));
+    return res(ctx.status(200), ctx.cookie('userData', '', {maxAge: 0}), ctx.json({status: 'AUTH2_REQUIRED'}));
   }),
 
   rest.post('/gateway/initialize', (req, res, ctx) => {

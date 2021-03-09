@@ -5,7 +5,11 @@ export const Form = styled.form`
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: flex-start;
-  align-self: center;
+
+  @media (max-width: 575px) {
+    align-self: center;
+  }
+
   border-radius: 32px;
   box-shadow: 0px 16px 48px rgba(73, 92, 136, 0.15);
   background-color: #fff;
