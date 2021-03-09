@@ -7,14 +7,12 @@ import {FooterSection,  FooterDisclaimer} from './styles';
 
 export function Footer() {
   const [isOpenArchiveModal, setModalState] = React.useState(false);
-  const {authStatus} = useAuth();
-
-  const hasReset = authStatus === 'OK';
+  const insideAnketa = window.location.pathname.includes('anketa');
   const handleToggleArchiveModal = () => setModalState(s => !s);
 
   return (
     <FooterSection>
-      {hasReset ? (
+      {insideAnketa ? (
         <LinkButton
           css={{color: 'var(--color-primary)', fontSize: 14, marginBottom: '1rem'}}
           onClick={handleToggleArchiveModal}
@@ -29,7 +27,7 @@ export function Footer() {
       <LinkButton css={{color: 'var(--color-primary)', fontSize: 14}} onClick={() => {}}>
         Ваше мнение об онлайн-кредите
       </LinkButton>
-      {hasReset ? (
+      {insideAnketa ? (
         <ArchiveModal
           isOpen={isOpenArchiveModal}
           onToggle={handleToggleArchiveModal}
