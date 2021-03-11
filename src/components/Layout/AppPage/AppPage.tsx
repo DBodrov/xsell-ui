@@ -13,6 +13,7 @@ type Props = {
 
 export function AppPage({children, noStepper}: Props) {
   const isMobile = useMedia('(max-width: 575px)');
+  const insideAnketa = window.location.pathname.includes('anketa');
 
   return (
     <AppPageLayout noStepper={noStepper}>
@@ -20,7 +21,7 @@ export function AppPage({children, noStepper}: Props) {
       <Content>
         {noStepper ? null : <Stepper css={{width: 288, margin: isMobile ? 0 : '32px 0 0 48px'}} />}
         {children}
-        <Footer />
+        {insideAnketa ? <Footer /> : null}
       </Content>
     </AppPageLayout>
   );

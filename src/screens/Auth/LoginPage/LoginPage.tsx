@@ -1,9 +1,11 @@
 import React, {useCallback, useState} from 'react';
-import {P} from 'neutrino-ui';
+import {P, Span} from 'neutrino-ui';
 import {useAuth, IAuth1Params} from 'context/Auth';
 import {AppPage, Screen} from 'components/Layout';
-import {H1} from 'components/lib';
+import {FooterDisclaimer, FooterSection} from 'components/Layout/AppPage/Footer/styles';
+import {H1, LinkButton} from 'components/lib';
 import {Landing} from 'screens/Landing';
+import {OPROSSO} from 'utils/externals';
 import {SigninForm} from './SigninForm';
 import {prepareAuth1Args} from './utils';
 
@@ -29,6 +31,8 @@ export function LoginPage() {
     }
   }, [handleAuth1SignIn, isClient]);
 
+  const openOprosso = () => window.location.assign(OPROSSO.AUTH1_REQUIRED);
+
   if (loginFormIsShown) {
     return (
       <AppPage>
@@ -39,6 +43,15 @@ export function LoginPage() {
           </P>
           <SigninForm onLogin={handleLogin} />
         </Screen>
+        <FooterSection>
+        <FooterDisclaimer>
+          <Span css={{fontSize: 14}}>Заявка оформлется через АО «ОТП Банк» </Span>
+          <Span css={{fontSize: 14}}> (Ген.лицензия № 2766 от 27.11.2014г).</Span>
+        </FooterDisclaimer>
+        <LinkButton css={{color: 'var(--color-primary)', fontSize: 14}} onClick={openOprosso}>
+          Ваше мнение об онлайн-кредите
+        </LinkButton>
+        </FooterSection>
       </AppPage>
     );
   }

@@ -1,5 +1,8 @@
 import React, { useCallback } from 'react';
-import { LayoutPage } from 'components/Layout';
+import {Span} from 'neutrino-ui';
+import { AppPage, Screen } from 'components/Layout';
+import {H2} from 'components/lib';
+
 import { BasicButton } from 'lib/components/buttons';
 import { useAuth } from 'context/Auth';
 import css from './ComebackPage.module.scss';
@@ -11,14 +14,14 @@ export function ComebackPage() {
   }, [handleAuth1SignIn]);
 
   return (
-    <LayoutPage>
-      <div className={css.Page}>
-        <h2 className={css.PageTitle}>Вас долго не было</h2>
-        <p className={css.Text}>
+    <AppPage>
+      <Screen>
+        <H2>Вас долго не было</H2>
+        <Span css={{marginBottom: '1.5rem', alignSelf: 'flex-start'}}>
           Поэтому мы завершили ваш сеанс. Нажмите продолжить и введите СМС которая придёт на ваш номер.
-        </p>
+        </Span>
         <BasicButton type="button" value="Продолжить" onClick={handleUserComeback} className={css.Button} />
-      </div>
-    </LayoutPage>
+      </Screen>
+    </AppPage>
   );
 }
