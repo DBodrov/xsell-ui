@@ -1,6 +1,6 @@
 import React, {createContext, useState, useMemo, useContext, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
-import {ClientNotFound} from 'pages/Authentication/ClientNotFound';
+import {ClientNotFound} from 'screens/Auth/ClientNotFound';
 import {ErrorPage} from 'pages/ErrorPage';
 
 export type ErrorState = {

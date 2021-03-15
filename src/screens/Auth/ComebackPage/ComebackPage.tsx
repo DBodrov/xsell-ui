@@ -38,7 +38,7 @@ export function ComebackPage() {
           <Span css={{fontSize: 14}}>Заявка оформлется через АО «ОТП Банк» </Span>
           <Span css={{fontSize: 14}}> (Ген.лицензия № 2766 от 27.11.2014г).</Span>
         </FooterDisclaimer>
-        </FooterSection>
+      </FooterSection>
     </AppPage>
   );
 }

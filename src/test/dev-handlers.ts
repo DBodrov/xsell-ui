@@ -16,7 +16,7 @@ export const handlers = [
     if (cookies['userData'] && cookies['SESSION']) {
       return res(ctx.status(200), ctx.json({status: 'AUTH2_REQUIRED'}));
     }
-    return res(ctx.status(200), ctx.json({status: 'AUTH2_REQUIRED'}));
+    return res(ctx.status(200), ctx.json({status: 'AUTH1_REQUIRED'}));
   }),
   //ctx.cookie('userData', '', {maxAge: 0}),
 
@@ -29,6 +29,19 @@ export const handlers = [
   }),
 
   rest.post('/gateway/auth1', (req, res, ctx) => {
+    const {body} = req;
+    const phone = body['phoneNumber'];
+    if (phone === '0000000000') {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          passwordLength: 4,
+          passwordLifetimeInSeconds: 60,
+          sessionStatus: 'AUTH1_REQUIRED',
+          verified: false,
+        }),
+      );
+    }
     return res(
       ctx.status(200),
       ctx.cookie('userData', '__encrypted__user__data__'),
