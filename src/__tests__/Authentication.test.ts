@@ -138,7 +138,7 @@ describe('Auth1 tests', () => {
     expect(SMSPageTitle).toBeInTheDocument();
   });
 
-  test('unknown client - not found', async () => {
+  test.skip('unknown client - not found', async () => {
     server.use(
       rest.post('/gateway/auth1', (req, res, ctx) => {
         return res.once(
@@ -174,7 +174,7 @@ describe('Auth1 tests', () => {
 });
 
 describe('client login flow', () => {
-  test('client jump to sms from landing', async () => {
+  test.skip('client jump to sms from landing', async () => {
     renderLandings('LANDING_TEST_1');
     await waitForLoadingFinish();
     const nextPageButton = screen.queryByRole('button', {name: /Получить онлайн/i});
