@@ -7,6 +7,7 @@ import {LayoutPage} from 'components/Layout';
 import {getMonthlyPayment} from 'services/creditCalc.service';
 import {toRuLocalNumber, correctRusCase} from 'utils/string.utils';
 import {useCampaign} from 'utils/use-campaign';
+import {COMMON_RULES} from 'utils/externals';
 import {CampaignVariant} from './CampaignVariant';
 import css from './ResultScoringPage.module.scss';
 import {AutoStepper} from 'components/AutoStepper';
@@ -14,7 +15,7 @@ import {AutoStepper} from 'components/AutoStepper';
 interface IAgreementLinkFormProps {
   agreementLink: string;
 }
-
+// Я ознакомлен с условиями кредита и со всеми документами, а так же с Общими условиями банковского обслуживания. Вводя код из СМС я подтверждаю выдачу мне кредита
 const AgreementLink = ({agreementLink}: IAgreementLinkFormProps) => (
   <p>
     Я ознакомлен{' '}
@@ -22,7 +23,11 @@ const AgreementLink = ({agreementLink}: IAgreementLinkFormProps) => (
       с условиями кредита и со всеми документами
     </a>
     {', '}
-    вводя код из СМС я подтверждаю выдачу мне кредита
+    а так же с {' '}
+    <a className="as-link" href={COMMON_RULES} type="download" target="_blank" rel="noopener noreferrer">Общими условиями</a>
+    {' '}
+    банковского обслуживания.
+    Вводя код из СМС я подтверждаю выдачу мне кредита
   </p>
 );
 
@@ -138,6 +143,11 @@ export function ResultScoringPage() {
               акции "разница есть"
             </p>
           ) : null}
+          <span css={{color: 'var(--color-text-label)', paddingTop: 8}}>
+            В случае неизменности данных, предоставленных заемщиком при подаче заявки на кредит, положительное
+            решение по заявке действует в течении пяти рабочих дней с даты первичного предоставления Заемщику
+            документов по одобренному кредиту на ознакомление
+          </span>
         </div>
       </div>
     </LayoutPage>
