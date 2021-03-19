@@ -7,6 +7,7 @@ import {LayoutPage} from 'components/Layout';
 import {getMonthlyPayment} from 'services/creditCalc.service';
 import {toRuLocalNumber, correctRusCase} from 'utils/string.utils';
 import {useCampaign} from 'utils/use-campaign';
+import {COMMON_RULES} from 'utils/externals';
 import {CampaignVariant} from './CampaignVariant';
 import css from './ResultScoringPage.module.scss';
 import {AutoStepper} from 'components/AutoStepper';
@@ -23,7 +24,7 @@ const AgreementLink = ({agreementLink}: IAgreementLinkFormProps) => (
     </a>
     {', '}
     а так же с {' '}
-    <a className="as-link" href={agreementLink} type="download" target="_blank" rel="noopener noreferrer">Общими условиями</a>
+    <a className="as-link" href={COMMON_RULES} type="download" target="_blank" rel="noopener noreferrer">Общими условиями</a>
     {' '}
     банковского обслуживания.
     Вводя код из СМС я подтверждаю выдачу мне кредита
