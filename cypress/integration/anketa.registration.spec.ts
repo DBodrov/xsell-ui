@@ -63,7 +63,7 @@ describe('anketa registration step', () => {
       cy.findByText(/Три фотографии с документами/i).should('exist');
     });
 
-    it('render registration step - DESKTOP', () => {
+    it.skip('render registration step - DESKTOP', () => {
       cy.viewport('macbook-15');
       cy.visit('/');
       const anketa = {...response, status: 'REGISTRATION_ADDRESS'};

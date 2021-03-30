@@ -23,7 +23,7 @@ export const fieldStyles = css`
   border-radius: 8px;
 `;
 
-export const innFieldStyles = css`
+export const borderFieldStyles = css`
   border: 1px var(--color-border) solid;
   outline: 0;
   &:focus,
@@ -37,6 +37,7 @@ export const FormField = styled.div`
   flex-flow: column nowrap;
   max-width: 288px;
   margin-bottom: 24px;
+  width: 100%;
 `;
 
 export const Label = styled.label`

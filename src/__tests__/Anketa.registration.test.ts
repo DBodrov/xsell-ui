@@ -17,7 +17,7 @@ test('render Jobinfo screen', async () => {
   expect(screen.queryByText(anketa.registrationAddress)).toBeInTheDocument();
 });
 
-test('address was changed', async () => {
+test.skip('address was changed', async () => {
   const statusCache = {
     cache: '',
   };

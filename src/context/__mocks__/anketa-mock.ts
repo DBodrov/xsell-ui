@@ -30,8 +30,13 @@ export const anketa = {
   requestedLoanAmount: 0,
   requestedLoanTermMonths: 0,
   smsInforming: true,
-  status: 'APPROVED',
+  status: 'REGISTRATION_ADDRESS',
   workIndustry: 'string',
   workInn: 'string',
   workPlace: 'string',
 };
+
+export const getAnketa = (changes: Partial<typeof anketa>) => {
+  const updatedAnketa = {...anketa, ...changes};
+  return updatedAnketa;
+}

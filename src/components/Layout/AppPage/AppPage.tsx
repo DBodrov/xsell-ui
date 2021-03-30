@@ -1,52 +1,10 @@
 import React from 'react';
-import styled from '@emotion/styled';
-import {useLocation} from 'react-router-dom';
+import {useMedia} from 'utils/use-media';
 import {AppPageHeader} from './AppPageHeader';
-
-const AppPageMobileLayout = styled.div<{noStepper: boolean}>`
-  display: grid;
-  grid-template: ${props => props.noStepper ? 'auto 1fr / 1fr' : 'auto 4px 1fr / 1fr'};
-  max-width: 704px;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  margin: auto;
-  background-color: #fff;
-`;
-
-const Step = styled.div`
-  display: inline-block;
-  width: 100%;
-  height: 4px;
-  margin-right: 10px;
-  &::last-of-type {
-    margin-right: 0;
-  }
-  background-color: ${(props: {isActive: boolean}) => (props.isActive ? 'var(--color-primary)' : '#8e939f')};
-`;
-
-function Stepper() {
-  const {state: {step = 1} = {}} = useLocation<{step: number}>();
-
-  return (
-    <div
-      css={{
-        display: 'grid',
-        gridTemplate: '4px / repeat(5, 1fr)',
-        columnGap: 10,
-        placeItems: 'center',
-        padding: '0 10px',
-      }}
-    >
-      <Step isActive={step >= 1} />
-      <Step isActive={step >= 2} />
-      <Step isActive={step >= 3} />
-      <Step isActive={step >= 4} />
-      <Step isActive={step >= 5} />
-    </div>
-  );
-}
+import {Stepper} from './Stepper';
+import {DesktopHero} from './DesktopHero';
+import {Footer} from './Footer';
+import {AppPageLayout, Content} from './styles';
 
 type Props = {
   children: React.ReactNode;
@@ -54,11 +12,17 @@ type Props = {
 };
 
 export function AppPage({children, noStepper}: Props) {
+  const isMobile = useMedia('(max-width: 575px)');
+  const insideAnketa = window.location.pathname.includes('anketa');
+
   return (
-    <AppPageMobileLayout noStepper={noStepper}>
-      <AppPageHeader />
-      {!noStepper && <Stepper />}
-      {children}
-    </AppPageMobileLayout>
+    <AppPageLayout noStepper={noStepper}>
+      {isMobile ? <AppPageHeader /> : <DesktopHero />}
+      <Content>
+        {noStepper ? null : <Stepper css={{width: 288, margin: isMobile ? 0 : '32px 0 0 48px'}} />}
+        {children}
+        {insideAnketa ? <Footer /> : null}
+      </Content>
+    </AppPageLayout>
   );
 }
