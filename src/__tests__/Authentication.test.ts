@@ -4,17 +4,12 @@ import {
   userEvent,
   renderApp,
   waitForLoadingFinish,
-  waitForElementToBeRemoved,
 } from 'utils/test-utils';
 import {AuthStatus} from 'context/Auth';
-import {LandingProps} from '../screens/Landing/types';
 
 jest.setTimeout(30000);
 
-const landing1 = 'https://cash.otpbank.ru/public/images/girl.png';
-const landing2 = 'https://cash.otpbank.ru/public/images/family.png';
 const landing3 = 'https://cash.otpbank.ru/public/images/girl3a.png';
-const landing4 = 'https://cash.otpbank.ru/public/images/girl_4.png';
 
 const appSetup = (status: AuthStatus) => {
   server.use(
@@ -36,6 +31,7 @@ const initSession = ({sessionStatus, settings}: TInitSessionResponse) => {
       return res(
         ctx.status(200),
         ctx.cookie('userData', '', {maxAge: -1}),
+        ctx.cookie('SESSION', '', {maxAge: -1}),
         ctx.json({sessionStatus, settings}),
       );
     }),
@@ -53,34 +49,7 @@ test('render default - Landing3', async () => {
   expect(screen.queryByAltText(/Кредит наличными/i)).toHaveAttribute('src', landing3);
 });
 
-const renderLandings = (landingCode: LandingProps['landingCode']) =>
-  initSession({sessionStatus: 'AUTH1_REQUIRED', settings: {landingCode}});
-
-test.skip('render Landing1', async () => {
-  renderLandings('LANDING_TEST_1');
-  await waitForLoadingFinish();
-  expect(screen.queryByAltText(/Кредит наличными/i)).toHaveAttribute('src', landing1);
-});
-
-test.skip('render Landing2', async () => {
-  renderLandings('LANDING_TEST_2');
-  await waitForLoadingFinish();
-  expect(screen.queryByAltText(/Кредит наличными/i)).toHaveAttribute('src', landing2);
-});
-
-test.skip('render Landing3', async () => {
-  renderLandings('LANDING_TEST_3');
-  await waitForLoadingFinish();
-  expect(screen.queryByAltText(/Кредит наличными/i)).toHaveAttribute('src', landing3);
-});
-
-test.skip('render Landing4', async () => {
-  renderLandings('LANDING_TEST_4');
-  await waitForLoadingFinish();
-  expect(screen.queryByAltText(/Кредит наличными/i)).toHaveAttribute('src', landing4);
-});
-
-test('handle get app status fail', async () => {
+test('handle get app status fail - render Error page', async () => {
   jest.useFakeTimers();
   server.use(
     rest.post('/gateway/auth-status', (req, res, ctx) => {
@@ -98,8 +67,8 @@ test('handle get app status fail', async () => {
   expect(screen.queryByText(/Что-то пошло не так/i)).toBeInTheDocument();
 });
 
-describe('Auth1 tests', () => {
-  test('handle initialize fail', async () => {
+describe('AUTH1', () => {
+  test('initialize fail - render Error page', async () => {
     //jest.useFakeTimers();
     server.use(
       rest.post('/gateway/auth-status', (req, res, ctx) => {
@@ -122,7 +91,7 @@ describe('Auth1 tests', () => {
     expect(screen.queryByText(/Что-то пошло не так/i)).toBeInTheDocument();
   });
 
-  test.skip('unknown client auth1 login - happy path', async () => {
+  test('auth1 - success', async () => {
     initSession({sessionStatus: 'AUTH1_REQUIRED', settings: {}});
     await waitForLoadingFinish();
     const nextPageButton = screen.getByRole('button', {name: /Получить онлайн/i});
@@ -130,23 +99,32 @@ describe('Auth1 tests', () => {
     const formHeader = await screen.findByText(/Личные данные/);
     expect(formHeader).toBeInTheDocument();
     const phoneNumber = screen.queryByLabelText(/мобильный/i);
-    await userEvent.type(phoneNumber, '8001234567');
+    userEvent.type(phoneNumber, '8001234567');
     const birthDate = screen.queryByLabelText(/дата рождения/i);
-    await userEvent.type(birthDate, '21091975');
+    userEvent.type(birthDate, '21091975');
     const checkboxes = screen.queryAllByRole('checkbox');
     checkboxes.forEach(checkbox => userEvent.click(checkbox));
     const submitButton = screen.queryByText('Далее');
     userEvent.click(submitButton);
-    // await waitForLoadingFinish();
-    //screen.debug()
     const SMSPageTitle = await screen.findByText(/Подтвердите вход/i);
     expect(SMSPageTitle).toBeInTheDocument();
   });
 
-  test.skip('unknown client - not found', async () => {
+  test('auth1 - client not found', async () => {
+    server.use(
+      rest.post('/gateway/auth-status', (req, res, ctx) => {
+        return res.once(
+          ctx.status(200),
+          ctx.cookie('userData', '', {maxAge: -1}),
+          ctx.json({
+            status: 'AUTH1_REQUIRED',
+          }),
+        );
+      }),
+    );
     server.use(
       rest.post('/gateway/auth1', (req, res, ctx) => {
-        return res.once(
+        return res(
           ctx.status(200),
           ctx.json({
             verified: false,
@@ -157,39 +135,49 @@ describe('Auth1 tests', () => {
         );
       }),
     );
-    initSession({sessionStatus: 'AUTH1_REQUIRED', settings: {}});
+    renderApp();
+
     await waitForLoadingFinish();
     const nextPageButton = screen.getByRole('button', {name: /Получить онлайн/i});
     userEvent.click(nextPageButton);
-    const formHeader = await screen.findByText(/Введите телефон/);
+    const formHeader = await screen.findByText(/Личные данные/);
     expect(formHeader).toBeInTheDocument();
     const phoneNumber = screen.queryByLabelText(/мобильный/i);
-    await userEvent.type(phoneNumber, '8001234567');
-    const birthDate = screen.queryByLabelText(/picker-input/i);
-    await userEvent.type(birthDate, '21091975');
-    // screen.debug(birthDate)
+    userEvent.type(phoneNumber, '8001234567');
+    const birthDate = screen.queryByLabelText(/дата рождения/i);
+    userEvent.type(birthDate, '21091975');
     const checkboxes = screen.queryAllByRole('checkbox');
     checkboxes.forEach(checkbox => userEvent.click(checkbox));
-    const submitButton = screen.queryByText('Продолжить');
+    const submitButton = screen.queryByText('Далее');
     userEvent.click(submitButton);
-    await waitForLoadingFinish();
     const PageTitle = await screen.findByText(/Не можем вас найти/i);
     expect(PageTitle).toBeInTheDocument();
   });
 });
 
-describe.skip('client login flow', () => {
-  test('client jump to sms from landing', async () => {
+describe('AUTH1 - client login flow', () => {
+  test('client go to sms from landing', async () => {
+    server.use(
+      rest.post('/gateway/auth-status', (req, res, ctx) => {
+        return res.once(
+          ctx.status(200),
+          ctx.cookie('userData', '', {maxAge: -1}),
+          ctx.json({
+            status: 'INITIALIZE',
+          }),
+        );
+      }),
+    );
     initSession({sessionStatus: 'AUTH1_REQUIRED', settings: {landingCode: 'LANDING_TEST_3'}});
+
     await waitForLoadingFinish();
-    const nextPageButton = screen.queryByText(/Получить онлайн/i);
+    const nextPageButton = screen.getByRole('button', {name: /Получить онлайн/i});
     userEvent.click(nextPageButton);
-    //await waitForLoadingFinish();
     const SMSPageTitle = await screen.findByText(/Подтвердите вход/i);
     expect(SMSPageTitle).toBeInTheDocument();
   });
 
-  test.skip('second enter', async () => {
+  test('second enter', async () => {
     server.use(
       rest.post('/gateway/auth-status', (req, res, ctx) => {
         return res(
@@ -201,20 +189,16 @@ describe.skip('client login flow', () => {
         );
       }),
     );
-    //jest.useFakeTimers();
     renderApp();
     await waitForLoadingFinish();
     expect(screen.queryByText(/мы завершили ваш сеанс/i)).toBeInTheDocument();
     const continueButton = screen.queryByRole('button', {name: /Продолжить/i});
-    screen.debug(continueButton);
     userEvent.click(continueButton);
     await waitForLoadingFinish();
     const SMSPageTitle = await screen.findByText(/Подтвердите вход/i);
     expect(SMSPageTitle).toBeInTheDocument();
-    await userEvent.type(screen.queryByPlaceholderText(/Введите код/i), '1234');
-    await waitForElementToBeRemoved(() => screen.queryByPlaceholderText(/Введите код/i), {timeout: 8000});
-    await waitForLoadingFinish();
-    //jest.runAllTimers();
-    expect(screen.queryByText(/обновляем анкету/i)).toBeInTheDocument();
+    userEvent.type(screen.queryByLabelText(/Введите код/i), '1234');
+    screen.debug();
+    expect(screen.queryByLabelText(/Введите код/i)).toHaveValue('1234');
   });
 });
