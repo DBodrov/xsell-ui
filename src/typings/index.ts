@@ -1,7 +1,6 @@
 export * from './services';
 export * from './analytics';
 export * from './session.types';
-export * from './calculatorPage';
 export * from './docsSend';
 export * from './passportPage';
 export * from './photoUpload';
