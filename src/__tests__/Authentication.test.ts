@@ -177,7 +177,7 @@ describe('AUTH1 - client login flow', () => {
     expect(SMSPageTitle).toBeInTheDocument();
   });
 
-  test('second enter', async () => {
+  test('session expired/ relogin', async () => {
     server.use(
       rest.post('/gateway/auth-status', (req, res, ctx) => {
         return res(
@@ -198,7 +198,6 @@ describe('AUTH1 - client login flow', () => {
     const SMSPageTitle = await screen.findByText(/Подтвердите вход/i);
     expect(SMSPageTitle).toBeInTheDocument();
     userEvent.type(screen.queryByLabelText(/Введите код/i), '1234');
-    screen.debug();
     expect(screen.queryByLabelText(/Введите код/i)).toHaveValue('1234');
   });
 });

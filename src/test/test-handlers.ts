@@ -41,7 +41,6 @@ export const handlers = [
   }),
 
   rest.post('/gateway/auth1-utm', (req, res, ctx) => {
-    console.log('====== auth1-utm =======')
     return res(
       ctx.status(200),
       ctx.cookie('userData', '__encrypted__user__data__'),
