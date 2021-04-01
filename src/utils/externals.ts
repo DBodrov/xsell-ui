@@ -19,6 +19,8 @@ export const OPROSSO = {
   COMPLETED: 'http://opros.so/FwAx',
 }
 
+export const ARCHIVE_APP_STEPS = ['PASSPORT', 'REGISTRATION_ADDRESS', 'TRANSFER_DETAILS'];
+
 // 01 - Посадочная страница http://opros.so/DtxQ
 // #02 - Телефон и ДР http://opros.so/FwAm
 // #03 - Подтверждение номера телефона и возраста http://opros.so/FwAn

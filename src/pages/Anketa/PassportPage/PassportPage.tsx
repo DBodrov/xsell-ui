@@ -1,7 +1,7 @@
 import React, {useState, Fragment, useCallback} from 'react';
 import {useAnketa} from 'context/Anketa';
 import {useError} from 'context/Error';
-import {LayoutPage} from 'components/Layout';
+import {LayoutPage, AppPage} from 'components/Layout';
 import {PassportForm} from 'components/PassportForm';
 import css from './PassportPage.module.scss';
 import {AutoStepper} from 'components/AutoStepper';
@@ -31,10 +31,6 @@ export function PassportPage() {
     setPassport(passportValue);
   }, []);
 
-  const handleArchivingAnketa = useCallback(() => {
-    archivingAnketa(step);
-  }, [archivingAnketa, step]);
-
   const isComplete = () => {
     if (passport) {
       const [series = '', number = ''] = passport;
@@ -46,13 +42,7 @@ export function PassportPage() {
   const getPassportValue = useCallback(() => passport && passport.join(''), [passport]);
 
   return (
-    <LayoutPage>
-      <AutoStepper className={css.Stepper} status={step} />
-      <ArchiveModal
-        isOpen={isShowModal}
-        handleArchivingAnketa={handleArchivingAnketa}
-        onClose={handleCloseModal}
-      />
+    <AppPage>
       <div className={css.Page}>
         <h2 className={css.PageTitle}>Введите паспорт</h2>
         <Fragment>
@@ -66,6 +56,6 @@ export function PassportPage() {
           />
         </Fragment>
       </div>
-    </LayoutPage>
+    </AppPage>
   );
 }
