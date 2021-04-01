@@ -1,4 +1,3 @@
-import {TAnketaRoutes} from 'providers'
 import {TAnketaStep} from 'context/Anketa'
 
 export const anketaRoutesMap = new Map<TAnketaStep, {url: string; step: number}>([
@@ -23,7 +22,7 @@ export const anketaRoutesMap = new Map<TAnketaStep, {url: string; step: number}>
   ['COMPLETED', {url: '/anketa/completed', step: 5}],
 ])
 
-export const routeMap: TAnketaRoutes = {
+export const routeMap = {
   LOAN_PARAMS: '/anketa/calculator',
   PASSPORT: '/anketa/passport',
   PASSPORT_PHOTO: '/anketa/photo',

@@ -7,9 +7,9 @@ class EnvironmentBuilder {
 
   readonly isLocalBuild = process.env.NODE_ENV === 'production' && process.env.ENV === 'local';
 
-  readonly isDevMode = process.env.NODE_ENV !== 'production' && process.env.ENV !== undefined;
+  readonly isDevMode = process.env.NODE_ENV === 'development';
 
-  readonly isJestEnv = process.env.NODE_ENV === 'test' && process.env.ENV === undefined;
+  readonly isJestEnv = process.env.NODE_ENV === 'test';
 
   // private isTestBuild = process.env.NODE_ENV === 'production' && process.env.ENV === 'test';
 

@@ -3,9 +3,9 @@ import {Route, Switch, useHistory} from 'react-router-dom';
 import {Spinner} from 'lib/components/Spinner';
 import {useAuth} from './context/Auth';
 
-const Auth1Container = React.lazy(() => import(/* webpackPrefetch: true */ './screens/Auth/Auth1Container'));
-const Auth2Container = React.lazy(() => import(/* webpackPrefetch: true */ './screens/Auth/Auth2Container'));
-const Anketa = React.lazy(() => import(/* webpackPrefetch: true */ './pages/Anketa'));
+const Auth1Container = React.lazy(() => import(/* webpackPrefetch: true */ /* webpackChunkName: "Auth1Container" */ './screens/Auth/Auth1Container'));
+const Auth2Container = React.lazy(() => import(/* webpackPrefetch: true */ /* webpackChunkName: "Auth2Container" */ './screens/Auth/Auth2Container'));
+const Anketa = React.lazy(() => import(/* webpackPrefetch: true */ /* webpackChunkName: "Anketa" */ './pages/Anketa'));
 
 function AppRoutes() {
   return (
