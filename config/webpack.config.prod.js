@@ -7,7 +7,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const PreloadWebpackPlugin = require('preload-webpack-plugin');
 
 const utils = require('./utilities.js');
 const {resolveApp} = require('./paths');
