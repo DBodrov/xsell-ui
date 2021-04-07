@@ -7,28 +7,19 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const PreloadWebpackPlugin = require('preload-webpack-plugin');
 
 const utils = require('./utilities.js');
 const {resolveApp} = require('./paths');
 const commonConfig = require('./webpack.config.common');
 
-// eslint-disable-next-line prefer-destructuring
-const ENV = process.env.ENV;
 process.env.NODE_ENV = 'production';
-console.info('ENV: ', process.env.ENV, 'NODE_ENV: ', process.env.NODE_ENV);
-console.info(chalk.white.bgGreen.bold('Node version: ', process.version));
 
 const VERSION = require('../package.json').version;
-
-process.env.VERSION = VERSION;
-
 const APP_NAME = require('../package.json').description;
 
 console.info(chalk.white.bgGreen.bold(APP_NAME));
 console.info(chalk.white.bgGreen.bold('Версия: ', VERSION));
-console.info(chalk.white.bgGreen.bold('Build: ', process.env.NODE_ENV));
-console.info(chalk.white.bgGreen.bold('ENV: ', process.env.ENV));
+console.info(chalk.white.bgGreen.bold('Build: ', 'production'));
 
 const getStyleLoaders = (cssOptions, preProcessor) => {
   const loaders = [
@@ -73,7 +64,9 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
   return loaders;
 };
 
-module.exports = webpackMerge.merge(commonConfig, {
+module.exports = (env) => {
+  console.info(chalk.white.bgGreen.bold('ENV mode: ', env.ENV));
+  return webpackMerge.merge(commonConfig, {
   mode: 'production',
   bail: true,
   stats: 'errors-only',
@@ -198,10 +191,6 @@ module.exports = webpackMerge.merge(commonConfig, {
         minifyURLs: true,
       },
     }),
-    new PreloadWebpackPlugin({
-      rel: 'preload',
-      include: 'asyncChunks',
-    }),
 
     new MiniCssExtractPlugin({
       filename: 'static/css/[name].[contenthash].css',
@@ -209,12 +198,16 @@ module.exports = webpackMerge.merge(commonConfig, {
       ignoreOrder: true,
     }),
 
-    new webpack.DefinePlugin({
-      'process.env.VERSION': JSON.stringify(VERSION),
-      'process.env.ENV': JSON.stringify(ENV),
-      'process.env.NODE_ENV': JSON.stringify(ENV),
-      'process.env.RTL_SKIP_AUTO_CLEANUP': JSON.stringify('false') //workaround
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
 
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'production',
+      RTL_SKIP_AUTO_CLEANUP: 'false',
+      ENV: env.ENV,
+      USE_API_MOCKS: 'false',
     }),
   ],
 });
+}

@@ -9,19 +9,14 @@ const utils = require('./utilities');
 const {resolveApp} = require('./paths');
 const commonConfig = require('./webpack.config.common');
 
-const ENV = 'development';
-process.env.NODE_ENV = ENV;
-process.env.ENV = ENV;
-
+process.env.NODE_ENV = 'development';
 const VERSION = require('../package.json').version;
-
-process.env.VERSION = VERSION;
 
 const APP_NAME = require('../package.json').description;
 
 console.log(chalk.white.bgGreen.bold(APP_NAME));
 console.log(chalk.white.bgGreen.bold('Версия: ', VERSION));
-console.log(chalk.white.bgGreen.bold('Build: ', process.env.NODE_ENV));
+console.log(chalk.white.bgGreen.bold('Build: ', 'development'));
 console.log(chalk.white.bgGreen.bold('Node version: ', process.version));
 
 const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -66,7 +61,7 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
 };
 
 module.exports = env => {
-  console.log(env);
+  console.log('USE API MOCKS = ', env.USE_API_MOCKS ?? 'false');
   return webpackMerge.merge(commonConfig, {
     mode: 'development',
     devtool: 'inline-source-map',
@@ -88,7 +83,6 @@ module.exports = env => {
           test: utils.jsxRegex,
           exclude: /node_modules/,
           use: 'babel-loader',
-          // use: ['babel-loader', 'eslint-loader'],
         },
         {
           test: utils.tsxRegex,
@@ -123,8 +117,6 @@ module.exports = env => {
               modules: {
                 mode: 'local',
                 localIdentName: '[name]__[local]--[hash:base64:5]',
-                // context: path.resolve(__dirname, 'src'),
-                // hashPrefix: 'my-custom-hash',
               },
             },
             'sass-loader',
@@ -135,18 +127,7 @@ module.exports = env => {
 
     optimization: {
       splitChunks: {
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'async',
-          },
-          default: {
-            minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-        },
+        chunks: 'all',
       },
       runtimeChunk: {
         name: 'runtime',
@@ -156,7 +137,7 @@ module.exports = env => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        title: `${APP_NAME} || ${ENV.toUpperCase()}`,
+        title: `${APP_NAME} || DEVELOPMENT`,
         filename: 'index.html',
         template: resolveApp('src/index.html'),
         favicon: resolveApp('src/favicon.ico'),
@@ -164,22 +145,18 @@ module.exports = env => {
         hash: true,
         chunksSortMode: 'none',
       }),
-
       new ReactRefreshWebpackPlugin(),
+
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+      }),
+
       new webpack.EnvironmentPlugin({
-        USE_API_MOCKS: env.USE_API_MOCKS ?? 'false'
+        NODE_ENV: 'development',
+        USE_API_MOCKS: env.USE_API_MOCKS ?? 'false',
       }),
 
-      new WebpackBar({
-        name: `ENV: ${ENV}  VERSION: ${VERSION}`,
-      }),
-
-      new webpack.DefinePlugin({
-        'process.env.VERSION': JSON.stringify(VERSION),
-        'process.env.ENV': JSON.stringify(ENV),
-        'process.env.NODE_ENV': JSON.stringify(ENV),
-      }),
-
+      new WebpackBar({}),
     ],
 
     devServer: {
@@ -202,4 +179,4 @@ module.exports = env => {
       },
     },
   });
-}
+};
