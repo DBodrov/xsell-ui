@@ -1,12 +1,10 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const webpackMerge = require('webpack-merge');
 const chalk = require('chalk');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const WebpackBar = require('webpackbar');
-const Dotenv = require('dotenv-webpack');
 const utils = require('./utilities');
 const {resolveApp} = require('./paths');
 const commonConfig = require('./webpack.config.common');
@@ -166,10 +164,6 @@ module.exports = env => {
         hash: true,
         chunksSortMode: 'none',
       }),
-      new PreloadWebpackPlugin({
-        rel: 'preload',
-        include: 'asyncChunks',
-      }),
 
       new ReactRefreshWebpackPlugin(),
       new webpack.EnvironmentPlugin({
@@ -180,7 +174,6 @@ module.exports = env => {
         name: `ENV: ${ENV}  VERSION: ${VERSION}`,
       }),
 
-      new Dotenv(),
       new webpack.DefinePlugin({
         'process.env.VERSION': JSON.stringify(VERSION),
         'process.env.ENV': JSON.stringify(ENV),
