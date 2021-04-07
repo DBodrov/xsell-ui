@@ -10,7 +10,7 @@ export function PreScoringOptions() {
     <List>
       <List.ListItem>
         <img src={hourglassIcon} alt="X" />
-        <span>Принятие решения займет около 20 минут</span>
+        <span>Принятие решения может занять от нескольких минут до нескольких часов</span>
       </List.ListItem>
       <List.ListItem>
         <img src={phoneIcon} alt="X" />
