@@ -2,7 +2,7 @@ import React from 'react';
 import {Switch} from 'react-router-dom';
 import {ProtectedRoute} from 'components/ProtectedRoute';
 import {CalculatorPage} from './CalculatorPage';
-import {PassportPage} from './PassportPage';
+import {PassportPage} from 'screens/Anketa/PassportPage';
 import {JobInfoPage} from 'screens/Anketa/JobInfoPage';
 import {AgreementPage} from './AgreementSMSPage';
 import {AdvanceScoringRefusalPage} from './AdvanceScoringRefusalPage';
