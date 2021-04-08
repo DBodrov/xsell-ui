@@ -94,7 +94,7 @@ test('handle get app status fail', async () => {
   expect(screen.queryByText(/Что-то пошло не так/i)).toBeInTheDocument();
 });
 
-describe('Auth1 tests', () => {
+describe.skip('Auth1 tests', () => {
   test('handle initialize fail', async () => {
     //jest.useFakeTimers();
     server.use(
