@@ -1,6 +1,7 @@
 import React from 'react';
 import {css} from '@emotion/react';
-import {ToggleProvider, useToggle, ToggleArrowIcon, Dropdown} from 'neutrino-ui';
+// import {ToggleProvider, useToggle, ToggleArrowIcon} from 'components/lib/ToggleProvider';
+import {Dropdown, ToggleProvider, useToggle, ToggleArrowIcon} from 'neutrino-ui';
 import {workIndustryList} from '../utils';
 import {Label, FormField, ErrorText} from '../styles';
 import {SelectBox} from './styles';
@@ -24,15 +25,12 @@ export function WorkIndustryField(props: Props) {
 }
 
 function SelectIndustry({industryId, onChangeIndustry, onBlurHandler, hasError, errorText}: Props) {
+
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const inputRect = inputRef?.current?.getBoundingClientRect();
-  //const {handleChange, errors, values, handleTouch} = useForma();
-  const {isOpen, handleToggle, handleClose} = useToggle();
-  // const hasError = errors[FIELDNAME]?.length > 0;
 
-  // const value = values[FIELDNAME];
-  const value = '';
+  const {isOpen, handleToggle, handleClose} = useToggle();
 
   const handleItemClick = React.useCallback(
     (event: React.MouseEvent<HTMLLIElement>) => {
@@ -46,7 +44,11 @@ function SelectIndustry({industryId, onChangeIndustry, onBlurHandler, hasError, 
 
   const handleInputBlur = React.useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
-      if (e.relatedTarget instanceof HTMLElement && dropdownRef && dropdownRef?.current?.contains(e.relatedTarget)) {
+      if (
+        e.relatedTarget instanceof HTMLElement &&
+        dropdownRef &&
+        dropdownRef?.current?.contains(e.relatedTarget)
+      ) {
         return;
       }
       onBlurHandler(industryId, e);
@@ -58,7 +60,8 @@ function SelectIndustry({industryId, onChangeIndustry, onBlurHandler, hasError, 
     const handleClickOutside = (e: PointerEvent | MouseEvent) => {
       if (e.target instanceof HTMLElement && isOpen) {
         const options = dropdownRef?.current;
-        if (options?.contains(e.target)) {
+        const input = inputRef.current;
+        if (options?.contains(e.target) || input.contains(e.target)) {
           return;
         }
         handleClose();
@@ -138,7 +141,7 @@ function SelectIndustry({industryId, onChangeIndustry, onBlurHandler, hasError, 
                     margin: 0,
                     fontSize: 14,
                     cursor: 'pointer',
-                    backgroundColor: item.id === value ? 'var(--color-border)' : '#fff',
+                    backgroundColor: item.id === industryId ? 'var(--color-border)' : '#fff',
                     '&:hover': {
                       backgroundColor: 'var(--color-border)',
                     },
@@ -155,5 +158,3 @@ function SelectIndustry({industryId, onChangeIndustry, onBlurHandler, hasError, 
     </FormField>
   );
 }
-
-// {hasError && <ErrorText errorMessage={errors[FIELDNAME]} />}
