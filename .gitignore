@@ -19,7 +19,7 @@
 
 # npm & yarn
 node_modules/
-package-lock.json
+
 
 
 ### PRODUCTION BUILDS ###

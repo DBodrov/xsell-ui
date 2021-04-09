@@ -78,7 +78,7 @@ export function Dropdown(props: IDropdownProps): React.ReactPortal {
         return {};
     };
 
-    const transition = useTransition(isReady, null, {
+    const transition = useTransition(isReady, {
         from: { opacity: 0, transform: 'translateY(20px)' },
         enter: isReady
             ? {
@@ -104,14 +104,13 @@ export function Dropdown(props: IDropdownProps): React.ReactPortal {
     }, [isOpen, parentRect]);
 
     const renderDropdown = () =>
-        transition.map(
-            ({ item, props: springProps, key }) =>
+        transition(
+            (springProps, item) =>
                 item && (
                     <animated.div
-                        key={key}
                         className={cssClasses}
                         ref={ddRef}
-                        style={{ ...springProps, ...styles }}
+                        style={{ ...springProps as any, ...styles }}
                         tabIndex={-1}
                         data-testid="dropdown">
                         {children}
