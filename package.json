@@ -132,5 +132,8 @@
     ">1%",
     "last 2 versions",
     "Firefox ESR"
-  ]
+  ],
+  "msw": {
+    "workerDirectory": "src"
+  }
 }

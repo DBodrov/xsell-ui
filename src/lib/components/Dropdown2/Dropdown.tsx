@@ -1,4 +1,4 @@
-import React, { useRef, CSSProperties } from 'react';
+import React, { useRef } from 'react';
 import cN from 'classnames/bind';
 import { animated, useTransition } from 'react-spring';
 import { Portal } from '../Portal';
@@ -27,7 +27,7 @@ export function Dropdown(props: IDropdownProps) {
         return {};
     };
 
-    const transitions = useTransition(isOpen, null, {
+    const transitions = useTransition(isOpen, {
         from: { opacity: 0, transform: 'translateY(20px)' },
         update: onUpdate(),
         leave: { opacity: 0, transform: 'translateY(20px)' },
@@ -35,11 +35,10 @@ export function Dropdown(props: IDropdownProps) {
     });
 
     const renderDropdown = () =>
-        transitions.map(
-            ({ item, props: springProps, key }) =>
+        transitions(
+            (springProps, item) =>
                 item && (
                     <animated.div
-                        key={key}
                         className={cssClasses}
                         ref={dropdownRef}
                         style={{ ...springProps, ...styles }}
