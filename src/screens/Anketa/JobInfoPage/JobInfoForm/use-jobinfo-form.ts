@@ -36,11 +36,7 @@ const formStateReducer = (state: TFormState, changes: IFormChanges) => {
         touched: {
           ...state.touched,
           [changes.fieldName]: true,
-        },
-        error: {
-          ...state.error,
-          [changes.fieldName]: '',
-        },
+        }
       };
     }
     default:
@@ -59,85 +55,50 @@ export function useJobinfoForm(isStaffCampaign = false) {
   }, [step, updateAnketa]);
 
   const validateRequiredField = React.useCallback(
-    async (value: string, e: React.FocusEvent<HTMLInputElement>) => {
-      const field = e.currentTarget.name;
-      const val = values[field];
+    async (fieldName: string) => {
+      const val = values[fieldName];
       try {
-        await requiredFieldValidator(field, val);
-        dispatch({type: 'ADD_ERROR', fieldName: field, payload: ''});
+        await requiredFieldValidator(fieldName, val);
+        dispatch({type: 'ADD_ERROR', fieldName, payload: ''});
         return true;
       } catch (error) {
-        dispatch({type: 'ADD_ERROR', fieldName: field, payload: error.message});
+        dispatch({type: 'ADD_ERROR', fieldName, payload: error.message});
       }
     },
     [values],
   );
 
-  const validateMinValue = React.useCallback(
-    async (value: number, e?: React.FocusEvent<HTMLInputElement>) => {
-      const field = e.currentTarget.name;
-      try {
-        await minValueValidator(field, value);
-        dispatch({type: 'ADD_ERROR', fieldName: field, payload: ''});
-        return true;
-      } catch (error) {
-        dispatch({type: 'ADD_ERROR', fieldName: field, payload: error.message});
-        return false;
-      }
-    },
-    [],
-  );
-
-  const validateMaxValue = React.useCallback(
-    async (value: number, e?: React.FocusEvent<HTMLInputElement>) => {
-      const field = e.currentTarget.name;
-      try {
-        await maxValueValidator(field, value);
-        dispatch({type: 'ADD_ERROR', fieldName: field, payload: ''});
-        return true;
-      } catch (error) {
-        dispatch({type: 'ADD_ERROR', fieldName: field, payload: error.message});
-        return false;
-      }
-    },
-    [],
-  );
-
-  const validateMonthlyAmount = React.useCallback(
-    async (value: number, e?: React.FocusEvent<HTMLInputElement>) => {
-      const field = e.currentTarget.name;
-      try {
-        await minValueValidator(field, value);
-        await maxValueValidator(field, value);
-        dispatch({type: 'ADD_ERROR', fieldName: field, payload: ''});
-        return true;
-      } catch (error) {
-        dispatch({type: 'ADD_ERROR', fieldName: field, payload: error.message});
-        return false;
-      }
-    },
-    [],
-  );
-
-  const validateLastWorkExperience = React.useCallback(
-    async (value: number, e?: React.FocusEvent<HTMLInputElement>) => {
-      try {
-        await minValueValidator('lastWorkExperienceMonths', value);
-        dispatch({type: 'ADD_ERROR', fieldName: 'lastWorkExperienceMonths', payload: ''});
-        return true;
-      } catch (error) {
-        dispatch({type: 'ADD_ERROR', fieldName: 'lastWorkExperienceMonths', payload: error.message});
-        return false;
-      }
-    },
-    [],
-  );
-
-  const validateInn = React.useCallback(async (workInn: string) => {
-    const fieldName = 'workInn';
+  const validateMonthlyAmount = React.useCallback(async () => {
+    const field = 'mainMonthlyIncomeAmount';
     try {
-      await requiredFieldValidator('workInn', workInn);
-      await innLengthValidator(workInn);
+      await minValueValidator(field, Number(values.mainMonthlyIncomeAmount));
+      await maxValueValidator(field, Number(values.mainMonthlyIncomeAmount));
+      dispatch({type: 'ADD_ERROR', fieldName: field, payload: ''});
+      return true;
+    } catch (error) {
+      dispatch({type: 'ADD_ERROR', fieldName: field, payload: error.message});
+
+      return false;
+    }
+  }, [values.mainMonthlyIncomeAmount]);
+
+  const validateLastWorkExperience = React.useCallback(async () => {
+    try {
+      await minValueValidator('lastWorkExperienceMonths', Number(values.lastWorkExperienceMonths));
+      dispatch({type: 'ADD_ERROR', fieldName: 'lastWorkExperienceMonths', payload: ''});
+      return true;
+    } catch (error) {
+      dispatch({type: 'ADD_ERROR', fieldName: 'lastWorkExperienceMonths', payload: error.message});
+      return false;
+    }
+  }, [values.lastWorkExperienceMonths]);
+
+  const validateInn = React.useCallback(async () => {
+    const fieldName = 'workInn';
+
+    try {
+      await requiredFieldValidator('workInn', values.workInn);
+      await innLengthValidator(values.workInn);
       dispatch({type: 'ADD_ERROR', fieldName, payload: ''});
       return true;
     } catch (error) {
@@ -148,7 +109,7 @@ export function useJobinfoForm(isStaffCampaign = false) {
       });
       return false;
     }
-  }, []);
+  }, [values.workInn]);
 
   const formValid = React.useCallback(() => {
     const isAllTouched = Object.values(touched).every(Boolean);
@@ -156,10 +117,21 @@ export function useJobinfoForm(isStaffCampaign = false) {
     return isAllTouched && noErrors && values.creditBureauConsentAgree;
   }, [error, touched, values.creditBureauConsentAgree]);
 
+  const validateAllFields = React.useCallback(() => {
+    return Promise.all([
+      validateInn(),
+      validateLastWorkExperience(),
+      validateMonthlyAmount(),
+      validateRequiredField('workIndustry'),
+      validateRequiredField('workPlace'),
+    ]);
+  }, [validateInn, validateLastWorkExperience, validateMonthlyAmount, validateRequiredField]);
+
   const handleFormSubmit = React.useCallback(() => {
-    const jobInfo = {...values, workInn: values.workInn.replace(/_/gi, '')};
-    updateAnketa('DETAILS', jobInfo);
-  }, [updateAnketa, values]);
+    validateAllFields().then(() => {
+      updateAnketa('DETAILS', values);
+    });
+  }, [updateAnketa, validateAllFields, values]);
 
   React.useEffect(() => {
     const getWorkExperience = () => {
@@ -196,7 +168,6 @@ export function useJobinfoForm(isStaffCampaign = false) {
     error,
     validateRequiredField,
     validateInn,
-    validateMinValue,
     validateMonthlyAmount,
     validateLastWorkExperience,
     formValid,

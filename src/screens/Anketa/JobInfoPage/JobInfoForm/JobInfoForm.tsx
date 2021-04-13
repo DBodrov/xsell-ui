@@ -10,7 +10,7 @@ import {fallbackAgreementLink} from './utils';
 import {useJobinfoForm} from './use-jobinfo-form';
 import {Form, innFieldStyles, fieldStyles, Label, FormField, ErrorText} from './styles';
 
-export function JobInfoForm(props: any) {
+export function JobInfoForm() {
   const {campaignParams, STAFF_CAMPAIGN} = useCampaign();
   const {anketa} = useAnketa();
 
@@ -58,7 +58,7 @@ export function JobInfoForm(props: any) {
   );
 
   const handleBlurInn = (event: React.FocusEvent<HTMLInputElement>) => {
-    validateInn(values.workInn);
+    validateInn();
   };
 
   const handleChangeIndustry = React.useCallback(
@@ -79,7 +79,7 @@ export function JobInfoForm(props: any) {
     });
 
   return (
-    <Form {...props}>
+    <Form onSubmit={handleFormSubmit}>
       <CustomerAddress address={registrationAddress} onChangeAddress={handleChangeAddress} />
       <FormField>
         <Label htmlFor="workInn">ИНН работодателя</Label>
@@ -111,7 +111,7 @@ export function JobInfoForm(props: any) {
           aria-label="Место работы"
           hasError={hasError('workPlace')}
           onChangeHandler={handleChangeTextField}
-          onBlurHandler={validateRequiredField}
+          onBlurHandler={() => validateRequiredField('workPlace')}
           value={values.workPlace}
           css={[fieldStyles]}
         />
@@ -155,7 +155,7 @@ export function JobInfoForm(props: any) {
       <WorkIndustryField
         industryId={values.workIndustry}
         onChangeIndustry={handleChangeIndustry}
-        onBlurHandler={validateRequiredField}
+        onBlurHandler={() => validateRequiredField('workIndustry')}
         hasError={hasError('workIndustry')}
         errorText={error.workIndustry}
       />
@@ -185,7 +185,7 @@ export function JobInfoForm(props: any) {
           variant="primary"
           flat
           css={{width: 288, height: 48, borderRadius: 28}}
-          onClick={handleFormSubmit}
+          type="submit"
           disabled={!formValid()}
         >
           Все данные верны
