@@ -10,7 +10,7 @@ import {fallbackAgreementLink} from './utils';
 import {useJobinfoForm} from './use-jobinfo-form';
 import {Form, innFieldStyles, fieldStyles, Label, FormField, ErrorText} from './styles';
 
-export function JobInfoForm(props: any) {
+export function JobInfoForm() {
   const {campaignParams, STAFF_CAMPAIGN} = useCampaign();
   const {anketa} = useAnketa();
 
@@ -19,58 +19,59 @@ export function JobInfoForm(props: any) {
 
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
   const {
-    formData,
+    values,
     dispatch,
     handleChangeAddress,
     handleFormSubmit,
-    errorState,
+    error,
     validateRequiredField,
     validateInn,
     validateMonthlyAmount,
     formValid,
-    validateLastWorkExpirience
+    validateLastWorkExperience
   } = useJobinfoForm(isStaff);
+  //console.log('===values work===', values.workPlace)
 
   const handleChangeTextField = React.useCallback(
     (value: string, e?: React.ChangeEvent<HTMLInputElement>) => {
       const fieldName = e?.currentTarget?.name;
-      dispatch({formData: {...formData, [fieldName]: value}});
+      dispatch({type: 'CHANGE_VALUE', fieldName, payload: value});
     },
-    [dispatch, formData],
+    [dispatch],
   );
 
 
   const handleChangeAgreement = React.useCallback(
     (isAgree: boolean) => {
-      dispatch({formData: {...formData, creditBureauConsentAgree: isAgree}});
+      dispatch({type: 'CHANGE_VALUE', fieldName: 'creditBureauConsentAgree', payload: isAgree});
     },
-    [dispatch, formData],
+    [dispatch],
   );
 
   const handleChangeInn = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const inn = onlyDigit(event.currentTarget.value);
-      const fullInn = maxLengthString(inn, 12)
+      const fullInn = maxLengthString(inn, 12);
 
-      dispatch({formData: {...formData, workInn: fullInn}});
+      dispatch({type: 'CHANGE_VALUE', fieldName: 'workInn', payload: fullInn});
     },
-    [dispatch, formData],
+    [dispatch],
   );
 
   const handleBlurInn = (event: React.FocusEvent<HTMLInputElement>) => {
-    validateInn(event);
+    validateInn();
   };
 
   const handleChangeIndustry = React.useCallback(
-    (id: string) => dispatch({formData: {...formData, workIndustry: id}}),
-    [dispatch, formData],
+    (id: string) => dispatch({type: 'CHANGE_VALUE', fieldName: 'workIndustry', payload: id}),
+    [dispatch],
   );
 
-  const hasError = (fieldName: keyof typeof formData) => {
-    return Boolean(errorState[fieldName]);
+  const hasError = (fieldName: string) => {
+    return Boolean(error[fieldName]);
   };
 
-  const errorStyleInputNumber = (field: keyof typeof formData) =>
+  const errorStyleInputNumber = (field: string) =>
     css({
       border: `1px ${hasError(field) ? 'var(--color-secondary)' : 'var(--color-border)'} solid`,
       '&:hover, &:focus': {
@@ -79,7 +80,7 @@ export function JobInfoForm(props: any) {
     });
 
   return (
-    <Form {...props}>
+    <Form onSubmit={handleFormSubmit}>
       <CustomerAddress address={registrationAddress} onChangeAddress={handleChangeAddress} />
       <FormField>
         <Label htmlFor="workInn">ИНН работодателя</Label>
@@ -97,10 +98,11 @@ export function JobInfoForm(props: any) {
           ]}
           onChange={handleChangeInn}
           onBlur={handleBlurInn}
-          value={formData.workInn}
+          value={values.workInn}
           id="workInn"
+          aria-label="ИНН работодателя"
         />
-        {hasError('workInn') ? <ErrorText>{errorState.workInn}</ErrorText> : null}
+        {hasError('workInn') ? <ErrorText>{error.workInn}</ErrorText> : null}
       </FormField>
       <FormField>
         <Label htmlFor="workPlace">Место работы</Label>
@@ -111,11 +113,11 @@ export function JobInfoForm(props: any) {
           aria-label="Место работы"
           hasError={hasError('workPlace')}
           onChangeHandler={handleChangeTextField}
-          onBlurHandler={validateRequiredField}
-          value={formData.workPlace}
+          onBlurHandler={() => validateRequiredField('workPlace')}
+          value={values.workPlace}
           css={[fieldStyles]}
         />
-        {hasError('workPlace') ? <ErrorText>{errorState.workPlace}</ErrorText> : null}
+        {hasError('workPlace') ? <ErrorText>{error.workPlace}</ErrorText> : null}
       </FormField>
       <FormField>
         <Label htmlFor="mainMonthlyIncomeAmount">Весь ежемесячный доход (руб)</Label>
@@ -124,13 +126,13 @@ export function JobInfoForm(props: any) {
           id="mainMonthlyIncomeAmount"
           aria-label="Весь ежемесячный доход (руб)"
           onChangeHandler={handleChangeTextField}
-          value={formData.mainMonthlyIncomeAmount}
+          value={values.mainMonthlyIncomeAmount}
           css={[fieldStyles, errorStyleInputNumber('mainMonthlyIncomeAmount')]}
           onBlurHandler={validateMonthlyAmount}
         />
 
         {hasError('mainMonthlyIncomeAmount') ? (
-          <ErrorText>{errorState.mainMonthlyIncomeAmount}</ErrorText>
+          <ErrorText>{error.mainMonthlyIncomeAmount}</ErrorText>
         ) : (
           <Span css={{fontSize: 14, color: 'var(--color-text-label)', paddingTop: 8}}>
             Ваш постоянный + дополнительный доход до вычета налогов
@@ -143,27 +145,27 @@ export function JobInfoForm(props: any) {
           name="lastWorkExperienceMonths"
           id="lastWorkExperienceMonths"
           onChangeHandler={handleChangeTextField}
-          value={formData.lastWorkExperienceMonths}
+          value={values.lastWorkExperienceMonths}
           aria-label="Стаж на последнем месте (месяцев)"
           css={[fieldStyles, errorStyleInputNumber('lastWorkExperienceMonths')]}
-          onBlurHandler={validateLastWorkExpirience}
+          onBlurHandler={validateLastWorkExperience}
         />
         {hasError('lastWorkExperienceMonths') ? (
-          <ErrorText>{errorState.lastWorkExperienceMonths}</ErrorText>
+          <ErrorText>{error.lastWorkExperienceMonths}</ErrorText>
         ) : null}
       </FormField>
       <WorkIndustryField
-        industryId={formData.workIndustry}
+        industryId={values.workIndustry}
         onChangeIndustry={handleChangeIndustry}
-        onBlurHandler={validateRequiredField}
+        onBlurHandler={() => validateRequiredField('workIndustry')}
         hasError={hasError('workIndustry')}
-        errorText={errorState.workIndustry}
+        errorText={error.workIndustry}
       />
       <FormField css={{gridColumn: '1/3', '@media (min-width: 704px)': {maxWidth: 608}}}>
         <Checkbox
           variant="primary"
           onChangeHandler={handleChangeAgreement}
-          checked={formData.creditBureauConsentAgree}
+          checked={values.creditBureauConsentAgree}
           boxStyles={{borderRadius: 4, alignSelf: 'flex-start'}}
         >
           <Span>
@@ -185,7 +187,7 @@ export function JobInfoForm(props: any) {
           variant="primary"
           flat
           css={{width: 288, height: 48, borderRadius: 28}}
-          onClick={handleFormSubmit}
+          type="submit"
           disabled={!formValid()}
         >
           Все данные верны
