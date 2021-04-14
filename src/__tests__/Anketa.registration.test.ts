@@ -6,6 +6,8 @@ import {
   renderApp,
   waitForLoadingFinish,
   waitForAnketaLoadingFinish,
+  act,
+  fireEvent
 } from 'utils/test-utils';
 
 test('render Jobinfo screen', async () => {
@@ -32,7 +34,7 @@ test.skip('address was changed', async () => {
         const updatedAnketa = {...anketa, status: 'CHANGED_REGISTRATION_ADDRESS'};
         return res(ctx.status(200), ctx.json(updatedAnketa));
       }
-      const registrationStep = {...anketa, status: 'REGISTRATION_ADDRESS'}
+      const registrationStep = {...anketa, status: 'REGISTRATION_ADDRESS'};
       return res(ctx.status(200), ctx.json(registrationStep));
     }),
   );
@@ -46,15 +48,44 @@ test.skip('address was changed', async () => {
   expect(screen.queryByText(/Похоже, что место вашей прописки изменилось/i)).toBeInTheDocument();
 });
 
-test('submit form', async () => {
+test('fill form', async () => {
   server.use(statusHandler('OK'), anketaHandler('REGISTRATION_ADDRESS'));
   renderApp();
   await waitForLoadingFinish();
   await waitForAnketaLoadingFinish();
-  const updateAddressButton = screen.queryByRole('button', {name: 'Обновить адрес'});
-  expect(updateAddressButton).toBeInTheDocument();
+
+  const submitButton = screen.queryByRole('button', {name: 'Все данные верны'});
+  expect(submitButton).toBeDisabled();
+
   const innField = screen.queryByLabelText(/ИНН работодателя/i);
   expect(innField).toBeInTheDocument();
+
   userEvent.type(innField, '123456789012');
   expect(innField).toHaveValue('123456789012');
+
+  const workPlace = screen.queryByLabelText(/Место работы/i);
+  userEvent.type(workPlace, 'рога и копыта');
+  expect(workPlace).toHaveValue('рога и копыта');
+  await act(() => Promise.resolve());
+
+  const monthlyAmount = screen.queryByLabelText(/Весь ежемесячный доход/i);
+  userEvent.type(monthlyAmount, '10000');
+  await act(() => Promise.resolve());
+
+  const workExperience = screen.queryByLabelText(/Стаж на последнем месте/i);
+  userEvent.type(workExperience, '10');
+  await act(() => Promise.resolve());
+
+  const industry = screen.queryByLabelText(/Отрасль занятости/i);
+  fireEvent.click(industry);
+  const industryItem = await screen.findByText('Энергетика');
+  fireEvent.click(industryItem);
+  expect(industry).toHaveValue('Энергетика');
+  await act(() => Promise.resolve());
+
+  const agreement = screen.queryByRole('checkbox');
+  userEvent.click(agreement);
+  await act(() => Promise.resolve());
+
+  expect(submitButton).not.toBeDisabled();
 });

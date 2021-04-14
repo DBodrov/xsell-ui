@@ -30,6 +30,7 @@ export function JobInfoForm() {
     formValid,
     validateLastWorkExperience
   } = useJobinfoForm(isStaff);
+  //console.log('===values work===', values.workPlace)
 
   const handleChangeTextField = React.useCallback(
     (value: string, e?: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,6 +100,7 @@ export function JobInfoForm() {
           onBlur={handleBlurInn}
           value={values.workInn}
           id="workInn"
+          aria-label="ИНН работодателя"
         />
         {hasError('workInn') ? <ErrorText>{error.workInn}</ErrorText> : null}
       </FormField>
