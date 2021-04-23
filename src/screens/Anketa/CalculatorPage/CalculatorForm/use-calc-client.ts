@@ -33,8 +33,8 @@ const formStateReducer = (state: TFormState, changes: IFormChanges) => {
         },
         error: {
           ...state.error,
-          [fieldName]: ''
-        }
+          [fieldName]: '',
+        },
       };
     }
     default:
@@ -45,11 +45,9 @@ const formStateReducer = (state: TFormState, changes: IFormChanges) => {
 function minMaxValidator(value: number, options: {minLimit: number; maxlimit: number; errorMessage: string}) {
   const minCheck = value >= options.minLimit;
   const maxCheck = value <= options.maxlimit;
-  console.log(minCheck && maxCheck, options.errorMessage)
   if (minCheck && maxCheck) {
     return Promise.resolve();
   } else {
-    console.log('reject')
     return Promise.reject({message: options.errorMessage});
   }
 }
@@ -91,7 +89,6 @@ export function useCalcClient(maxAmount: number) {
         dispatch({type: 'ADD_ERROR', fieldName: 'requestedLoanAmount', payload: ''});
         return true;
       } catch (error) {
-        console.log('catch', error)
         dispatch({type: 'ADD_ERROR', fieldName: 'requestedLoanAmount', payload: error.message});
         return false;
       }
@@ -99,31 +96,40 @@ export function useCalcClient(maxAmount: number) {
     [max],
   );
 
-  const validateLoanTerm = React.useCallback(async (value: number) => {
-    try {
-      const errorMessage = `Введите от ${minTerm} месяцев до ${maxTerm} месяцев.`;
-      console.log('try term', value);
-      await minMaxValidator(value, {
-        minLimit: minTerm,
-        maxlimit: maxTerm,
-        errorMessage,
-      });
-      dispatch({type: 'ADD_ERROR', fieldName: 'requestedLoanTermMonths', payload: ''});
-      return true;
-    } catch (error) {
-      dispatch({type: 'ADD_ERROR', fieldName: 'requestedLoanTermMonths', payload: error.message});
-      return false;
-    }
-  }, [minTerm]);
+  const validateLoanTerm = React.useCallback(
+    async (value: number) => {
+      try {
+        const errorMessage = `Введите от ${minTerm} месяцев до ${maxTerm} месяцев.`;
+        await minMaxValidator(value, {
+          minLimit: minTerm,
+          maxlimit: maxTerm,
+          errorMessage,
+        });
+        dispatch({type: 'ADD_ERROR', fieldName: 'requestedLoanTermMonths', payload: ''});
+        return true;
+      } catch (error) {
+        dispatch({type: 'ADD_ERROR', fieldName: 'requestedLoanTermMonths', payload: error.message});
+        return false;
+      }
+    },
+    [minTerm],
+  );
 
   const validateAllFields = React.useCallback(() => {
     return Promise.all([
       validateLoanAmount(values.requestedLoanAmount),
-      validateLoanTerm(values.requestedLoanTermMonths)
+      validateLoanTerm(values.requestedLoanTermMonths),
     ]);
   }, [validateLoanAmount, validateLoanTerm, values.requestedLoanAmount, values.requestedLoanTermMonths]);
 
-
-
-  return {values, error, getWorkExperience, dispatch, validateLoanAmount, validateLoanTerm, validateAllFields, touched};
+  return {
+    values,
+    error,
+    getWorkExperience,
+    dispatch,
+    validateLoanAmount,
+    validateLoanTerm,
+    validateAllFields,
+    touched,
+  };
 }
