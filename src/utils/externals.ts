@@ -3,6 +3,15 @@ export const OTP_INN = '7708001614';
 export const HERO_IMG_URL = 'https://cash.otpbank.ru/public/images/girl3a.png';
 export const COMMON_RULES='https://cash.otpbank.ru/public/OTP_Common_rules_01032021.pdf';
 
+export const DIFFERENCE_HAVE_RULES = 'https://cash.otpbank.ru/public/rule.pdf';
+
+export const INSURANCE_DOCS = {
+  smsService: 'https://cash.otpbank.ru/public/sms-service.pdf',
+  job: 'https://cash.otpbank.ru/public/insurance-job.pdf',
+  life: 'https://cash.otpbank.ru/public/insurance-life.pdf'
+}
+
+
 export const OPROSSO = {
   LANDING: 'http://opros.so/DtxQ',
   AUTH1_REQUIRED: 'http://opros.so/FwAm',

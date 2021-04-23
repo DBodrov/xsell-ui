@@ -128,6 +128,7 @@ export function useJobinfoForm(isStaffCampaign = false) {
   }, [validateInn, validateLastWorkExperience, validateMonthlyAmount, validateRequiredField]);
 
   const handleFormSubmit = React.useCallback(() => {
+    //TODO: проверить негативный сценарий.
     validateAllFields().then(() => {
       updateAnketa('DETAILS', values);
     });
