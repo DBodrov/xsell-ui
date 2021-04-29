@@ -15,12 +15,55 @@ const RangeInput = styled.input<{hasError?: boolean}>`
 
 const Slider = styled.input`
   position: absolute;
-  bottom: -8px;
+  bottom: -15px;
   left: 8px;
   width: calc(100% - 16px);
+  height: 30px;
   padding: 0;
   margin: 0;
-  align-self: 'center';
+  -webkit-appearance: none;
+  background: transparent;
+
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px !important;
+    height: 24px !important;
+    border: 4px #fff solid;
+    border-radius: 50%;
+    background: var(--color-primary);
+    cursor: pointer;
+    box-shadow: 0px 5px 15px var(--color-border);
+    margin-top: -11px;
+  }
+
+  &::-moz-range-thumb {
+    appearance: none;
+    max-width: 24px !important;
+    max-height: 24px !important;
+    border: 4px #fff solid;
+    border-radius: 50%;
+    background: var(--color-primary);
+    cursor: pointer;
+    box-shadow: 0px 5px 15px var(--color-border);
+  }
+
+
+  &::-webkit-slider-runnable-track {
+    box-sizing: border-box;
+    border: none;
+    width: 100%;
+    height: 4px;
+    background: var(--color-primary);
+  }
+
+  &::-moz-range-track {
+    box-sizing: border-box;
+    border: none;
+    width: 100%;
+    height: 4px;
+    background: var(--color-primary);
+  }
 `;
 
 interface IRangeProps extends Omit<React.HTMLProps<HTMLInputElement>, 'onChange'> {
