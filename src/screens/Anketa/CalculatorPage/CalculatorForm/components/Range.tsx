@@ -17,13 +17,17 @@ const Slider = styled.input`
   position: absolute;
   bottom: -15px;
   left: 8px;
-  width: calc(100% - 16px);
+  width: calc(100% - 20px);
   height: 30px;
   padding: 0;
   margin: 0;
   -webkit-appearance: none;
   background: transparent;
 
+  &:focus {
+    outline: 0;
+    border: 0;
+  }
 
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
