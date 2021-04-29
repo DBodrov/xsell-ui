@@ -6,6 +6,8 @@ const baseHeading = css`
   font-style: normal;
   font-weight: bold;
   color: #000;
+  margin: 0;
+  padding: 0;
 `;
 
 export const H1 = styled.h1`

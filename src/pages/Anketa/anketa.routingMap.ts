@@ -1,7 +1,7 @@
 import {TAnketaStep} from 'context/Anketa'
 
 export const anketaRoutesMap = new Map<TAnketaStep, {url: string; step: number}>([
-  ['LOAN_PARAMS', {url: '/anketa/calculator', step: 2}],
+  ['LOAN_PARAMS', {url: '/anketa/calculator', step: 1}],
   ['PASSPORT', {url: '/anketa/passport', step: 2}],
   ['PASSPORT_PHOTO', {url: '/anketa/photo', step: 2}],
   ['REGISTRATION_ADDRESS', {url: '/anketa/registration', step: 2}],

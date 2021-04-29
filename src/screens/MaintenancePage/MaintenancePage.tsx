@@ -1,25 +1,25 @@
 import React from 'react';
-import {LayoutPage} from 'components/Layout';
+import {AppPage} from 'components/Layout';
 import maintenanceImg from 'assets/images/maintenance.png';
-import css from './MaintenancePage.module.scss';
+import {Screen, Heading, HeadImage, HeadText, Info} from './styles';
 
 export function MaintenancePage() {
   return (
-    <LayoutPage layoutStyles={{maxWidth: '1024px'}}>
-      <div className={css.Page}>
-        <div className={css.Heading}>
-          <img className={css.HeadImage} src={maintenanceImg} alt="heading" />
-          <p className={css.HeadText}>Регламентные работы</p>
-        </div>
-        <div className={css.Info}>
+    <AppPage noStepper>
+      <Screen>
+        <Heading>
+          <HeadImage src={maintenanceImg} alt="heading" />
+          <HeadText>Регламентные работы</HeadText>
+        </Heading>
+        <Info>
           <h2>Уважаемые клиенты</h2>
           <p>Сервис временно недоступен. Мы уже работаем над этим.</p>
           <p>Приносим свои извинения за доставленные неудобства.</p>
           <p>
             <strong>ОТП Банк</strong>
           </p>
-        </div>
-      </div>
-    </LayoutPage>
+        </Info>
+      </Screen>
+    </AppPage>
   );
 }

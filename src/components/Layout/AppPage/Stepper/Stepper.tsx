@@ -7,7 +7,7 @@ export function Stepper(props: React.HTMLAttributes<HTMLDivElement>) {
   const {state: {step = 1} = {}} = useLocation<{step: number}>();
 
   return (
-    <div css={{padding: '0 10px'}} {...props}>
+    <div css={{'@media (max-width: 575px)': {padding: '0 10px'}}} {...props}>
       <div
         css={{
           display: 'grid',

@@ -6,7 +6,7 @@ import {server} from './test/dev-server';
 import {AppProviders} from './context';
 import {App} from './App';
 import {globalStyles} from './globalStyles';
-import './global.scss';
+// import './global.scss';
 
 auditService.initAudit();
 

@@ -217,7 +217,7 @@ export const handlers = [
     return res(ctx.status(200), ctx.json({code: 'OK'}));
   }),
   rest.post('/gateway/customer-profile/get-work-experience', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({workExperienceMonths: 28}));
+    return res(ctx.status(200), ctx.json({workExperienceMonths: 20}));
   }),
   rest.post('/gateway/customer-profile/get-otp-cards', (req, res, ctx) => {
     return res(
