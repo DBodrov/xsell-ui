@@ -143,6 +143,7 @@ export function SigninForm({onLogin}: TSigninFormProps) {
           name="birthDay"
           onChangeHandler={handleChangeBirthDate}
           value={values?.birthDate}
+          locale="ru"
           inputStyles={css([birthDateStyles, birthDateBorderStyle])}
           inputProps={{'aria-label': 'дата рождения', placeholder: 'ДД.ММ.ГГГГ'}}
           calendarButtonStyles={{color: hasBirthDateError ? 'var(--color-error)' : 'var(--color-primary)'}}
