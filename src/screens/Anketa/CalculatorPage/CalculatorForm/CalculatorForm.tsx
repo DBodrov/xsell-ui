@@ -290,6 +290,27 @@ export function CalculatorForm() {
       <FormField css={{height: 48, justifyContent: 'center'}}>
         <SecuritySign />
       </FormField>
+      <FormField css={{gridColumn: '1/3', '@media (min-width: 704px)': {maxWidth: 608}}}>
+        <span>
+          * Расчет носит предварительный характер. Точная сумма ежемесячного платежа будет определена Банком
+          по результатам рассмотрения заявки
+        </span>
+        <span css={{paddingTop: 8}}>
+          ** После выполнения{' '}
+          <a
+            href={DIFFERENCE_HAVE_RULES}
+            target="_blank"
+            rel="noopener noreferrer"
+            css={{color: 'var(--color-primary)'}}
+          >
+            условий
+          </a>
+          , в конце срока кредита мы пересчитаем его проценты по ставке 8,5%, и вернем переплату на ваш счет
+        </span>
+        {isStaff ? (
+          <span >*** Перевод внутри организации через увольнение разрывает непрерывный трудовой стаж</span>
+        ) : null}
+      </FormField>
     </Form>
   );
 }

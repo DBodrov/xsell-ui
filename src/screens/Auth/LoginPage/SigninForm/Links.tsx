@@ -21,8 +21,6 @@ const asLink = css`
 const agreementLink = 'https://cash.otpbank.ru/public/soglasie_otpbank.pdf';
 const hrefDistanceServiceRule = 'https://cash.otpbank.ru/public/distant-service-rules.pdf';
 
-
-
 export const AgreementLink = () => (
   <span>
     Я даю{' '}
@@ -34,16 +32,18 @@ export const AgreementLink = () => (
 );
 
 export const DistanceAgreementLink = () => (
-  <p>
-    Я присоединяюсь к действующей редакции{' '}
-    <a
-      css={asLink}
-      href={hrefDistanceServiceRule}
-      type="download"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      Правил дистанционного банковского обслуживания физических лиц АО &quot;ОТП Банк&quot;
-    </a>
-  </p>
+
+    <span css={{margin: 0}}>
+      Я присоединяюсь к действующей редакции{' '}
+      <a
+        css={asLink}
+        href={hrefDistanceServiceRule}
+        type="download"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Правил дистанционного банковского обслуживания физических лиц АО "ОТП Банк"
+      </a>
+    </span>
+
 );
