@@ -4,22 +4,21 @@ import {ProtectedRoute} from 'components/ProtectedRoute';
 import {CalculatorPage} from 'screens/Anketa/CalculatorPage';
 import {PassportPage} from 'screens/Anketa/PassportPage';
 import {JobInfoPage} from 'screens/Anketa/JobInfoPage';
-import {AgreementPage} from './AgreementSMSPage';
-import {AdvanceScoringRefusalPage} from './AdvanceScoringRefusalPage';
-import {ResultScoringPage} from './ResultScoringPage';
-import {SignaturePage} from './SignaturePage';
-import {ExecutionPage} from './ExecutionPage';
-import {ExecutionFailedPage} from './ExecutionFailedPage';
-import {CompletedPage} from './CompletedPage';
-import {RegistrationChanged} from './RegistrationChanged';
-import {PendingScoringPage} from './PendingScoringPage';
-import {PhotoPassportPage} from 'screens/Anketa/PhotoPassportPage';
-import {PassportRegPhotoPage} from '../PassportRegPhotoPage';
-import {PassportPhotoPage} from '../PassportPhotoPage';
-import {PendingDocumentsPage} from './PendingDocumentsPage';
-
-import {routeMap} from './anketa.routingMap';
 import {TransferDetailsPage} from 'screens/Anketa/TransferDetailsPage';
+import {PhotoPassportPage} from 'screens/Anketa/PhotoPassportPage';
+import {AgreementPage} from '../../pages/Anketa/AgreementSMSPage';
+import {AdvanceScoringRefusalPage} from '../../pages/Anketa/AdvanceScoringRefusalPage';
+import {ResultScoringPage} from '../../pages/Anketa/ResultScoringPage';
+import {SignaturePage} from '../../pages/Anketa/SignaturePage';
+import {ExecutionPage} from '../../pages/Anketa/ExecutionPage';
+import {ExecutionFailedPage} from '../../pages/Anketa/ExecutionFailedPage';
+import {CompletedPage} from '../../pages/Anketa/CompletedPage';
+import {RegistrationChanged} from '../../pages/Anketa/RegistrationChanged';
+import {PendingScoringPage} from '../../pages/Anketa/PendingScoringPage';
+// import {PassportRegPhotoPage} from '../../pages/PassportRegPhotoPage';
+// import {PassportPhotoPage} from '../../pages/PassportPhotoPage';
+import {PendingDocumentsPage} from '../../pages/Anketa/PendingDocumentsPage';
+import {routeMap} from './anketa.routingMap';
 
 export function AnketaRoutes() {
   return (
@@ -45,8 +44,8 @@ export function AnketaRoutes() {
       <ProtectedRoute exact path={routeMap.PASSPORT_PHOTO}>
         <PhotoPassportPage />
       </ProtectedRoute>
-      <ProtectedRoute path={`${routeMap.PASSPORT_PHOTO}/person`} component={PassportPhotoPage} />
-      <ProtectedRoute path={`${routeMap.PASSPORT_PHOTO}/registration`} component={PassportRegPhotoPage} />
+      {/* <ProtectedRoute path={`${routeMap.PASSPORT_PHOTO}/person`} component={PassportPhotoPage} />
+      <ProtectedRoute path={`${routeMap.PASSPORT_PHOTO}/registration`} component={PassportRegPhotoPage} /> */}
       {/* Необходимо получить согласие клиента на его проверку в БКИ */}
       {/* <ProtectedRoute exact path={routeMap.PROCESSING_AGREEMENT}>
                 <ContactsPage />

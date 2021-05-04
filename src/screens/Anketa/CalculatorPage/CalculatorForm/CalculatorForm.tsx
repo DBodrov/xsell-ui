@@ -111,7 +111,7 @@ export function CalculatorForm() {
             hasError={hasError('requestedLoanAmount')}
           />
           {hasError('requestedLoanAmount') ? (
-            <span css={{fontSize: 14, color: 'var(--color-error)', paddingTop: 4}}>
+            <span css={{fontSize: 14, color: 'var(--color-error)', paddingTop: 4}} role="alert">
               {error['requestedLoanAmount']}
             </span>
           ) : (
@@ -134,7 +134,7 @@ export function CalculatorForm() {
             hasError={hasError('requestedLoanTermMonths')}
           />
           {hasError('requestedLoanTermMonths') ? (
-            <span css={{fontSize: 14, color: 'var(--color-error)', paddingTop: 4}}>
+            <span css={{fontSize: 14, color: 'var(--color-error)', paddingTop: 4}} role="alert">
               {error.requestedLoanTermMonths}
             </span>
           ) : (
@@ -289,6 +289,27 @@ export function CalculatorForm() {
       </FormField>
       <FormField css={{height: 48, justifyContent: 'center'}}>
         <SecuritySign />
+      </FormField>
+      <FormField css={{gridColumn: '1/3', '@media (min-width: 704px)': {maxWidth: 608}}}>
+        <span>
+          * Расчет носит предварительный характер. Точная сумма ежемесячного платежа будет определена Банком
+          по результатам рассмотрения заявки
+        </span>
+        <span css={{paddingTop: 8}}>
+          ** После выполнения{' '}
+          <a
+            href={DIFFERENCE_HAVE_RULES}
+            target="_blank"
+            rel="noopener noreferrer"
+            css={{color: 'var(--color-primary)'}}
+          >
+            условий
+          </a>
+          , в конце срока кредита мы пересчитаем его проценты по ставке 8,5%, и вернем переплату на ваш счет
+        </span>
+        {isStaff ? (
+          <span css={{paddingTop: 8}}>*** Перевод внутри организации через увольнение разрывает непрерывный трудовой стаж</span>
+        ) : null}
       </FormField>
     </Form>
   );

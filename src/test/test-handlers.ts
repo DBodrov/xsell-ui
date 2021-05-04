@@ -224,7 +224,6 @@ export const statusHandler = (status: AuthStatus = 'INITIALIZE') =>
     return res(ctx.status(200), ctx.json({status}));
   });
 
-
 export const anketaHandler = (step: TAnketaStep) => {
   const updatedAnketa = {...anketa, status: step}
   return rest.post('/gateway/credit-application/get-session-app', (req, res, ctx) => {
