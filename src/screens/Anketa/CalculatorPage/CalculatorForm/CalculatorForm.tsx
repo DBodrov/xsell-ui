@@ -111,7 +111,7 @@ export function CalculatorForm() {
             hasError={hasError('requestedLoanAmount')}
           />
           {hasError('requestedLoanAmount') ? (
-            <span css={{fontSize: 14, color: 'var(--color-error)', paddingTop: 4}}>
+            <span css={{fontSize: 14, color: 'var(--color-error)', paddingTop: 4}} role="alert">
               {error['requestedLoanAmount']}
             </span>
           ) : (
@@ -134,7 +134,7 @@ export function CalculatorForm() {
             hasError={hasError('requestedLoanTermMonths')}
           />
           {hasError('requestedLoanTermMonths') ? (
-            <span css={{fontSize: 14, color: 'var(--color-error)', paddingTop: 4}}>
+            <span css={{fontSize: 14, color: 'var(--color-error)', paddingTop: 4}} role="alert">
               {error.requestedLoanTermMonths}
             </span>
           ) : (
@@ -308,7 +308,7 @@ export function CalculatorForm() {
           , в конце срока кредита мы пересчитаем его проценты по ставке 8,5%, и вернем переплату на ваш счет
         </span>
         {isStaff ? (
-          <span >*** Перевод внутри организации через увольнение разрывает непрерывный трудовой стаж</span>
+          <span css={{paddingTop: 8}}>*** Перевод внутри организации через увольнение разрывает непрерывный трудовой стаж</span>
         ) : null}
       </FormField>
     </Form>
