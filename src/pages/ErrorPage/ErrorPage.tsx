@@ -4,7 +4,7 @@ import errorIcon from 'assets/images/error.svg';
 import css from './ErrorPage.module.scss';
 
 export function ErrorPage() {
-    const { state: { message = 'Что-то пошло не так' } = {} } = useLocation();
+    const { state: { message = 'Что-то пошло не так' } = {} } = useLocation<{message: string}>();
 
     return (
         <div className={css.ErrorPage}>

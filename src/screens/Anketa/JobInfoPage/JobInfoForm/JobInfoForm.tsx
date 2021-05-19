@@ -18,6 +18,7 @@ export function JobInfoForm() {
   const agreementLink = agreementFormLink ? `/gateway/doc${agreementFormLink}` : fallbackAgreementLink;
 
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
+
   const {
     values,
     dispatch,
@@ -30,7 +31,6 @@ export function JobInfoForm() {
     formValid,
     validateLastWorkExperience
   } = useJobinfoForm(isStaff);
-  //console.log('===values work===', values.workPlace)
 
   const handleChangeTextField = React.useCallback(
     (value: string, e?: React.ChangeEvent<HTMLInputElement>) => {

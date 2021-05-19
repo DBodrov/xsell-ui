@@ -45,6 +45,7 @@ const formStateReducer = (state: TFormState, changes: IFormChanges) => {
 };
 
 export function useJobinfoForm(isStaffCampaign = false) {
+
   const [{values, error, touched}, dispatch] = React.useReducer(formStateReducer, initState);
 
   const {updateAnketa, step} = useAnketa();

@@ -12,3 +12,4 @@ export * from './UserBoxIcon';
 export * from './CCOnHand';
 export * from './CloseIcon';
 export * from './MasterCardIcon';
+export * from './CameraIcon';

@@ -4,3 +4,4 @@ export * from './LinkButton';
 export * from './SecuritySign';
 export * from './Form';
 export * from './Input';
+export * from './Spinner';
