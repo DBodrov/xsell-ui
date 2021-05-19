@@ -18,6 +18,7 @@ export function JobInfoForm() {
   const agreementLink = agreementFormLink ? `/gateway/doc${agreementFormLink}` : fallbackAgreementLink;
 
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
+
   const {
     values,
     dispatch,

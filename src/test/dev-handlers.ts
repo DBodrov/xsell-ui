@@ -200,6 +200,14 @@ export const handlers = [
     return res(ctx.status(200), ctx.json({code: 'OK'}));
   }),
   rest.post('/gateway/credit-application/upload-passport-photo', (req, res, ctx) => {
+    // const photoType = req.url.searchParams.get('passportPhotoType');
+    // if (photoType === 'PRIMARY') {
+    //   return res(
+    //     ctx.status(409),
+    //     ctx.json({message: 'Something went wrong'})
+    //   )
+    // }
+    console.log(req.body)
     return res(ctx.status(200), ctx.json({code: 'OK'}));
   }),
   rest.post('/gateway/credit-application/verify-agreement-signature', (req, res, ctx) => {
