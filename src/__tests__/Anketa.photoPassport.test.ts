@@ -74,7 +74,6 @@ test('user skip photo process', async () => {
   await waitForLoadingFinish();
   await waitForAnketaLoadingFinish();
   const skipPhotoButton = screen.queryByRole('button', {name: /Нет, не готов/i});
-  screen.debug(skipPhotoButton)
   fireEvent.click(skipPhotoButton);
   await act(() => Promise.resolve());
   await waitForAnketaLoadingFinish();
