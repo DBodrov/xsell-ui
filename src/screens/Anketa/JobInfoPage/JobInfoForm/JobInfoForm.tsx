@@ -31,7 +31,6 @@ export function JobInfoForm() {
     formValid,
     validateLastWorkExperience
   } = useJobinfoForm(isStaff);
-  //console.log('===values work===', values.workPlace)
 
   const handleChangeTextField = React.useCallback(
     (value: string, e?: React.ChangeEvent<HTMLInputElement>) => {
