@@ -22,7 +22,7 @@ export type TLoanParams = Partial<typeof defaultLoanParams>;
 
 const defaultLoanParams = {
   customerTimezoneOffset: timezone,
-  requestedLoanAmount: 300000,
+  requestedLoanAmount: 400000,
   requestedLoanTermMonths: 24,
   jobLossProtection: false,
   lifeAndHealthProtection: false,
@@ -40,9 +40,10 @@ export function CalcAmountForm() {
   });
   const [, forceUpdate] = React.useState({});
 
-  const {STAFF_CAMPAIGN, campaignParams} = useCampaign();
+  const {STAFF_CAMPAIGN, FAP_CAMPAIGN, campaignParams} = useCampaign();
 
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
+  const isFap = campaignParams?.campaignName === FAP_CAMPAIGN;
   const showDifferenceHave = !isStaff || (isStaff && loanParams?.workExperience < 25);
 
   const {payment, updateLoanParams} = usePayment(isStaff);
@@ -54,6 +55,28 @@ export function CalcAmountForm() {
     loanParams.campaignParticipant,
   );
   const maxAmount = isStaff ? 3000000 : 1000000;
+
+  const [takeMore, setTakeMore] = React.useState({isShowMore: false, takeAmount: undefined});
+
+  const takeMoreMoney = React.useCallback((current: number) => {
+    const takeAmount = 400000 - current;
+    setTakeMore(s => ({...s, isShowMore: true, takeAmount}));
+  }, []);
+
+  const resetTakeMoreMoney = React.useCallback(() => {
+    setTakeMore(s => ({...s, isShowMore: false, takeAmount: undefined}));
+  }, []);
+
+  const handleFapPromoRate = React.useCallback(
+    (amount: number) => {
+      if (amount < 400000) {
+        takeMoreMoney(amount);
+      } else {
+        resetTakeMoreMoney();
+      }
+    },
+    [resetTakeMoreMoney, takeMoreMoney],
+  );
 
   //TODO: Костыльная валидация
   const handleSubmit: React.MouseEventHandler = useCallback(
@@ -104,10 +127,13 @@ export function CalcAmountForm() {
 
   const setAmount = useCallback(
     (value: string | number) => {
+      if (isFap) {
+        handleFapPromoRate(Number(value));
+      }
       validateLoanParam('requestedLoanAmount', Number(value));
       setState({requestedLoanAmount: Number(value)});
     },
-    [validateLoanParam],
+    [handleFapPromoRate, isFap, validateLoanParam],
   );
 
   const setTerm = useCallback(
@@ -165,6 +191,13 @@ export function CalcAmountForm() {
               hasError={amountError?.length > 0}
             />
             {amountError?.length > 0 && <span className={css.ErrorText}>{amountError}</span>}
+            {takeMore.isShowMore ? (
+            <span
+              css={{fontSize: '0.875rem', color: 'var(--color-text)', paddingTop: '4px'}}
+            >{`Если вы возьмете кредит на ${takeMore.takeAmount.toLocaleString(
+              'ru',
+            )} рублей больше, то ставка будет ниже`}</span>
+          ) : null}
           </label>
         </div>
         <div className={cx(css.FormField)}>
