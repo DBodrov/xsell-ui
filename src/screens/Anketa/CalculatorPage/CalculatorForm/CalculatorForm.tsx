@@ -1,17 +1,20 @@
 import React from 'react';
 import {Span, Checkbox, Button} from 'neutrino-ui';
 import {useAnketa} from 'context/Anketa';
-import {Form, Label, FormField, H2, SecuritySign} from 'components/lib';
+import {Form, Label, FormField, H2, SecuritySign, LinkButton} from 'components/lib';
 import {useCampaign} from 'utils/use-campaign';
-import {INSURANCE_DOCS, DIFFERENCE_HAVE_RULES} from 'utils/externals';
+import {DIFFERENCE_HAVE_RULES} from 'utils/externals';
 import {Range} from './components/Range';
+import {AdditionsModal} from './components/AdditionsModal';
 import {useCalcClient} from './use-calc-client';
 import {usePayment} from './use-payment';
+import {TAdditionsModalType} from './types';
 import {MinmaxText, ConditionsCard, List, ListItem} from './styles';
 
 export function CalculatorForm() {
-  const {STAFF_CAMPAIGN, campaignParams} = useCampaign();
+  const {STAFF_CAMPAIGN, FAP_CAMPAIGN, campaignParams} = useCampaign();
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
+  const isFap = campaignParams?.campaignName === FAP_CAMPAIGN;
   const {step, updateAnketa} = useAnketa();
   const maxAmount = isStaff ? 3000000 : 1000000;
 
@@ -27,11 +30,37 @@ export function CalculatorForm() {
   const {payment, updateLoanParams} = usePayment(isStaff);
   const showDifferenceHave = !isStaff || (isStaff && values?.workExperience < 25);
 
+  const [modalState, setModalState] = React.useState({modalType: '', modalTitle: '', isOpen: false});
+  const [takeMore, setTakeMore] = React.useState({isShowMore: false, takeAmount: undefined});
+
+  const takeMoreMoney = React.useCallback((current: number) => {
+    const takeAmount = 400000 - current;
+    setTakeMore(s => ({...s, isShowMore: true, takeAmount}));
+  }, []);
+
+  const resetTakeMoreMoney = React.useCallback(() => {
+    setTakeMore(s => ({...s, isShowMore: false, takeAmount: undefined}));
+  }, []);
+
+  const handleFapPromoRate = React.useCallback(
+    (amount: number) => {
+      if (amount < 400000) {
+        takeMoreMoney(amount);
+      } else {
+        resetTakeMoreMoney();
+      }
+    },
+    [resetTakeMoreMoney, takeMoreMoney],
+  );
+
   const handleChangeAmount = React.useCallback(
     (amount: number) => {
+      if (isFap) {
+        handleFapPromoRate(amount);
+      }
       dispatch({type: 'CHANGE_VALUE', fieldName: 'requestedLoanAmount', payload: amount});
     },
-    [dispatch],
+    [dispatch, handleFapPromoRate, isFap],
   );
 
   const handleChangeTerm = React.useCallback(
@@ -72,6 +101,17 @@ export function CalculatorForm() {
     [step, updateAnketa, validateAllFields, values],
   );
 
+  const handleOpenModal = React.useCallback((e: React.PointerEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const modalTitle = e.currentTarget.textContent;
+    const modalType = e.currentTarget.dataset.modal;
+    setModalState(s => ({...s, modalTitle, modalType, isOpen: true}));
+  }, []);
+
+  const handleCloseModal = React.useCallback(() => {
+    setModalState(s => ({...s, modalTitle: '', modalType: '', isOpen: false}));
+  }, []);
+
   React.useEffect(() => {
     if (isStaff && !values.workExperience) {
       getWorkExperience();
@@ -93,10 +133,25 @@ export function CalculatorForm() {
     return Boolean(error[fieldName]);
   };
 
+  const readPayment = React.useCallback(
+    (modalType: string): number => {
+      if (payment) {
+        const payments = {
+          smsService: payment.allSmsPayment,
+          diffHave: payment.allCampaignPayment,
+          job: payment.allJobLossProtectionPayment,
+          life: payment.allLifeAndHealthProtectionPayment,
+        };
+        return payments[modalType];
+      }
+    },
+    [payment],
+  );
+
   return (
     <Form onSubmit={handleSubmit}>
       <div css={{width: '100%'}}>
-        <FormField>
+        <FormField css={{height: isFap ? '9rem' : 'auto'}}>
           <Label>Желаемая сумма кредита</Label>
           <Range
             showCurrency
@@ -120,6 +175,13 @@ export function CalculatorForm() {
               <span>{`до ${maxAmount.toLocaleString('ru')}`}</span>
             </MinmaxText>
           )}
+          {takeMore.isShowMore ? (
+            <span
+              css={{fontSize: '0.875rem', color: 'var(--color-text)', paddingTop: '4px'}}
+            >{`Если вы возьмете кредит на ${takeMore.takeAmount.toLocaleString(
+              'ru',
+            )} рублей больше, то ставка будет ниже`}</span>
+          ) : null}
         </FormField>
         <FormField>
           <Label>Cрок кредита</Label>
@@ -163,7 +225,7 @@ export function CalculatorForm() {
                 color: 'var(--color-primary)',
               }}
             >
-              {Number((payment || 0).toFixed(0)).toLocaleString('ru')} ₽
+              {Number((payment?.monthlyPayment ?? 0).toFixed(0)).toLocaleString('ru')} ₽
             </H2>
           </ListItem>
           <ListItem>
@@ -214,14 +276,13 @@ export function CalculatorForm() {
               onChangeHandler={checked => handleSetCheck('smsInforming', checked)}
               checked={values.smsInforming}
             >
-              <a
-                href={INSURANCE_DOCS.smsService}
-                target="_blank"
-                rel="noopener noreferrer"
-                css={{color: 'var(--color-primary)'}}
+              <LinkButton
+                data-modal="smsService"
+                css={{color: 'var(--color-primary)', fontSize: 16}}
+                onClick={handleOpenModal}
               >
                 SMS информирование
-              </a>
+              </LinkButton>
             </Checkbox>
           </ListItem>
           <ListItem>
@@ -232,14 +293,13 @@ export function CalculatorForm() {
               onChangeHandler={checked => handleSetCheck('jobLossProtection', checked)}
               checked={values.jobLossProtection}
             >
-              <a
-                href={INSURANCE_DOCS.job}
-                target="_blank"
-                rel="noopener noreferrer"
-                css={{color: 'var(--color-primary)'}}
+              <LinkButton
+                data-modal="job"
+                css={{color: 'var(--color-primary)', fontSize: 16}}
+                onClick={handleOpenModal}
               >
                 Защита от потери работы
-              </a>
+              </LinkButton>
             </Checkbox>
           </ListItem>
           <ListItem>
@@ -250,14 +310,13 @@ export function CalculatorForm() {
               onChangeHandler={checked => handleSetCheck('lifeAndHealthProtection', checked)}
               checked={values.lifeAndHealthProtection}
             >
-              <a
-                href={INSURANCE_DOCS.life}
-                target="_blank"
-                rel="noopener noreferrer"
-                css={{color: 'var(--color-primary)'}}
+              <LinkButton
+                data-modal="life"
+                css={{color: 'var(--color-primary)', fontSize: 16}}
+                onClick={handleOpenModal}
               >
                 Защита жизни и здоровья
-              </a>
+              </LinkButton>
             </Checkbox>
           </ListItem>
           {showDifferenceHave ? (
@@ -269,14 +328,13 @@ export function CalculatorForm() {
                 onChangeHandler={handleSetDifferenceHave}
                 checked={values.campaignParticipant}
               >
-                <a
-                  href={DIFFERENCE_HAVE_RULES}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  css={{color: 'var(--color-primary)'}}
+                <LinkButton
+                  data-modal="diffHave"
+                  css={{color: 'var(--color-primary)', fontSize: 16}}
+                  onClick={handleOpenModal}
                 >
                   Акция "Разница есть"
-                </a>
+                </LinkButton>
               </Checkbox>
             </ListItem>
           ) : null}
@@ -308,9 +366,18 @@ export function CalculatorForm() {
           , в конце срока кредита мы пересчитаем его проценты по ставке 8,5%, и вернем переплату на ваш счет
         </span>
         {isStaff ? (
-          <span css={{paddingTop: 8}}>*** Перевод внутри организации через увольнение разрывает непрерывный трудовой стаж</span>
+          <span css={{paddingTop: 8}}>
+            *** Перевод внутри организации через увольнение разрывает непрерывный трудовой стаж
+          </span>
         ) : null}
       </FormField>
+      <AdditionsModal
+        isOpen={modalState.isOpen}
+        onClose={handleCloseModal}
+        modalTitle={modalState.modalTitle}
+        modalType={modalState.modalType as TAdditionsModalType}
+        payment={readPayment(modalState.modalType)}
+      />
     </Form>
   );
 }

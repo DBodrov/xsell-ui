@@ -4,7 +4,7 @@ export type TLoanParams = typeof initLoanParams;
 
 export const initLoanParams = {
   customerTimezoneOffset: timezone,
-  requestedLoanAmount: 300000,
+  requestedLoanAmount: 400000,
   requestedLoanTermMonths: 24,
   jobLossProtection: false,
   lifeAndHealthProtection: false,
@@ -17,24 +17,24 @@ export const initLoanParams = {
 export const initErrorState = {
   requestedLoanAmount: '',
   requestedLoanTermMonths: '',
-}
+};
 
 export const initTouchedState = {
   requestedLoanAmount: false,
   requestedLoanTermMonths: false,
-}
+};
 
 export const initFormState: TFormState = {
   values: initLoanParams,
   error: initErrorState,
   touched: initTouchedState,
-}
+};
 
 export type TFormState = {
   readonly values: typeof initLoanParams;
   readonly error: typeof initErrorState;
   readonly touched: typeof initTouchedState;
-}
+};
 
 export type TChangesType =
   | 'INIT_FORM'
@@ -54,3 +54,19 @@ export interface IFormChanges {
   fieldName?: string | string[];
   payload?: any;
 }
+
+export type TPaymentValues = {
+  allCampaignPayment: number;
+  allJobLossProtectionPayment: number;
+  allLifeAndHealthProtectionPayment: number;
+  allSmsPayment: number;
+  monthlyCampaignPayment: number;
+  monthlyJobLossProtectionPayment: number;
+  monthlyLifeAndHealthProtectionPayment: number;
+  monthlyPayment: number;
+  monthlySmsPayment: number;
+};
+
+export type TAdditionsModalType = "smsService" | "job" | "life" | "diffHave";
+
+export type TPaymentByType = Record<TAdditionsModalType, number>;

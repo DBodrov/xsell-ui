@@ -145,7 +145,20 @@ export const handlers = [
     return res(ctx.status(200), ctx.json({monthlyPayment: 12345}));
   }),
   rest.post('/gateway/credit-application/get-monthly-payment', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({monthlyPayment: 12345}));
+    return res(
+      ctx.status(200),
+      ctx.json({
+        allCampaignPayment: 9900,
+        allJobLossProtectionPayment: 12743.36,
+        allLifeAndHealthProtectionPayment: 19115.04,
+        allSmsPayment: 2376,
+        monthlyCampaignPayment: 412.5,
+        monthlyJobLossProtectionPayment: 530.97,
+        monthlyLifeAndHealthProtectionPayment: 796.46,
+        monthlyPayment: 17498.19,
+        monthlySmsPayment: 99,
+      }),
+    );
   }),
   rest.post('/gateway/credit-application/send-documents', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({code: 'OK'}));
@@ -207,7 +220,6 @@ export const handlers = [
     //     ctx.json({message: 'Something went wrong'})
     //   )
     // }
-    console.log(req.body)
     return res(ctx.status(200), ctx.json({code: 'OK'}));
   }),
   rest.post('/gateway/credit-application/verify-agreement-signature', (req, res, ctx) => {

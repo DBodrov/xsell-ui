@@ -1,9 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import { useFetch } from 'utils/use-fetch';
-import { TLoanParams } from './types';
+import { TLoanParams, TPaymentValues } from './types';
 
 export function usePayment(isStaff = false) {
-  const [payment, setPayment] = useState(null);
+  const [payment, setPayment] = useState<TPaymentValues | null>(null);
   const fetchClient = useFetch();
 
   const updateLoanParams = useCallback(
@@ -12,8 +12,8 @@ export function usePayment(isStaff = false) {
       const staffUrl = '/gateway/credit-application/get-employee-monthly-payment';
       const url = isStaff ? staffUrl : clientUrl;
       fetchClient(url, { body: calcData }).then(
-        (data) => {
-          setPayment(data?.monthlyPayment);
+        (data : TPaymentValues) => {
+          setPayment(data);
           return data;
         },
         (error) => {
@@ -24,5 +24,5 @@ export function usePayment(isStaff = false) {
     [fetchClient, isStaff]
   );
 
-  return { updateLoanParams, payment };
+  return { updateLoanParams, payment: useMemo(() => (payment), [payment]) };
 }
