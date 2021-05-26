@@ -12,8 +12,9 @@ import {TAdditionsModalType} from './types';
 import {MinmaxText, ConditionsCard, List, ListItem} from './styles';
 
 export function CalculatorForm() {
-  const {STAFF_CAMPAIGN, campaignParams} = useCampaign();
+  const {STAFF_CAMPAIGN, FAP_CAMPAIGN, campaignParams} = useCampaign();
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
+  const isFap = campaignParams?.campaignName === FAP_CAMPAIGN;
   const {step, updateAnketa} = useAnketa();
   const maxAmount = isStaff ? 3000000 : 1000000;
 
@@ -30,12 +31,36 @@ export function CalculatorForm() {
   const showDifferenceHave = !isStaff || (isStaff && values?.workExperience < 25);
 
   const [modalState, setModalState] = React.useState({modalType: '', modalTitle: '', isOpen: false});
+  const [takeMore, setTakeMore] = React.useState({isShowMore: false, takeAmount: undefined});
+
+  const takeMoreMoney = React.useCallback((current: number) => {
+    const takeAmount = 400000 - current;
+    setTakeMore(s => ({...s, isShowMore: true, takeAmount}));
+  }, []);
+
+  const resetTakeMoreMoney = React.useCallback(() => {
+    setTakeMore(s => ({...s, isShowMore: false, takeAmount: undefined}));
+  }, []);
+
+  const handleFapPromoRate = React.useCallback(
+    (amount: number) => {
+      if (amount < 400000) {
+        takeMoreMoney(amount);
+      } else {
+        resetTakeMoreMoney();
+      }
+    },
+    [resetTakeMoreMoney, takeMoreMoney],
+  );
 
   const handleChangeAmount = React.useCallback(
     (amount: number) => {
+      if (isFap) {
+        handleFapPromoRate(amount);
+      }
       dispatch({type: 'CHANGE_VALUE', fieldName: 'requestedLoanAmount', payload: amount});
     },
-    [dispatch],
+    [dispatch, handleFapPromoRate, isFap],
   );
 
   const handleChangeTerm = React.useCallback(
@@ -126,7 +151,7 @@ export function CalculatorForm() {
   return (
     <Form onSubmit={handleSubmit}>
       <div css={{width: '100%'}}>
-        <FormField>
+        <FormField css={{height: isFap ? '9rem' : 'auto'}}>
           <Label>Желаемая сумма кредита</Label>
           <Range
             showCurrency
@@ -150,6 +175,13 @@ export function CalculatorForm() {
               <span>{`до ${maxAmount.toLocaleString('ru')}`}</span>
             </MinmaxText>
           )}
+          {takeMore.isShowMore ? (
+            <span
+              css={{fontSize: '0.875rem', color: 'var(--color-text)', paddingTop: '4px'}}
+            >{`Если вы возьмете кредит на ${takeMore.takeAmount.toLocaleString(
+              'ru',
+            )} рублей больше, то ставка будет ниже`}</span>
+          ) : null}
         </FormField>
         <FormField>
           <Label>Cрок кредита</Label>

@@ -58,6 +58,7 @@ export function useCampaign() {
       BLACKFRIDAY_CAMPAIGN: 'a2',
       PHOTO_AB_CAMPAIGN: 'quasi_photo_pilot',
       STAFF_CAMPAIGN: 'staff',
+      FAP_CAMPAIGN: 'fapromorate',
     }),
     [campaignParams]
   );

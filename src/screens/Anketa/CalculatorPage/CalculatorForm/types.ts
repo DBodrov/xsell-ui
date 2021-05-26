@@ -4,7 +4,7 @@ export type TLoanParams = typeof initLoanParams;
 
 export const initLoanParams = {
   customerTimezoneOffset: timezone,
-  requestedLoanAmount: 300000,
+  requestedLoanAmount: 400000,
   requestedLoanTermMonths: 24,
   jobLossProtection: false,
   lifeAndHealthProtection: false,
