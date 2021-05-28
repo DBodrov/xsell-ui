@@ -137,10 +137,10 @@ export function CalculatorForm() {
     (modalType: string): number => {
       if (payment) {
         const payments = {
-          smsService: payment.allSmsPayment,
-          diffHave: payment.allCampaignPayment,
-          job: payment.allJobLossProtectionPayment,
-          life: payment.allLifeAndHealthProtectionPayment,
+          smsService: payment.monthlySmsPayment,
+          diffHave: payment.monthlyCampaignPayment,
+          job: payment.monthlyJobLossProtectionPayment,
+          life: payment.monthlyLifeAndHealthProtectionPayment,
         };
         return payments[modalType];
       }
