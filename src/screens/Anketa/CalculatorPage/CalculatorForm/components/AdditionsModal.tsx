@@ -64,7 +64,7 @@ export function AdditionsModal(props: TModalProps) {
         </div>
         <H2 css={{marginBottom: 34}}>{modalTitle}</H2>
         <div
-          css={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-start', alignItems: 'center'}}
+          css={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-start', alignItems: 'center', gap: '1rem'}}
         >
           <p css={{width: '60%'}}>Ориентировочная стоимость услуги, рублей в месяц</p>
           <p css={{width: '40%', fontSize: 24, color: 'var(--color-primary)', fontWeight: 600}}>
