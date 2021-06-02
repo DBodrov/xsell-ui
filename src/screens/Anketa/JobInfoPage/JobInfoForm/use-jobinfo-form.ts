@@ -9,7 +9,7 @@ import {
   minValueValidator,
   maxValueValidator,
 } from './validate.utils';
-import {IFormChanges, TFormState, initState} from './types';
+import {IFormChanges, TFormState, initState, TFieldName} from './types';
 
 const formStateReducer = (state: TFormState, changes: IFormChanges) => {
   switch (changes.type) {
@@ -36,7 +36,7 @@ const formStateReducer = (state: TFormState, changes: IFormChanges) => {
         touched: {
           ...state.touched,
           [changes.fieldName]: true,
-        }
+        },
       };
     }
     default:
@@ -45,7 +45,6 @@ const formStateReducer = (state: TFormState, changes: IFormChanges) => {
 };
 
 export function useJobinfoForm(isStaffCampaign = false) {
-
   const [{values, error, touched}, dispatch] = React.useReducer(formStateReducer, initState);
 
   const {updateAnketa, step} = useAnketa();
@@ -56,8 +55,8 @@ export function useJobinfoForm(isStaffCampaign = false) {
   }, [step, updateAnketa]);
 
   const validateRequiredField = React.useCallback(
-    async (fieldName: string) => {
-      const val = values[fieldName];
+    async (fieldName: TFieldName) => {
+      const val = values[fieldName] as string | number;
       try {
         await requiredFieldValidator(fieldName, val);
         dispatch({type: 'ADD_ERROR', fieldName, payload: ''});
@@ -115,8 +114,20 @@ export function useJobinfoForm(isStaffCampaign = false) {
   const formValid = React.useCallback(() => {
     const isAllTouched = Object.values(touched).every(Boolean);
     const noErrors = Object.values(error).every(isEmptyString);
-    return isAllTouched && noErrors && values.creditBureauConsentAgree;
-  }, [error, touched, values.creditBureauConsentAgree]);
+    return (
+      isAllTouched &&
+      noErrors &&
+      values.notarialRecord &&
+      values.creditBureauConsentAgree &&
+      values.personalDataProcessingConsentAgree
+    );
+  }, [
+    error,
+    touched,
+    values.creditBureauConsentAgree,
+    values.notarialRecord,
+    values.personalDataProcessingConsentAgree,
+  ]);
 
   const validateAllFields = React.useCallback(() => {
     return Promise.all([
@@ -147,7 +158,7 @@ export function useJobinfoForm(isStaffCampaign = false) {
             workInn: OTP_INN,
           };
 
-          Object.keys(fillFormFields).forEach(field => {
+          Object.keys(fillFormFields).forEach((field: TFieldName) => {
             dispatch({type: 'CHANGE_VALUE', fieldName: field, payload: fillFormFields[field]});
           });
           return response;

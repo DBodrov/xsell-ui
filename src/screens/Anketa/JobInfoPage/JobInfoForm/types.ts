@@ -6,6 +6,8 @@ export type TFormState = {
     lastWorkExperienceMonths?: string;
     mainMonthlyIncomeAmount?: string;
     creditBureauConsentAgree?: boolean;
+    personalDataProcessingConsentAgree?: boolean;
+    notarialRecord?: boolean;
   };
   readonly error: typeof initErrorState;
   readonly touched: typeof initTouchedState;
@@ -26,6 +28,8 @@ export const initErrorState = {
   lastWorkExperienceMonths: '',
   mainMonthlyIncomeAmount: '',
   creditBureauConsentAgree: '',
+  personalDataProcessingConsentAgree: '',
+  notarialRecord: '',
 };
 
 export const initState: TFormState = {
@@ -36,6 +40,8 @@ export const initState: TFormState = {
     lastWorkExperienceMonths: '',
     mainMonthlyIncomeAmount: '',
     creditBureauConsentAgree: false,
+    notarialRecord: false,
+    personalDataProcessingConsentAgree: false,
   },
   touched: initTouchedState,
   error: initErrorState,
@@ -54,8 +60,11 @@ export type TChangesType =
   | 'SET_ISSUBMITING'
   | 'SET_ISSUBMITED';
 
+
+export type TFieldName = keyof TFormState['values'];
+
 export interface IFormChanges {
   type: TChangesType;
-  fieldName?: string;
+  fieldName?: TFieldName;
   payload?: any;
 }

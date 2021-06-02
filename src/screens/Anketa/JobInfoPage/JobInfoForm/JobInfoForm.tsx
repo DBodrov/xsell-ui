@@ -5,9 +5,10 @@ import {useAnketa} from 'context/Anketa';
 import {useCampaign} from 'utils/use-campaign';
 import {onlyDigit, maxLengthString} from 'utils/string.utils';
 import {SecuritySign} from 'components/lib';
-import {CustomerAddress, WorkIndustryField} from './components';
-import {fallbackAgreementLink} from './utils';
+import {CustomerAddress, WorkIndustryField, CollapseAgreements} from './components';
+import {BKI_AGREEMENT_DEFAULT, PERSONAL_DATA_AGREEMENT} from 'utils/externals';
 import {useJobinfoForm} from './use-jobinfo-form';
+import {TFieldName} from './types';
 import {Form, innFieldStyles, fieldStyles, Label, FormField, ErrorText} from './styles';
 
 export function JobInfoForm() {
@@ -15,7 +16,7 @@ export function JobInfoForm() {
   const {anketa} = useAnketa();
 
   const {agreementFormLink, registrationAddress} = anketa;
-  const agreementLink = agreementFormLink ? `/gateway/doc${agreementFormLink}` : fallbackAgreementLink;
+  const agreementLink = agreementFormLink ? `/gateway/doc${agreementFormLink}` : BKI_AGREEMENT_DEFAULT;
 
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
 
@@ -29,21 +30,34 @@ export function JobInfoForm() {
     validateInn,
     validateMonthlyAmount,
     formValid,
-    validateLastWorkExperience
+    validateLastWorkExperience,
   } = useJobinfoForm(isStaff);
 
   const handleChangeTextField = React.useCallback(
     (value: string, e?: React.ChangeEvent<HTMLInputElement>) => {
-      const fieldName = e?.currentTarget?.name;
+      const fieldName = e?.currentTarget?.name as TFieldName;
       dispatch({type: 'CHANGE_VALUE', fieldName, payload: value});
     },
     [dispatch],
   );
 
-
-  const handleChangeAgreement = React.useCallback(
+  const setCreditBureauConsentAgree = React.useCallback(
     (isAgree: boolean) => {
       dispatch({type: 'CHANGE_VALUE', fieldName: 'creditBureauConsentAgree', payload: isAgree});
+    },
+    [dispatch],
+  );
+
+  const setNotarialRecord = React.useCallback(
+    (isAgree: boolean) => {
+      dispatch({type: 'CHANGE_VALUE', fieldName: 'notarialRecord', payload: isAgree});
+    },
+    [dispatch],
+  );
+
+  const setPersonalDataProcessingConsentAgree = React.useCallback(
+    (isAgree: boolean) => {
+      dispatch({type: 'CHANGE_VALUE', fieldName: 'personalDataProcessingConsentAgree', payload: isAgree});
     },
     [dispatch],
   );
@@ -163,24 +177,39 @@ export function JobInfoForm() {
       />
       <FormField css={{gridColumn: '1/3', '@media (min-width: 704px)': {maxWidth: 608}}}>
         <Checkbox
-          variant="primary"
-          onChangeHandler={handleChangeAgreement}
+          onChangeHandler={setCreditBureauConsentAgree}
+          id="creditBureauConsentAgree"
           checked={values.creditBureauConsentAgree}
           boxStyles={{borderRadius: 4, alignSelf: 'flex-start'}}
         >
-          <Span>
-            Я даю{' '}
+          <div>
+            Я даю согласие на{' '}
             <a
-              css={{color: 'var(--color-primary)'}}
-              href={agreementLink}
-              type="download"
+              href={PERSONAL_DATA_AGREEMENT}
+              target="_blank"
               rel="noopener noreferrer"
+              css={{color: 'var(--color-primary)'}}
             >
-              согласие Банку на запрос информации
-            </a>{' '}
+              обработку Банком моих персональных данных
+            </a>
+            в целях рассмотрения настоящего сообщения и{' '}
+            <a
+              href={agreementLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              css={{color: 'var(--color-primary)'}}
+            >
+              на запрос информации
+            </a>
             в Бюро кредитных историй для оценки моей платежеспособности
-          </Span>
+          </div>
         </Checkbox>
+        <CollapseAgreements
+          collectionSetted={values.personalDataProcessingConsentAgree}
+          notarialSetted={values.notarialRecord}
+          setCollection={setPersonalDataProcessingConsentAgree}
+          setNotarial={setNotarialRecord}
+        />
       </FormField>
       <FormField>
         <Button
