@@ -4,6 +4,7 @@ import {LinkButton} from 'components/lib';
 import {FormField, Label} from '../styles';
 
 type Props = {address?: string; onChangeAddress: () => void};
+
 export function CustomerAddress(props: Props) {
   const {address = '', onChangeAddress} = props;
 
