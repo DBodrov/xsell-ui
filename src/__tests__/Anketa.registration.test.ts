@@ -83,8 +83,10 @@ test('fill form', async () => {
   expect(industry).toHaveValue('Энергетика');
   await act(() => Promise.resolve());
 
-  const agreement = screen.queryByRole('checkbox');
-  userEvent.click(agreement);
+  screen.queryAllByRole('checkbox').forEach(checkbox => {
+    fireEvent.click(checkbox);
+  })
+
   await act(() => Promise.resolve());
 
   expect(submitButton).not.toBeDisabled();
