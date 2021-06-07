@@ -44,7 +44,14 @@ export function CalcAmountForm() {
 
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
   const isFap = campaignParams?.campaignName === FAP_CAMPAIGN;
-  const showDifferenceHave = !isStaff || (isStaff && loanParams?.workExperience < 25);
+  const showDifferenceHave = useCallback(() => {
+    if (isStaff && loanParams?.workExperience < 25) {
+      return true;
+    } else if (isFap && loanParams.requestedLoanAmount < 400000) {
+      return true;
+    }
+    return false;
+  }, [isFap, isStaff, loanParams.requestedLoanAmount, loanParams?.workExperience]);
 
   const {payment, updateLoanParams} = usePayment(isStaff);
   const fetchClient = useFetch();
@@ -83,17 +90,20 @@ export function CalcAmountForm() {
     event => {
       event.preventDefault();
       const errors = validateBeforeSubmit(loanParams);
-      // console.log(errors);
+
       const formIsValid = Object.keys(errors.current).length === 0;
       if (formIsValid) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const {rate, ...anketa} = loanParams;
+        const diffHave = showDifferenceHave() ? loanParams.campaignParticipant : false;
+        const anketa = {
+          ...loanParams,
+          campaignParticipant: diffHave,
+        };
         updateAnketa(step, anketa);
       } else {
         forceUpdate({});
       }
     },
-    [loanParams, step, updateAnketa, validateBeforeSubmit],
+    [loanParams, showDifferenceHave, step, updateAnketa, validateBeforeSubmit],
   );
 
   useEffect(() => {
@@ -113,17 +123,30 @@ export function CalcAmountForm() {
         },
       );
     };
+
     if (isStaff && !loanParams.workExperience) {
       getWorkExperience();
     }
-  }, [fetchClient, isStaff, loanParams.workExperience]);
+
+    /**XSEL-2464 */
+    if (isFap && loanParams.requestedLoanAmount >= 400000) {
+      setState({rate: 13.9});
+    } else if (isFap && loanParams.requestedLoanAmount < 400000) {
+      setState({rate: 19.9});
+    }
+  }, [fetchClient, isFap, isStaff, loanParams.requestedLoanAmount, loanParams.workExperience]);
 
   useEffect(() => {
     if (formIsValid) {
-      timeout = window.setTimeout(() => updateLoanParams(loanParams), 300);
+      const diffHave = showDifferenceHave() ? loanParams.campaignParticipant : false;
+      const anketa = {
+        ...loanParams,
+        campaignParticipant: diffHave,
+      };
+      timeout = window.setTimeout(() => updateLoanParams(anketa), 300);
     }
     return () => window.clearTimeout(timeout);
-  }, [formIsValid, loanParams, updateLoanParams]);
+  }, [formIsValid, loanParams, showDifferenceHave, updateLoanParams]);
 
   const setAmount = useCallback(
     (value: string | number) => {
@@ -192,12 +215,12 @@ export function CalcAmountForm() {
             />
             {amountError?.length > 0 && <span className={css.ErrorText}>{amountError}</span>}
             {takeMore.isShowMore ? (
-            <span
-              css={{fontSize: '0.875rem', color: 'var(--color-text)', paddingTop: '4px'}}
-            >{`Если вы возьмете кредит на ${takeMore.takeAmount.toLocaleString(
-              'ru',
-            )} рублей больше, то ставка будет ниже`}</span>
-          ) : null}
+              <span
+                css={{fontSize: '0.875rem', color: 'var(--color-text)', paddingTop: '4px'}}
+              >{`Если вы возьмете кредит на ${takeMore.takeAmount.toLocaleString(
+                'ru',
+              )} рублей больше, то ставка будет ниже`}</span>
+            ) : null}
           </label>
         </div>
         <div className={cx(css.FormField)}>
@@ -280,7 +303,7 @@ export function CalcAmountForm() {
               />
               <LifeInsuranceLink htmlFor="lifeAndHealthProtection" />
             </div>
-            {showDifferenceHave ? (
+            {showDifferenceHave() ? (
               <div className={css.CheckboxesItem}>
                 <Checkbox
                   name="campaignParticipant"
@@ -310,7 +333,7 @@ export function CalcAmountForm() {
           * Расчет носит предварительный характер. Точная сумма ежемесячного платежа будет определена Банком
           по результатам рассмотрения заявки
         </p>
-        {showDifferenceHave ? (
+        {showDifferenceHave() ? (
           <p className={css.Disclaimer} style={{marginBottom: 0}}>
             ** После выполнения{' '}
             <a
