@@ -2,8 +2,6 @@ import React from 'react';
 import { List } from 'components/List';
 import hourglassIcon from 'lib/ui-kit/assets/icons/otp/hourglass.svg';
 import phoneIcon from 'lib/ui-kit/assets/icons/otp/phone.svg';
-// import moneyIcon from 'lib/ui-kit/assets/icons/otp/money-atm-2.svg';
-// import moneyIcon from 'lib/ui-kit/assets/icons/otp/money-atm-2.svg';
 
 export function PreScoringOptions() {
   return (
