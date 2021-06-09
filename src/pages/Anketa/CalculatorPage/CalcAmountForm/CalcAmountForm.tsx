@@ -53,7 +53,7 @@ export function CalcAmountForm() {
     return false;
   }, [isFap, isStaff, loanParams.requestedLoanAmount, loanParams?.workExperience]);
 
-  const {payment, updateLoanParams} = usePayment(isStaff);
+  const {payment, updateLoanParams} = usePayment(isStaff, isFap);
   const fetchClient = useFetch();
   const {step, updateAnketa} = useAnketa();
 
@@ -127,26 +127,29 @@ export function CalcAmountForm() {
     if (isStaff && !loanParams.workExperience) {
       getWorkExperience();
     }
-
-    /**XSEL-2464 */
-    if (isFap && loanParams.requestedLoanAmount >= 400000) {
-      setState({rate: 13.9});
-    } else if (isFap && loanParams.requestedLoanAmount < 400000) {
-      setState({rate: 19.9});
-    }
   }, [fetchClient, isFap, isStaff, loanParams.requestedLoanAmount, loanParams.workExperience]);
 
   useEffect(() => {
     if (formIsValid) {
       const diffHave = showDifferenceHave() ? loanParams.campaignParticipant : false;
-      const anketa = {
-        ...loanParams,
-        campaignParticipant: diffHave,
-      };
+      let anketa = {};
+      if (isFap) {
+        anketa = {
+          ...loanParams,
+          campaignParticipant: diffHave,
+          rate: undefined,
+          campaignCode: 'fap'
+        }
+      } else {
+        anketa = {
+          ...loanParams,
+          campaignParticipant: diffHave,
+        };
+      }
       timeout = window.setTimeout(() => updateLoanParams(anketa), 300);
     }
     return () => window.clearTimeout(timeout);
-  }, [formIsValid, loanParams, showDifferenceHave, updateLoanParams]);
+  }, [formIsValid, isFap, loanParams, showDifferenceHave, updateLoanParams]);
 
   const setAmount = useCallback(
     (value: string | number) => {
@@ -261,12 +264,12 @@ export function CalcAmountForm() {
             <div className={css.PaymentItem}>
               <span className={css.PaymentTitle}>Ежемесячный платёж</span>
               <span className={css.PaymentValue}>
-                {Number((payment || 0).toFixed(0)).toLocaleString('ru')} ₽
+                {Number((payment?.monthlyPayment || 0).toFixed(0)).toLocaleString('ru')} ₽
               </span>
             </div>
             <div className={css.PaymentItem}>
               <span className={css.PaymentTitle}>Cтавка по кредиту*</span>
-              <span className={css.PaymentValue}>{loanParams.rate} %</span>
+              <span className={css.PaymentValue}>{isFap ? payment?.rate : loanParams.rate} %</span>
             </div>
             {isStaff && (
               <div className={css.PaymentItem}>

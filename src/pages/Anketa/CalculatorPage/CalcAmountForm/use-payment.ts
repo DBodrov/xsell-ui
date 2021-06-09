@@ -1,28 +1,30 @@
-import { useCallback, useState } from 'react';
-import { useFetch } from 'utils/use-fetch';
-import { TLoanParams } from './CalcAmountForm';
+import {useCallback, useState} from 'react';
+import {useFetch} from 'utils/use-fetch';
+import {TLoanParams} from './CalcAmountForm';
+import {TPaymentValues} from './types';
 
-export function usePayment(isStaff = false) {
-  const [payment, setPayment] = useState(null);
+export function usePayment(isStaff = false, isFap = false) {
+  const [payment, setPayment] = useState<TPaymentValues | null>(null);
   const fetchClient = useFetch();
 
   const updateLoanParams = useCallback(
     (calcData: Partial<TLoanParams>) => {
       const clientUrl = '/gateway/credit-application/get-monthly-payment';
       const staffUrl = '/gateway/credit-application/get-employee-monthly-payment';
-      const url = isStaff ? staffUrl : clientUrl;
-      fetchClient(url, { body: calcData }).then(
-        (data) => {
-          setPayment(data?.monthlyPayment);
+      const fapUrl = '/get-monthly-payment-with-campaign';
+      const url = isStaff ? staffUrl : isFap ? fapUrl : clientUrl;
+      fetchClient(url, {body: calcData}).then(
+        (data: TPaymentValues) => {
+          setPayment(data);
           return data;
         },
-        (error) => {
+        error => {
           console.error(error);
-        }
+        },
       );
     },
-    [fetchClient, isStaff]
+    [fetchClient, isFap, isStaff],
   );
 
-  return { updateLoanParams, payment };
+  return {updateLoanParams, payment};
 }

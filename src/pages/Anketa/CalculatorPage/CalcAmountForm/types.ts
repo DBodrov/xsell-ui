@@ -7,3 +7,16 @@ export interface ICalcData {
   smsInforming?: boolean;
   workExperience?: number;
 }
+
+export type TPaymentValues = {
+  allCampaignPayment: number;
+  allJobLossProtectionPayment: number;
+  allLifeAndHealthProtectionPayment: number;
+  allSmsPayment: number;
+  monthlyCampaignPayment: number;
+  monthlyJobLossProtectionPayment: number;
+  monthlyLifeAndHealthProtectionPayment: number;
+  monthlyPayment: number;
+  monthlySmsPayment: number;
+  rate?: number;
+};

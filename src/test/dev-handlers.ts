@@ -130,6 +130,24 @@ export const handlers = [
   rest.post('/gateway/credit-application/get-employee-monthly-payment', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({monthlyPayment: 12345}));
   }),
+  rest.post('/get-monthly-payment-with-campaign', (req, res, ctx) => {
+    const amount = req.body['requestedLoanAmount'];
+    return res(
+      ctx.status(200),
+      ctx.json({
+        allCampaignPayment: 9900,
+        allJobLossProtectionPayment: 12743.36,
+        allLifeAndHealthProtectionPayment: 19115.04,
+        allSmsPayment: 2376,
+        monthlyCampaignPayment: 412.5,
+        monthlyJobLossProtectionPayment: 530.97,
+        monthlyLifeAndHealthProtectionPayment: 796.46,
+        monthlyPayment: 17498.19,
+        monthlySmsPayment: 99,
+        rate: amount >= 400_000 ? 13.9 : 19.9,
+      }),
+    );
+  }),
   rest.post('/gateway/credit-application/get-monthly-payment', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({monthlyPayment: 12345}));
   }),
@@ -203,7 +221,7 @@ export const handlers = [
     return res(ctx.status(200), ctx.json({code: 'OK'}));
   }),
   rest.post('/gateway/customer-profile/get-work-experience', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({workExperienceMonths: 28}));
+    return res(ctx.status(200), ctx.json({workExperienceMonths: 21}));
   }),
   rest.post('/gateway/customer-profile/get-otp-cards', (req, res, ctx) => {
     return res(
