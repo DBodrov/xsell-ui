@@ -30,7 +30,7 @@ export const anketa = {
   requestedLoanAmount: 0,
   requestedLoanTermMonths: 0,
   smsInforming: true,
-  status: 'REGISTRATION_ADDRESS',
+  status: 'ADVANCE_SCORING_REFUSAL',
   workIndustry: 'string',
   workInn: 'string',
   workPlace: 'string',
