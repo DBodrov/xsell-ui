@@ -130,7 +130,7 @@ export const handlers = [
   rest.post('/gateway/credit-application/get-employee-monthly-payment', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({monthlyPayment: 12345}));
   }),
-  rest.post('/get-monthly-payment-with-campaign', (req, res, ctx) => {
+  rest.post('/gateway/credit-application/get-monthly-payment-with-campaign', (req, res, ctx) => {
     const amount = req.body['requestedLoanAmount'];
     return res(
       ctx.status(200),
