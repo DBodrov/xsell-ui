@@ -11,7 +11,7 @@ export function usePayment(isStaff = false, isFap = false) {
     (calcData: Partial<TLoanParams>) => {
       const clientUrl = '/gateway/credit-application/get-monthly-payment';
       const staffUrl = '/gateway/credit-application/get-employee-monthly-payment';
-      const fapUrl = '/get-monthly-payment-with-campaign';
+      const fapUrl = '/gateway/credit-application/get-monthly-payment-with-campaign';
       const url = isStaff ? staffUrl : isFap ? fapUrl : clientUrl;
       fetchClient(url, {body: calcData}).then(
         (data: TPaymentValues) => {
