@@ -9,7 +9,7 @@ import {PhotoPassportPage} from 'screens/Anketa/PhotoPassportPage';
 import {AgreementPage} from 'screens/Anketa/AgreementSMSPage';
 import {PendingScoringPage} from 'screens/Anketa/PendingScoringPage';
 import {AdvanceScoringRefusalPage} from 'screens/Anketa/AdvanceScoringRefusalPage';
-import {ResultScoringPage} from '../../pages/Anketa/ResultScoringPage';
+import {ResultScoringPage} from 'screens/Anketa/ResultScoringPage';
 import {SignaturePage} from '../../pages/Anketa/SignaturePage';
 import {ExecutionPage} from '../../pages/Anketa/ExecutionPage';
 import {ExecutionFailedPage} from '../../pages/Anketa/ExecutionFailedPage';
