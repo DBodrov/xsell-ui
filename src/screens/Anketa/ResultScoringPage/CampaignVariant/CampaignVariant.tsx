@@ -56,7 +56,7 @@ function Rate({anketa}: IVariantProps) {
       <span className={css.Rate}>
         {isCampaign ? (
           <div>
-            Ставка: <span className={css.OldRate}>{oldRate.toFixed(2)}*</span>
+            Ставка: <span css={{color: 'var(--color-text-label)', textDecoration: 'line-through'}}>{oldRate.toFixed(2)}*</span>
             <span className={css.NewRate}>{approvedInterestRate}%</span> годовых
           </div>
         ) : (
