@@ -10,7 +10,7 @@ import {AgreementPage} from 'screens/Anketa/AgreementSMSPage';
 import {PendingScoringPage} from 'screens/Anketa/PendingScoringPage';
 import {AdvanceScoringRefusalPage} from 'screens/Anketa/AdvanceScoringRefusalPage';
 import {ResultScoringPage} from 'screens/Anketa/ResultScoringPage';
-import {SignaturePage} from '../../pages/Anketa/SignaturePage';
+import {SignatureSMSPage} from 'screens/Anketa/SignatureSMSPage';
 import {ExecutionPage} from '../../pages/Anketa/ExecutionPage';
 import {ExecutionFailedPage} from '../../pages/Anketa/ExecutionFailedPage';
 import {CompletedPage} from '../../pages/Anketa/CompletedPage';
@@ -85,7 +85,7 @@ export function AnketaRoutes() {
       </ProtectedRoute>
       {/* Ожидается код, подтверждающий подпись клиента под документами на кредит */}
       <ProtectedRoute exact path={routeMap.SIGNATURE_SMS_CODE}>
-        <SignaturePage />
+        <SignatureSMSPage />
       </ProtectedRoute>
       {/* Ждем */}
       <ProtectedRoute exact path={routeMap.PENDING_DOCUMENTS}>
