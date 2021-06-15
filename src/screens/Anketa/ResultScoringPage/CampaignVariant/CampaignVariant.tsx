@@ -4,9 +4,7 @@ import {IAnketa} from 'context/Anketa';
 import {useCampaign} from 'utils/use-campaign';
 import {toRuLocalNumber} from 'utils/string.utils';
 import {calcOldPayment, calcOldRate} from './utils';
-import {PaymentAmount} from './styles';
-
-import css from './CampaignVariant.module.scss';
+import {PaymentAmount, NewPayment, OldPayment, NewRate} from './styles';
 
 interface IVariantProps {
   anketa: Partial<IAnketa>;
@@ -23,8 +21,8 @@ function Payment({anketa}: IVariantProps) {
       <span css={{color: 'var(--color-text-label)', fontWeight: 'bold'}}>Ежемесячный платеж</span>
       {isCampaign ? (
         <Fragment>
-          <span className={css.OldPayment}>{toRuLocalNumber(oldPayment)}*</span>
-          <span className={css.NewPayment}>{toRuLocalNumber(approvedMonthlyPayment)} руб</span>
+          <OldPayment>{toRuLocalNumber(oldPayment)}*</OldPayment>
+          <NewPayment>{toRuLocalNumber(approvedMonthlyPayment)} руб</NewPayment>
         </Fragment>
       ) : (
         <H2
@@ -53,16 +51,16 @@ function Rate({anketa}: IVariantProps) {
 
   return (
     <div css={{display: 'flex', flexFlow: 'column nowrap'}}>
-      <span className={css.Rate}>
+      <div>
         {isCampaign ? (
           <div>
             Ставка: <span css={{color: 'var(--color-text-label)', textDecoration: 'line-through'}}>{oldRate.toFixed(2)}*</span>
-            <span className={css.NewRate}>{approvedInterestRate}%</span> годовых
+            <NewRate>{approvedInterestRate}%</NewRate> годовых
           </div>
         ) : (
           <span css={{color: '#000', }}>Ставка: {approvedInterestRate}% годовых</span>
         )}
-      </span>
+      </div>
       {campaignParticipant ? <span>Ставка при выполнении условий акции**: 8,5%</span> : null}
     </div>
   );
@@ -70,5 +68,5 @@ function Rate({anketa}: IVariantProps) {
 
 export const CampaignVariant = {
   Payment,
-  Rate,
+  Rate
 };

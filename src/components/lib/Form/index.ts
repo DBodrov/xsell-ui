@@ -63,5 +63,5 @@ export const Card = styled.form`
   padding: 24px 32px;
   margin-top: 24px;
   width: 290px;
-  height: 248px;
+  height: auto;
 `;
