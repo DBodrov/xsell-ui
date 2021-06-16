@@ -11,7 +11,7 @@ import {PendingScoringPage} from 'screens/Anketa/PendingScoringPage';
 import {AdvanceScoringRefusalPage} from 'screens/Anketa/AdvanceScoringRefusalPage';
 import {ResultScoringPage} from 'screens/Anketa/ResultScoringPage';
 import {SignatureSMSPage} from 'screens/Anketa/SignatureSMSPage';
-import {ExecutionPage} from '../../pages/Anketa/ExecutionPage';
+import {ExecutionPage} from 'screens/Anketa/ExecutionPage';
 import {ExecutionFailedPage} from '../../pages/Anketa/ExecutionFailedPage';
 import {CompletedPage} from '../../pages/Anketa/CompletedPage';
 import {RegistrationChanged} from '../../pages/Anketa/RegistrationChanged';
