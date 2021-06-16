@@ -14,3 +14,4 @@ export * from './CloseIcon';
 export * from './MasterCardIcon';
 export * from './CameraIcon';
 export * from './ArrowIcon';
+export * from './BankingBillIcon';
