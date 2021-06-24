@@ -1,11 +1,9 @@
 import React, {useCallback, useState} from 'react';
-import {Span, Button} from 'neutrino-ui';
+import {Button} from 'neutrino-ui';
 import {useAnketa, TCustomerCard} from 'context/Anketa';
 import {CardSelect} from './CardSelect';
-import {AppPage} from 'components/Layout';
-import {H1, H2} from 'components/lib';
-import {Page} from './styles';
-import {MoneyATM} from 'icons';
+import {AppPage, Screen} from 'components/Layout';
+import {H1, H2, Form, FormField, LinkButton, SecuritySign} from 'components/lib';
 
 type Props = {
   cards?: TCustomerCard[];
@@ -25,87 +23,91 @@ export function TransferCardPage({cards, hasDbo, onChangePage}: Props) {
     const card = cards.find(c => c.bankCardId === currentCardId);
 
     const {bankCardNumber, cardExpirationDt} = card;
-    updateAnketa('TRANSFER_DETAILS_CARDS', {cardExpirationDate: cardExpirationDt, cardNumber: bankCardNumber});
+    updateAnketa('TRANSFER_DETAILS_CARDS', {
+      cardExpirationDate: cardExpirationDt,
+      cardNumber: bankCardNumber,
+    });
   }, [cards, currentCardId, updateAnketa]);
+
+  const handleChangePage = React.useCallback(
+    (e: React.PointerEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      const pageType = e.currentTarget.dataset.page;
+      onChangePage(pageType);
+    },
+    [onChangePage],
+  );
 
   return (
     <AppPage>
-      <Page css={{backgroundColor: '#f0f0f0'}}>
+      <Screen>
         <H1>Способ получения денег на карту</H1>
-        <div
-          css={{
-            backgroundColor: '#fff',
-            border: '1px #c5c5c5 solid',
-            borderRadius: 4,
-            padding: '1rem',
-            marginBottom: 8,
-            width: '100%',
-          }}
-        >
-          <Span css={{fontWeight: 600}}>НА СУЩЕСТВУЮЩУЮ КАРТУ</Span>
-          <CardSelect cardsList={cards} onSelectCard={handleSetCard} currentCardId={currentCardId} />
-          <div css={{display: 'flex', marginTop: '1rem'}}>
-            <MoneyATM fill="var(--color-primary)" />
-            <Span css={{paddingLeft: 16}}>Деньги будут отправлены на вашу карту в банке ОТП.</Span>
-          </div>
-        </div>
-        <Button
-          css={{
-            width: '100%',
-            height: 44,
-            borderRadius: 4,
-            alignSelf: 'center',
-            fontWeight: 700,
-            fontSize: 14,
-          }}
-          onClick={handleChooseCard}
-          type="button"
-          variant="primary"
-          flat
-          disabled={!currentCardId}
-        >
-          Далее
-        </Button>
-
-        <H2 css={{marginTop: 10, fontSize: 30}}>Альтернативные способы</H2>
-        <Button
-          css={{
-            width: '100%',
-            height: 44,
-            borderRadius: 4,
-            alignSelf: 'center',
-            fontWeight: 700,
-            fontSize: 14,
-          }}
-          onClick={() => onChangePage('account')}
-          type="button"
-          variant="primary"
-          outline
-          flat
-        >
-          Перевод на счёт в другой банк
-        </Button>
-        {hasDbo ? (
-          <Button
-            css={{
-              width: '100%',
-              height: 44,
-              borderRadius: 4,
-              alignSelf: 'center',
-              marginTop: 10,
-              fontWeight: 700,
-              fontSize: 14,
-            }}
-            onClick={() => onChangePage('sbp')}
-            type="button"
-            variant="primary"
-            outline
-            flat
-          >
-            Перевод по номеру телефона
-          </Button>
-        ) : null}
-      </Page>
+        <Form>
+          <FormField>
+            <div
+              css={{
+                backgroundColor: '#fff',
+                borderRadius: 32,
+                boxShadow: '0px 16px 48px rgba(73, 92, 136, 0.15)',
+                padding: '32px 16px',
+                margin: '14px 0',
+                width: '100%',
+              }}
+            >
+              <H2>Куда перевести?</H2>
+              <CardSelect cardsList={cards} onSelectCard={handleSetCard} currentCardId={currentCardId} />
+            </div>
+          </FormField>
+          <FormField>
+            <div
+              css={{
+                backgroundColor: '#fff',
+                borderRadius: 32,
+                boxShadow: '0px 16px 48px rgba(73, 92, 136, 0.15)',
+                padding: '32px 25px',
+                margin: '14px 0',
+                width: '100%',
+              }}
+            >
+              <H2>Другие способы</H2>
+              <LinkButton
+                data-page="account"
+                onClick={handleChangePage}
+                css={{color: 'var(--color-primary)'}}
+              >
+                Перевод на счёт в другой банк
+              </LinkButton>
+              {hasDbo ? (
+                <LinkButton data-page="sbp" onClick={handleChangePage} css={{color: 'var(--color-primary)'}}>
+                  Перевод по номеру телефона
+                </LinkButton>
+              ) : null}
+            </div>
+          </FormField>
+          <FormField>
+            <Button
+              css={{
+                width: '100%',
+                height: 44,
+                borderRadius: 28,
+                alignSelf: 'center',
+                fontWeight: 700,
+                fontSize: 14,
+              }}
+              onClick={handleChooseCard}
+              type="button"
+              variant="primary"
+              flat
+              disabled={!currentCardId}
+            >
+              Далее
+            </Button>
+          </FormField>
+          <FormField css={{alignItems: 'center', justifyContent: 'center'}}>
+            <SecuritySign />
+          </FormField>
+        </Form>
+      </Screen>
     </AppPage>
   );
 }

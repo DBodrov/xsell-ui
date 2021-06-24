@@ -260,6 +260,15 @@ export const handlers = [
   }),
 
   rest.post('/gateway/dadata/suggestions/api/4_1/rs/suggest/bank', (req, res, ctx) => {
+    const query = JSON.parse(req.body as string)['query'];
+    if (query === '000000000') {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          suggestions: []
+        })
+      )
+    }
     return res(
       ctx.status(200),
       ctx.json({

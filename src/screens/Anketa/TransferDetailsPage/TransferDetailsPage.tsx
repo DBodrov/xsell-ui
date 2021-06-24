@@ -35,7 +35,7 @@ export function TransferDetailsPage() {
     return <Spinner withBackdrop message="Получаем данные..." />;
   }
 
-  if (page === 'account' || page === 'default') {
+  if (page === 'account') {
     return <TransferAccountPage />
   }
 

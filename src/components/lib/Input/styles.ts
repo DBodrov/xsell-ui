@@ -1,6 +1,6 @@
 import {css} from '@emotion/react';
 import styled from '@emotion/styled';
-import {ITheme} from '../Themes';
+import {ITheme} from 'neutrino-ui';
 import {IInputProps} from './types';
 
 export const StyledInput = styled.input`
