@@ -32,7 +32,7 @@ export function TransferDetailsPage() {
   }, [anketa, cards, fetchOTPCards, hasCards, hasDbo, isError, isSuccess]);
 
   if (isIdle || isLoading) {
-    return <Spinner withBackdrop message="Получаем данные..." />;
+    return <Spinner withBackdrop message="Обновляем анкету..." />;
   }
 
   if (page === 'account') {

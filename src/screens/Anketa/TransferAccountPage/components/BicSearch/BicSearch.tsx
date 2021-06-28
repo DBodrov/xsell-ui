@@ -85,6 +85,7 @@ export function BicSearch({
         autoComplete="off"
         autoCorrect="off"
         spellCheck="false"
+        aria-label="БИК вашего банка"
       />
       <Dropdown ref={dropdownRef} isOpen={showList} parentBound={showList ? inputRect : undefined}>
         <SuggestionList query={value} results={searchResults} onSelectSuggest={handleSelectSuggest} />

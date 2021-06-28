@@ -42,6 +42,7 @@ export function AccountInput(props: TAccountInputProps) {
         autoComplete="off"
         autoCorrect="off"
         spellCheck="false"
+        aria-label="Ваш рублёвый счёт"
       />
       {displayErrorMessage ? (
         <span role="alert" css={{color: 'var(--color-error)', fontSize: 12}}>
