@@ -23,6 +23,8 @@ export const fieldStyles = css`
   border-radius: 8px;
 `;
 
+
+
 export const innFieldStyles = css`
   border: 1px var(--color-border) solid;
   outline: 0;
@@ -49,4 +51,33 @@ export const ErrorText = styled.span`
   font-size: 12px;
   color: var(--color-text-error);
   margin-top: 8px;
+`;
+
+export const borderFieldStyles = css`
+  border: 1px var(--color-border) solid;
+  outline: 0;
+  &:focus,
+  &:hover {
+    border-color: var(--color-primary);
+  }
+`;
+
+export const countryCodeStyle = css`
+  font: 600 1rem/24px 'Source Sans Pro';
+`;
+
+export const placeholderStyles = css`
+  &::placeholder {
+    font-weight: normal;
+    color: #ABABAB;
+  }
+`;
+
+export const additionalPhoneFieldStyles = css`
+width: 288px;
+height: 48px;
+transition: border 200ms ease-in;
+font: 600 1rem/24px 'Source Sans Pro';
+border-radius: 8px;
+${borderFieldStyles}
 `;

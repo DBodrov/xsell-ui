@@ -1,3 +1,5 @@
+import {mobilePhoneValidator} from 'screens/Auth/LoginPage/SigninForm/utils';
+
 const validationSchema = {
   workPlace: {
     isRequired: {error: 'Место работы не может быть пустым'},
@@ -64,3 +66,5 @@ export function maxValueValidator(fieldName: string, value: number) {
     return Promise.reject({message: schema.max.error});
   }
 }
+
+export {mobilePhoneValidator}

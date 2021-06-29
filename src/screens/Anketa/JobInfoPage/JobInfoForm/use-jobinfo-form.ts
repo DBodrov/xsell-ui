@@ -2,13 +2,15 @@ import React from 'react';
 import {useAnketa} from 'context/Anketa';
 import {useFetch} from 'utils/use-fetch';
 import {OTP_INN} from 'utils/externals';
-import {isEmptyString} from 'utils/string.utils';
+import {isEmptyString, onlyDigit} from 'utils/string.utils';
 import {
   innLengthValidator,
   requiredFieldValidator,
   minValueValidator,
   maxValueValidator,
+  mobilePhoneValidator,
 } from './validate.utils';
+
 import {IFormChanges, TFormState, initState, TFieldName} from './types';
 
 const formStateReducer = (state: TFormState, changes: IFormChanges) => {
@@ -50,9 +52,13 @@ export function useJobinfoForm(isStaffCampaign = false) {
   const {updateAnketa, step} = useAnketa();
   const fetchClient = useFetch();
 
-  const handleChangeAddress = React.useCallback(() => {
-    updateAnketa(step, {registrationAddressChanged: true});
-  }, [step, updateAnketa]);
+  const handleChangeAddress = React.useCallback(
+    (e: React.PointerEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      updateAnketa(step, {registrationAddressChanged: true});
+    },
+    [step, updateAnketa],
+  );
 
   const validateRequiredField = React.useCallback(
     async (fieldName: TFieldName) => {
@@ -111,6 +117,17 @@ export function useJobinfoForm(isStaffCampaign = false) {
     }
   }, [values.workInn]);
 
+  const validateAdditionalPhoneNumber = React.useCallback(async () => {
+    try {
+      await mobilePhoneValidator(values.additionalPhone);
+      dispatch({type: 'ADD_ERROR', fieldName: 'additionalPhone', payload: ''});
+      return true;
+    } catch (e) {
+      dispatch({type: 'ADD_ERROR', fieldName: 'additionalPhone', payload: e.message});
+      return false;
+    }
+  }, [values.additionalPhone]);
+
   const formValid = React.useCallback(() => {
     const isAllTouched = Object.values(touched).every(Boolean);
     const noErrors = Object.values(error).every(isEmptyString);
@@ -136,15 +153,26 @@ export function useJobinfoForm(isStaffCampaign = false) {
       validateMonthlyAmount(),
       validateRequiredField('workIndustry'),
       validateRequiredField('workPlace'),
+      validateAdditionalPhoneNumber(),
     ]);
-  }, [validateInn, validateLastWorkExperience, validateMonthlyAmount, validateRequiredField]);
+  }, [
+    validateAdditionalPhoneNumber,
+    validateInn,
+    validateLastWorkExperience,
+    validateMonthlyAmount,
+    validateRequiredField,
+  ]);
 
-  const handleFormSubmit = React.useCallback(() => {
-    //TODO: проверить негативный сценарий.
-    validateAllFields().then(() => {
-      updateAnketa('DETAILS', values);
-    });
-  }, [updateAnketa, validateAllFields, values]);
+  const handleFormSubmit = React.useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      validateAllFields().then(() => {
+        const anketa = {...values, additionalPhone: `7${onlyDigit(values.additionalPhone)}`}
+        updateAnketa('DETAILS', anketa);
+      });
+    },
+    [updateAnketa, validateAllFields, values],
+  );
 
   React.useEffect(() => {
     const getWorkExperience = () => {
@@ -183,6 +211,7 @@ export function useJobinfoForm(isStaffCampaign = false) {
     validateInn,
     validateMonthlyAmount,
     validateLastWorkExperience,
+    validateAdditionalPhoneNumber,
     formValid,
   };
 }

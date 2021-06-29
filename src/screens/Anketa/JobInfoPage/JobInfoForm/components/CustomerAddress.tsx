@@ -3,7 +3,7 @@ import {Span} from 'neutrino-ui';
 import {LinkButton} from 'components/lib';
 import {FormField, Label} from '../styles';
 
-type Props = {address?: string; onChangeAddress: () => void};
+type Props = {address?: string; onChangeAddress: (e: React.PointerEvent<HTMLButtonElement>) => void};
 
 export function CustomerAddress(props: Props) {
   const {address = '', onChangeAddress} = props;
@@ -28,7 +28,7 @@ export function CustomerAddress(props: Props) {
         <Span css={{padding: '22px 0 0', marginBottom: 16, '@media (max-width: 704px)': {padding: 0}}}>
           Проверьте ваш текущий адрес. Если адрес изменился, то обновите его.
         </Span>
-        <LinkButton css={{alignSelf: 'flex-start'}} onClick={onChangeAddress}>Обновить адрес</LinkButton>
+        <LinkButton type="button" css={{alignSelf: 'flex-start'}} onClick={onChangeAddress}>Обновить адрес</LinkButton>
       </FormField>
     </>
   );

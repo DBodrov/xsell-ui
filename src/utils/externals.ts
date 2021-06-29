@@ -7,6 +7,8 @@ export const BKI_AGREEMENT_DEFAULT = 'https://cash.otpbank.ru/public/bki_soglasi
 
 export const DIFFERENCE_HAVE_RULES = 'https://cash.otpbank.ru/public/rule.pdf';
 
+export const HUMAN_FACTOR_BIC_URL = '/gateway/dadata/suggestions/api/4_1/rs/suggest/bank';
+
 export const INSURANCE_DOCS = {
   smsService: 'https://cash.otpbank.ru/public/sms-service.pdf',
   job: 'https://cash.otpbank.ru/public/insurance-job.pdf',

@@ -11,7 +11,7 @@
     "target": "ESNext",
     "sourceMap": true,
     "outDir": "./dist",
-    "lib": ["dom", "es2015"],
+    "lib": ["dom", "DOM.Iterable", "ESNext"],
     "experimentalDecorators": true,
     "typeRoots": [
       "node_modules/@types",

@@ -8,6 +8,7 @@ export type TFormState = {
     creditBureauConsentAgree?: boolean;
     personalDataProcessingConsentAgree?: boolean;
     notarialRecord?: boolean;
+    additionalPhone?: string;
   };
   readonly error: typeof initErrorState;
   readonly touched: typeof initTouchedState;
@@ -19,6 +20,7 @@ export const initTouchedState = {
   workInn: false,
   lastWorkExperienceMonths: false,
   mainMonthlyIncomeAmount: false,
+  additionalPhone: false,
 };
 
 export const initErrorState = {
@@ -30,6 +32,7 @@ export const initErrorState = {
   creditBureauConsentAgree: '',
   personalDataProcessingConsentAgree: '',
   notarialRecord: '',
+  additionalPhone: '',
 };
 
 export const initState: TFormState = {
@@ -42,6 +45,7 @@ export const initState: TFormState = {
     creditBureauConsentAgree: false,
     notarialRecord: false,
     personalDataProcessingConsentAgree: false,
+    additionalPhone: '',
   },
   touched: initTouchedState,
   error: initErrorState,

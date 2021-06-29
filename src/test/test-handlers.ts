@@ -159,6 +159,9 @@ export const handlers = [
   rest.post('/gateway/credit-application/update-session-app-card-transfer-details', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({code: 'OK'}));
   }),
+  rest.post('/gateway/credit-application/update-session-app-outer-card-transfer-details', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({code: 'OK'}));
+  }),
   rest.post(
     '/gateway/credit-application/update-session-app-confirm-upload-passport-photo',
     (req, res, ctx) => {
@@ -209,9 +212,103 @@ export const handlers = [
       ctx.json({
         customerOtpCards: [
           {
-            id: '1',
-            number: '1234567890123456',
-            expirationDate: '09/23',
+            bankCardId: '2-QF19DDU',
+            bankCardNumber: '1234567890123456',
+            cardExpirationDt: '2020-12-25',
+          },
+          {
+            bankCardId: '2-1QZXRWG',
+            bankCardNumber: '9876543200001234',
+            cardExpirationDt: '2023-10-02',
+          },
+        ],
+      }),
+    );
+  }),
+
+  rest.post('/gateway/dadata/suggestions/api/4_1/rs/suggest/bank', (req, res, ctx) => {
+    const query = JSON.parse(req.body as string)['query'];
+    if (query === '000000000') {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          suggestions: []
+        })
+      )
+    }
+    return res(
+      ctx.status(200),
+      ctx.json({
+        suggestions: [
+          {
+            value: 'КЦ СЕВЕРО-ЗАПАДНОГО ГУ БАНКА РОССИИ',
+            data: {
+              bic: '044012000',
+              address: {data: {region_with_type: 'г Санкт-Петербург'}},
+            },
+          },
+          {
+            value: 'СЕВЕРО-ЗАПАДНОЕ ГУ БАНКА РОССИИ',
+            data: {
+              bic: '044030001',
+              address: {data: {region_with_type: 'г Санкт-Петербург'}},
+            },
+          },
+          {
+            value: 'АО "АЛЬФА-БАНК"',
+            data: {
+              bic: '044525593',
+              address: {data: {region_with_type: 'г Москва'}},
+            },
+          },
+          {
+            value: 'ООО НКО "МОБИЛЬНАЯ КАРТА"',
+            data: {
+              bic: '044030303',
+              address: {data: {region_with_type: 'г Санкт-Петербург'}},
+            },
+          },
+          {
+            value: 'НКО АО ПРЦ',
+            data: {
+              bic: '044030505',
+              address: {data: {region_with_type: 'г Санкт-Петербург'}},
+            },
+          },
+          {
+            value: 'СЕВЕРО-ЗАПАДНЫЙ БАНК ПАО СБЕРБАНК',
+            data: {
+              bic: '044030653',
+              address: {data: {region_with_type: 'г Санкт-Петербург'}},
+            },
+          },
+          {
+            value: 'АО "СИТИ ИНВЕСТ БАНК"',
+            data: {
+              bic: '044030702',
+              address: {data: {region_with_type: 'г Санкт-Петербург'}},
+            },
+          },
+          {
+            value: 'Ф. ОПЕРУ БАНКА ВТБ (ПАО) В САНКТ-ПЕТЕРБУРГЕ',
+            data: {
+              bic: '044030704',
+              address: {data: {region_with_type: 'г Санкт-Петербург'}},
+            },
+          },
+          {
+            value: 'ПАО "БАЛТИНВЕСТБАНК"',
+            data: {
+              bic: '044030705',
+              address: {data: {region_with_type: 'г Санкт-Петербург'}},
+            },
+          },
+          {
+            value: 'ФИЛИАЛ ПАО "БАНК УРАЛСИБ" В Г.САНКТ-ПЕТЕРБУРГ',
+            data: {
+              bic: '044030706',
+              address: {data: {region_with_type: 'г Санкт-Петербург'}},
+            },
           },
         ],
       }),

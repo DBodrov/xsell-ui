@@ -82,6 +82,9 @@ test('fill form', async () => {
   fireEvent.click(industryItem);
   expect(industry).toHaveValue('Энергетика');
   await act(() => Promise.resolve());
+  const additionalPhone = screen.queryByLabelText(/дополнительный мобильный телефон/i);
+  userEvent.type(additionalPhone, '8007772233');
+  await act(() => Promise.resolve());
 
   screen.queryAllByRole('checkbox').forEach(checkbox => {
     fireEvent.click(checkbox);

@@ -58,11 +58,12 @@ export function useAnketaClient() {
       setErrorState(undefined);
       fetchClient(anketaUpdateAPI[step], {body: anketa}).then(
         data => {
-          setState({status: 'resolved'});
+          //setState({status: 'resolved'});
           getAnketa();
           return data;
         },
         error => {
+          console.error(error)
           errorHandler(error);
         },
       );
