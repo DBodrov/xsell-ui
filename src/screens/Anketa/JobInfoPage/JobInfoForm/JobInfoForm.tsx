@@ -1,6 +1,6 @@
 import React from 'react';
 import {css} from '@emotion/react';
-import {Input, InputNumber, Span, Checkbox, Button} from 'neutrino-ui';
+import {Input, InputNumber, Span, Checkbox, Button, InputPhone} from 'neutrino-ui';
 import {useAnketa} from 'context/Anketa';
 import {useCampaign} from 'utils/use-campaign';
 import {onlyDigit, maxLengthString} from 'utils/string.utils';
@@ -9,7 +9,17 @@ import {CustomerAddress, WorkIndustryField, CollapseAgreements} from './componen
 import {BKI_AGREEMENT_DEFAULT, PERSONAL_DATA_AGREEMENT} from 'utils/externals';
 import {useJobinfoForm} from './use-jobinfo-form';
 import {TFieldName} from './types';
-import {Form, innFieldStyles, fieldStyles, Label, FormField, ErrorText} from './styles';
+import {
+  Form,
+  innFieldStyles,
+  fieldStyles,
+  Label,
+  FormField,
+  ErrorText,
+  countryCodeStyle,
+  placeholderStyles,
+  additionalPhoneFieldStyles,
+} from './styles';
 
 export function JobInfoForm() {
   const {campaignParams, STAFF_CAMPAIGN} = useCampaign();
@@ -31,6 +41,7 @@ export function JobInfoForm() {
     validateMonthlyAmount,
     formValid,
     validateLastWorkExperience,
+    validateAdditionalPhoneNumber,
   } = useJobinfoForm(isStaff);
 
   const handleChangeTextField = React.useCallback(
@@ -71,6 +82,10 @@ export function JobInfoForm() {
     },
     [dispatch],
   );
+
+  const handleChangePhone = React.useCallback((value?: string) => {
+    dispatch({type: 'CHANGE_VALUE', fieldName: 'additionalPhone', payload: value})
+  }, [dispatch]);
 
   const handleBlurInn = (event: React.FocusEvent<HTMLInputElement>) => {
     validateInn();
@@ -175,6 +190,23 @@ export function JobInfoForm() {
         hasError={hasError('workIndustry')}
         errorText={error.workIndustry}
       />
+      <FormField>
+        <Label htmlFor="additionalPhone">Дополнительный телефон</Label>
+        <InputPhone
+          countryCode="+7"
+          mask="(999) 999-99-99"
+          name="phoneNumber"
+          onChange={handleChangePhone}
+          onBlur={validateAdditionalPhoneNumber}
+          css={[additionalPhoneFieldStyles, errorStyleInputNumber('additionalPhone'), placeholderStyles]}
+          countryCodeCSS={countryCodeStyle}
+          id="additionalPhone"
+          value={values?.additionalPhone}
+          placeholder="(___) ___-__-__"
+          aria-label="дополнительный мобильный телефон"
+        />
+        {hasError('additionalPhone') ? <ErrorText>{error.additionalPhone}</ErrorText> : null}
+      </FormField>
       <FormField css={{gridColumn: '1/3', '@media (min-width: 704px)': {maxWidth: 608}}}>
         <Checkbox
           onChangeHandler={setCreditBureauConsentAgree}
