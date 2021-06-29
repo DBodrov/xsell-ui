@@ -12,7 +12,7 @@ import {AdvanceScoringRefusalPage} from 'screens/Anketa/AdvanceScoringRefusalPag
 import {ResultScoringPage} from 'screens/Anketa/ResultScoringPage';
 import {SignatureSMSPage} from 'screens/Anketa/SignatureSMSPage';
 import {ExecutionPage} from 'screens/Anketa/ExecutionPage';
-import {ExecutionFailedPage} from '../../pages/Anketa/ExecutionFailedPage';
+import {ExecutionFailedPage} from 'screens/Anketa/ExecutionFailedPage';
 import {CompletedPage} from '../../pages/Anketa/CompletedPage';
 import {RegistrationChanged} from '../../pages/Anketa/RegistrationChanged';
 // import {PassportRegPhotoPage} from '../../pages/PassportRegPhotoPage';
