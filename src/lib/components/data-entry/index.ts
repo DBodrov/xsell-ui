@@ -7,4 +7,3 @@ export * from './Select';
 export * from './Range';
 export * from './DatePicker';
 export * from './InputNumber';
-export * from './BicSearch';
