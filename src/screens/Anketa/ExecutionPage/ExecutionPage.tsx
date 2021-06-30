@@ -55,6 +55,7 @@ export function ExecutionPage() {
               gap: '1rem',
               '@media (min-width: 704px)': {width: '50%'},
               maxWidth: '288px',
+              width: '100%'
             }}
           >
             <Button css={{width: '100%'}} type="button" onClick={downloadAllDocs} variant="primary" flat>
