@@ -5,9 +5,6 @@ const chalk = require('chalk');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-
 const utils = require('./utilities.js');
 const {resolveApp} = require('./paths');
 const commonConfig = require('./webpack.config.common');
@@ -20,49 +17,6 @@ const APP_NAME = require('../package.json').description;
 console.info(chalk.white.bgGreen.bold(APP_NAME));
 console.info(chalk.white.bgGreen.bold('Версия: ', VERSION));
 console.info(chalk.white.bgGreen.bold('Build: ', 'production'));
-
-const getStyleLoaders = (cssOptions, preProcessor) => {
-  const loaders = [
-    {
-      loader: MiniCssExtractPlugin.loader,
-    },
-    {
-      loader: require.resolve('css-loader'),
-      options: cssOptions,
-    },
-    {
-      loader: require.resolve('postcss-loader'),
-      options: {
-        postcssOptions: {
-          plugins: [
-            'postcss-import',
-            'postcss-flexbugs-fixes',
-            [
-              'postcss-preset-env',
-              {
-                autoprefixer: {
-                  flexbox: 'no-2009',
-                  grid: true,
-                },
-              },
-            ],
-          ],
-          stage: 3,
-        },
-        sourceMap: false,
-      },
-    },
-  ];
-  if (preProcessor) {
-    loaders.push({
-      loader: require.resolve(preProcessor),
-      options: {
-        sourceMap: false,
-      },
-    });
-  }
-  return loaders;
-};
 
 module.exports = env => {
   console.info(chalk.white.bgGreen.bold('ENV mode: ', env.ENV, env.USE_API_MOCKS));
@@ -82,55 +36,9 @@ module.exports = env => {
     module: {
       rules: [
         {
-          test: utils.jsxRegex,
-          exclude: /node_modules/,
-          use: 'babel-loader',
-        },
-        {
           test: utils.tsxRegex,
           exclude: /node_modules/,
           use: 'babel-loader',
-        },
-        {
-          test: utils.cssRegex,
-          exclude: utils.cssModuleRegex,
-          use: getStyleLoaders({
-            importLoaders: 1,
-          }),
-        },
-        {
-          test: utils.cssModuleRegex,
-          use: getStyleLoaders({
-            importLoaders: 1,
-            modules: {
-              mode: 'local',
-              localIdentName: '[name]__[local]--[hash:base64:5]',
-            },
-          }),
-        },
-        {
-          test: utils.sassRegex,
-          exclude: utils.sassModuleRegex,
-          use: getStyleLoaders(
-            {
-              importLoaders: 2,
-              sourceMap: false,
-            },
-            'sass-loader',
-          ),
-        },
-        {
-          test: utils.sassModuleRegex,
-          use: getStyleLoaders(
-            {
-              importLoaders: 2,
-              modules: {
-                mode: 'local',
-                localIdentName: '[name]__[local]--[hash:base64:5]',
-              },
-            },
-            'sass-loader',
-          ),
         },
       ],
     },
@@ -146,12 +54,6 @@ module.exports = env => {
       minimize: true,
       minimizer: [
         new TerserPlugin({}),
-        new OptimizeCSSAssetsPlugin({
-          cssProcessorOptions: {
-            preset: 'advanced',
-            safe: true,
-          },
-        }),
       ],
     },
 
@@ -179,12 +81,6 @@ module.exports = env => {
           minifyCSS: true,
           minifyURLs: true,
         },
-      }),
-
-      new MiniCssExtractPlugin({
-        filename: 'static/css/[name].[contenthash].css',
-        chunkFilename: 'static/css/[name].[contenthash].chunk.css',
-        ignoreOrder: true,
       }),
 
       new webpack.ProvidePlugin({

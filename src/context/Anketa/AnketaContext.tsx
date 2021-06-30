@@ -1,5 +1,5 @@
 import React, {useContext, createContext, useMemo, useEffect} from 'react';
-import {Spinner} from 'lib/components/Spinner';
+import {Spinner} from 'components/lib';
 import {useAnketaClient} from './use-anketaClient';
 import {TAnketaContext} from './types';
 

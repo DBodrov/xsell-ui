@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Route, Switch, useHistory} from 'react-router-dom';
-import {Spinner} from 'lib/components/Spinner';
+import {Spinner} from 'components/lib';
 import {useAuth} from './context/Auth';
 
 const Auth1Container = React.lazy(() => import(/* webpackPrefetch: true */ /* webpackChunkName: "Auth1Container" */ './screens/Auth/Auth1Container'));

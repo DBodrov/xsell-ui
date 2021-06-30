@@ -17,7 +17,7 @@ import {CompletedPage} from 'screens/Anketa/CompletedPage';
 // import {RegistrationChanged} from '../../pages/Anketa/RegistrationChanged';
 // import {PassportRegPhotoPage} from '../../pages/PassportRegPhotoPage';
 // import {PassportPhotoPage} from '../../pages/PassportPhotoPage';
-import {PendingDocumentsPage} from '../../pages/Anketa/PendingDocumentsPage';
+import {PendingDocumentsPage} from 'screens/Anketa/PendingDocumentsPage';
 import {routeMap} from './anketa.routingMap';
 
 export function AnketaRoutes() {

@@ -32,7 +32,7 @@ export function Spinner(props: ISpinnerProps) {
         </svg>
       </div>
 
-      {message && <span css={{fontSize: '1.5rem', fontWeight: 600}}>{message}</span>}
+      {message && <span css={{fontSize: '1.5rem', fontWeight: 400}}>{message}</span>}
     </SpinnerScreen>
   );
 }
