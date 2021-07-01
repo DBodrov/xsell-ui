@@ -1,7 +1,7 @@
 import {rest} from 'msw';
 import {AuthStatus} from 'context/Auth';
 import {TAnketaStep} from 'context/Anketa';
-import {anketa} from 'context/__mocks__/anketa-mock';
+import {anketa, getAnketa} from 'context/__mocks__/anketa-mock';
 
 export const handlers = [
   rest.post('/gateway/reject-offer', async (req, res, ctx) => {
@@ -321,7 +321,8 @@ export const statusHandler = (status: AuthStatus = 'INITIALIZE') =>
     return res(ctx.status(200), ctx.json({status}));
   });
 
-export const anketaHandler = (step: TAnketaStep) => {
+export const anketaHandler = (step: TAnketaStep, anketaChanges: Partial<typeof anketa> = anketa) => {
+  const anketa = getAnketa(anketaChanges);
   const updatedAnketa = {...anketa, status: step}
   return rest.post('/gateway/credit-application/get-session-app', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(updatedAnketa));

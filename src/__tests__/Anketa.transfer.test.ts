@@ -14,7 +14,8 @@ const bic = '044525593';
 
 describe('Transfer', () => {
   test('render Transfer SBP screen', async () => {
-    server.use(statusHandler('OK'), anketaHandler('TRANSFER_DETAILS'));
+
+    server.use(statusHandler('OK'), anketaHandler('TRANSFER_DETAILS', {dboActivated: true}));
     renderApp();
     await waitForLoadingFinish();
     await waitForAnketaLoadingFinish();
@@ -26,7 +27,7 @@ describe('Transfer', () => {
   });
 
   test('Transfer Account screen', async () => {
-    server.use(statusHandler('OK'), anketaHandler('TRANSFER_DETAILS'));
+    server.use(statusHandler('OK'), anketaHandler('TRANSFER_DETAILS', {dboActivated: true}));
     renderApp();
     await waitForLoadingFinish();
     await waitForAnketaLoadingFinish();
@@ -47,7 +48,7 @@ describe('Transfer', () => {
   });
 
   test('Transfer CardPage', async () => {
-    server.use(statusHandler('OK'), anketaHandler('TRANSFER_DETAILS'));
+    server.use(statusHandler('OK'), anketaHandler('TRANSFER_DETAILS', {dboActivated: true}));
     renderApp();
     await waitForLoadingFinish();
     await waitForAnketaLoadingFinish();
