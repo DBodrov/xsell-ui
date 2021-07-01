@@ -1,14 +1,13 @@
-Для сборки проекта нужна **Node JS** версии не ниже 14
-запустить
+Для сборки проекта нужна **Node JS** версии не ниже 14 запустить
 
-    yarn
-    **DEV-режим**
-    yarn dev
+    npm i
+    **DEV-режим включает msw (моки для апи)**
+    npm run dev
 
     **Staging/UAT сборка**
-    yarn build:stage
+    npm run build:stage
 
     **Production сборка**
-    yarn build
+    npm run build
 
 Статика собирается в папку **dist** в корне проекта

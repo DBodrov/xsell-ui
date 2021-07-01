@@ -1,5 +1,5 @@
 import React from 'react';
-import {Spinner} from 'lib/components/Spinner';
+import {Spinner} from 'components/lib';
 import {useAnketa} from 'context/Anketa';
 import {TransferCardPage} from '../TransferCardPage';
 import {TransferAccountPage} from '../TransferAccountPage';

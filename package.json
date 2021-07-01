@@ -1,9 +1,12 @@
 {
   "name": "x-sell",
   "version": "2.0.0",
-  "description": "Кредит наличными @next",
+  "description": "Кредит наличными",
   "license": "ISC",
   "private": true,
+  "author": {
+    "name": "D.Bodrov"
+  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.isb/scm/dc/x-sell-ui.git"
@@ -23,13 +26,10 @@
     "postversion": "git push"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "classnames": "^2.3.1",
     "neutrino-ui": "^1.4.9",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-ga": "^3.3.0",
-    "react-input-mask": "^2.0.4",
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
@@ -60,7 +60,6 @@
     "@types/node": "^15.0.1",
     "@types/react": "^17.0.4",
     "@types/react-dom": "^17.0.3",
-    "@types/react-input-mask": "^3.0.0",
     "@types/react-router-dom": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",
@@ -68,9 +67,6 @@
     "babel-loader": "^8.2.2",
     "chalk": "^4.1.1",
     "core-js": "^3.11.2",
-    "cross-env": "^7.0.3",
-    "css-loader": "^5.2.4",
-    "cssnano": "^5.0.2",
     "emotion-theming": "^11.0.0",
     "eslint-config-react-app": "^6.0.0",
     "html-webpack-plugin": "^5.3.1",
@@ -78,24 +74,13 @@
     "jest": "^26.4.2",
     "jest-emotion": "^11.0.0",
     "lint-staged": "^10.5.4",
-    "mini-css-extract-plugin": "^1.6.0",
     "msw": "^0.28.2",
-    "node-sass": "^4.14.1",
-    "optimize-css-assets-webpack-plugin": "^5.0.4",
-    "postcss": "^8.2.13",
-    "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-import": "^14.0.1",
-    "postcss-loader": "^5.2.0",
-    "postcss-preset-env": "^6.7.0",
-    "postcss-safe-parser": "^5.0.2",
     "prettier": "^2.2.1",
     "react-refresh": "^0.10.0",
     "react-scripts": "^4.0.3",
     "react-spring": "^9.1.2",
-    "sass-loader": "^11.0.1",
     "semver": "^7.3.5",
     "start-server-and-test": "^1.12.1",
-    "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.1.1",
     "typescript": "^4.2.4",
     "webpack": "^5.33.2",

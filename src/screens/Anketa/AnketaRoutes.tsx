@@ -12,12 +12,12 @@ import {AdvanceScoringRefusalPage} from 'screens/Anketa/AdvanceScoringRefusalPag
 import {ResultScoringPage} from 'screens/Anketa/ResultScoringPage';
 import {SignatureSMSPage} from 'screens/Anketa/SignatureSMSPage';
 import {ExecutionPage} from 'screens/Anketa/ExecutionPage';
-import {ExecutionFailedPage} from '../../pages/Anketa/ExecutionFailedPage';
-import {CompletedPage} from '../../pages/Anketa/CompletedPage';
-import {RegistrationChanged} from '../../pages/Anketa/RegistrationChanged';
+import {ExecutionFailedPage} from 'screens/Anketa/ExecutionFailedPage';
+import {CompletedPage} from 'screens/Anketa/CompletedPage';
+// import {RegistrationChanged} from '../../pages/Anketa/RegistrationChanged';
 // import {PassportRegPhotoPage} from '../../pages/PassportRegPhotoPage';
 // import {PassportPhotoPage} from '../../pages/PassportPhotoPage';
-import {PendingDocumentsPage} from '../../pages/Anketa/PendingDocumentsPage';
+import {PendingDocumentsPage} from 'screens/Anketa/PendingDocumentsPage';
 import {routeMap} from './anketa.routingMap';
 
 export function AnketaRoutes() {
@@ -37,9 +37,10 @@ export function AnketaRoutes() {
         <JobInfoPage />
       </ProtectedRoute>
       {/* Паспорт ввел не правильно / Адрес изменился */}
-      <ProtectedRoute path={routeMap.CHANGED_REGISTRATION_ADDRESS}>
+
+      {/* <ProtectedRoute path={routeMap.CHANGED_REGISTRATION_ADDRESS}>
         <RegistrationChanged />
-      </ProtectedRoute>
+      </ProtectedRoute> */}
       {/* Фото */}
       <ProtectedRoute exact path={routeMap.PASSPORT_PHOTO}>
         <PhotoPassportPage />

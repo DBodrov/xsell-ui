@@ -29,6 +29,9 @@ const noOverlayCss = css`
   align-items: center;
   justify-content: center;
   position: fixed;
+  width: 100vw;
+  height: 100vh;
+  transform: translateY(0%);
 `;
 
 export const defaultLoaderCss = css`
@@ -96,17 +99,17 @@ const dash = keyframes`
 const color = keyframes`
   100%,
   0% {
-    stroke: $green-primary;
+    stroke: var(--color-primary);
   }
   40% {
-    stroke: $yellow;
+    stroke: var(--color-secondary);
   }
   66% {
-    stroke: $otp-blue;
+    stroke: var(--color-primary);
   }
   80%,
   90% {
-    stroke: $orange-300;
+    stroke: var(--color-secondary);
   }
 `;
 
