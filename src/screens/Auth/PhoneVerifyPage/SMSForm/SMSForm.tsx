@@ -64,7 +64,7 @@ export function SMSForm() {
   }, [timeLeft]);
 
   return (
-    <Form>
+    <Form onSubmit={(e) => e.preventDefault()}>
       <HeroSubText css={{fontSize: '24px !important', color: '#000', marginBottom: 8}}>
         Введите код из СМС
       </HeroSubText>
