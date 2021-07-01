@@ -134,6 +134,7 @@ export function SigninForm({onLogin}: TSigninFormProps) {
           value={values?.phoneNumber}
           placeholder="(___) ___-__-__"
           aria-label="мобильный телефон"
+          tabIndex={1}
         />
         {hasPhoneNumberError ? <ErrorText>{error.phoneNumber}</ErrorText> : null}
       </FormField>
@@ -145,7 +146,7 @@ export function SigninForm({onLogin}: TSigninFormProps) {
           value={values?.birthDate}
           locale="ru"
           inputStyles={css([birthDateStyles, birthDateBorderStyle])}
-          inputProps={{'aria-label': 'дата рождения', placeholder: 'ДД.ММ.ГГГГ'}}
+          inputProps={{'aria-label': 'дата рождения', placeholder: 'ДД.ММ.ГГГГ', tabIndex: 0}}
           calendarButtonStyles={{color: hasBirthDateError ? 'var(--color-error)' : 'var(--color-primary)'}}
           onBlur={handleValidateBirthDate}
           maxDate={date18plus()}
