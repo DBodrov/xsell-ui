@@ -1,6 +1,6 @@
 {
   "name": "x-sell",
-  "version": "2.0.0",
+  "version": "2.0.0-beta1",
   "description": "Кредит наличными",
   "license": "ISC",
   "private": true,
