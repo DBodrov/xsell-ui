@@ -26,7 +26,7 @@ describe('Transfer', () => {
     await waitForAnketaLoadingFinish();
   });
 
-  test('Transfer Account screen', async () => {
+  test.skip('Transfer Account screen', async () => {
     server.use(statusHandler('OK'), anketaHandler('TRANSFER_DETAILS', {dboActivated: true}));
     renderApp();
     await waitForLoadingFinish();
