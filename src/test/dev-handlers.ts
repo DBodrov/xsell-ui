@@ -244,18 +244,18 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json({
-        customerOtpCards: [
-          {
-            bankCardId: '2-QF19DDU',
-            bankCardNumber: '1234567890123456',
-            cardExpirationDt: '2020-12-25',
-          },
-          {
-            bankCardId: '2-1QZXRWG',
-            bankCardNumber: '9876543200001234',
-            cardExpirationDt: '2023-10-02',
-          },
-        ],
+        // customerOtpCards: [
+        //   {
+        //     bankCardId: '2-QF19DDU',
+        //     bankCardNumber: '1234567890123456',
+        //     cardExpirationDt: '2020-12-25',
+        //   },
+        //   {
+        //     bankCardId: '2-1QZXRWG',
+        //     bankCardNumber: '9876543200001234',
+        //     cardExpirationDt: '2023-10-02',
+        //   },
+        // ],
       }),
     );
   }),
