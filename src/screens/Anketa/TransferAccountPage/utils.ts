@@ -47,7 +47,7 @@ export function validateAccountAndBic(accountNumber: string, bic: string) {
 
 export async function searchBank(value: string) {
   const body = JSON.stringify({query: value});
-  const searchResponse = await window.fetch(HUMAN_FACTOR_BIC_URL, {method: 'post', body});
+  const searchResponse = await window.fetch(HUMAN_FACTOR_BIC_URL, {method: 'post', body, headers: {'Content-Type': 'application/json'}});
   const results = await searchResponse.json();
   const suggestions: TBicSuggestion[] = results?.suggestions?.map((item: any) => {
     return {

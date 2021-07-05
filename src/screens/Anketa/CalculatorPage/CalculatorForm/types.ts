@@ -2,16 +2,17 @@ const timezone = new Date().getTimezoneOffset() / -60;
 
 export type TLoanParams = typeof initLoanParams;
 
-export const initLoanParams = {
+export const initLoanParams: TPaymentRequest = {
   customerTimezoneOffset: timezone,
-  requestedLoanAmount: 400000,
-  requestedLoanTermMonths: 24,
+  requestedLoanAmount: 0,
+  requestedLoanTermMonths: 0,
   jobLossProtection: false,
   lifeAndHealthProtection: false,
   smsInforming: false,
-  workExperience: undefined,
   campaignParticipant: false,
-  rate: 19.9,
+  workExperience: undefined,
+  campaign: null,
+  productCode: null
 };
 
 export const initErrorState = {
@@ -65,8 +66,32 @@ export type TPaymentValues = {
   monthlyLifeAndHealthProtectionPayment: number;
   monthlyPayment: number;
   monthlySmsPayment: number;
+  rate: number;
 };
 
-export type TAdditionsModalType = "smsService" | "job" | "life" | "diffHave";
+export type TCalculatorParams = {
+  minLoanAmount: number;
+  maxLoanAmount: number;
+  minLoanTermMonths: number;
+  maxLoanTermMonths: number;
+  approvedLoanAmount: number;
+  approvedLoanTermMonths: number;
+  productCode?: string;
+};
+
+export type TPaymentRequest = {
+  customerTimezoneOffset: number;
+  requestedLoanAmount: number;
+  requestedLoanTermMonths: number;
+  jobLossProtection: boolean;
+  lifeAndHealthProtection: boolean;
+  smsInforming: boolean;
+  campaignParticipant: boolean;
+  workExperience?: number;
+  campaign?: string;
+  productCode?: string;
+};
+
+export type TAdditionsModalType = 'smsService' | 'job' | 'life' | 'diffHave';
 
 export type TPaymentByType = Record<TAdditionsModalType, number>;

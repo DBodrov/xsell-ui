@@ -18,7 +18,7 @@ export function TransferDetailsPage() {
     if (!cards && !isSuccess && !isError) {
       fetchOTPCards();
     }
-    if (cards && anketa && isSuccess) {
+    if (anketa && isSuccess) {
       let currentPage = 'default';
       if (!hasCards && !hasDbo) {
         currentPage = 'account';

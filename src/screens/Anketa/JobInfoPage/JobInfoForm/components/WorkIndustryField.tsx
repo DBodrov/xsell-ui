@@ -29,7 +29,6 @@ function SelectIndustry({industryId, onChangeIndustry, onBlurHandler, hasError, 
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const inputRect = inputRef?.current?.getBoundingClientRect();
-
   const {isOpen, handleToggle, handleClose} = useToggle();
 
   const handleItemClick = React.useCallback(

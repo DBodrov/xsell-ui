@@ -58,6 +58,7 @@ test('fill form', async () => {
   expect(submitButton).toBeDisabled();
 
   const innField = screen.queryByLabelText(/ИНН работодателя/i);
+  //const workindustryField = screen.queryByLabelText(/Отрасль занятости/i);
   expect(innField).toBeInTheDocument();
 
   userEvent.type(innField, '123456789012');

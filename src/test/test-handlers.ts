@@ -1,7 +1,7 @@
 import {rest} from 'msw';
 import {AuthStatus} from 'context/Auth';
 import {TAnketaStep} from 'context/Anketa';
-import {anketa} from 'context/__mocks__/anketa-mock';
+import {anketa, getAnketa} from 'context/__mocks__/anketa-mock';
 
 export const handlers = [
   rest.post('/gateway/reject-offer', async (req, res, ctx) => {
@@ -126,6 +126,38 @@ export const handlers = [
 
   rest.post('/gateway/credit-application/archive-app', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({code: 'OK'}));
+  }),
+
+  rest.post('/gateway/credit-application/get-calculator-params', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        minLoanAmount: 10000,
+        maxLoanAmount: 100000,
+        minLoanTermMonths: 12,
+        maxLoanTermMonths: 72,
+        approvedLoanAmount: 50000,
+        approvedLoanTermMonths: 24,
+        productCode: 'product_code',
+      }),
+    );
+  }),
+  rest.post('/gateway/credit-application/get-all-monthly-payment', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        monthlyPayment: 20000.34,
+        monthlySmsPayment: 100,
+        allSmsPayment: null,
+        monthlyJobLossProtectionPayment: null,
+        allJobLossProtectionPayment: null,
+        monthlyLifeAndHealthProtectionPayment: null,
+        allLifeAndHealthProtectionPayment: null,
+        monthlyCampaignPayment: null,
+        allCampaignPayment: 322.228,
+        rate: 19.9,
+      }),
+    );
   }),
 
   rest.post('/gateway/credit-application/get-employee-monthly-payment', (req, res, ctx) => {
@@ -321,7 +353,8 @@ export const statusHandler = (status: AuthStatus = 'INITIALIZE') =>
     return res(ctx.status(200), ctx.json({status}));
   });
 
-export const anketaHandler = (step: TAnketaStep) => {
+export const anketaHandler = (step: TAnketaStep, anketaChanges: Partial<typeof anketa> = anketa) => {
+  const anketa = getAnketa(anketaChanges);
   const updatedAnketa = {...anketa, status: step}
   return rest.post('/gateway/credit-application/get-session-app', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(updatedAnketa));

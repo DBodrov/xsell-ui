@@ -19,7 +19,11 @@ const initAudit = () => {
 };
 
 const saveUserEvent = (userEvent: IUserEvent) => {
-  window.fetch('/gateway/report/store-event', {method: 'post', body: JSON.stringify(userEvent)})
+  window.fetch('/gateway/report/store-event', {
+    method: 'post',
+    body: JSON.stringify(userEvent),
+    headers: {'Content-Type': 'application/json'},
+  });
 };
 
 let cachePath: string;

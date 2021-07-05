@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const chalk = require('chalk');

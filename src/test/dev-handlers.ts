@@ -142,8 +142,58 @@ export const handlers = [
     return res(ctx.status(200), ctx.json({code: 'OK'}));
   }),
 
+  rest.post('/gateway/credit-application/get-calculator-params', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        minLoanAmount: 10000,
+        maxLoanAmount: 100000,
+        minLoanTermMonths: 12,
+        maxLoanTermMonths: 72,
+        approvedLoanAmount: 50000,
+        approvedLoanTermMonths: 24,
+        productCode: 'product_code',
+      }),
+    );
+  }),
+  rest.post('/gateway/credit-application/get-all-monthly-payment', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        monthlyPayment: 20000.34,
+        monthlySmsPayment: 100,
+        allSmsPayment: null,
+        monthlyJobLossProtectionPayment: null,
+        allJobLossProtectionPayment: null,
+        monthlyLifeAndHealthProtectionPayment: null,
+        allLifeAndHealthProtectionPayment: null,
+        monthlyCampaignPayment: null,
+        allCampaignPayment: 322.228,
+        rate: 19.9,
+      }),
+    );
+  }),
+
   rest.post('/gateway/credit-application/get-employee-monthly-payment', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({monthlyPayment: 12345}));
+  }),
+  rest.post('/gateway/credit-application/get-monthly-payment-with-campaign', (req, res, ctx) => {
+    const amount = req.body['requestedLoanAmount'];
+    return res(
+      ctx.status(200),
+      ctx.json({
+        allCampaignPayment: 9900,
+        allJobLossProtectionPayment: 12743.36,
+        allLifeAndHealthProtectionPayment: 19115.04,
+        allSmsPayment: 2376,
+        monthlyCampaignPayment: 412.5,
+        monthlyJobLossProtectionPayment: 530.97,
+        monthlyLifeAndHealthProtectionPayment: 796.46,
+        monthlyPayment: 17498.19,
+        monthlySmsPayment: 99,
+        rate: amount >= 400_000 ? 13.9 : 19.9,
+      }),
+    );
   }),
   rest.post('/gateway/credit-application/get-monthly-payment', (req, res, ctx) => {
     return res(
@@ -161,6 +211,7 @@ export const handlers = [
       }),
     );
   }),
+
   rest.post('/gateway/credit-application/send-documents', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({code: 'OK'}));
   }),
@@ -261,14 +312,14 @@ export const handlers = [
   }),
 
   rest.post('/gateway/dadata/suggestions/api/4_1/rs/suggest/bank', (req, res, ctx) => {
-    const query = JSON.parse(req.body as string)['query'];
+    const query = req.body['query'];
     if (query === '000000000') {
       return res(
         ctx.status(200),
         ctx.json({
-          suggestions: []
-        })
-      )
+          suggestions: [],
+        }),
+      );
     }
     return res(
       ctx.status(200),

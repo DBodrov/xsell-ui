@@ -11,3 +11,9 @@
     npm run build
 
 Статика собирается в папку **dist** в корне проекта
+
+    **Тесты**
+    npm test
+
+    **Watch режим**
+    npm run tdd
