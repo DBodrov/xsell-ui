@@ -1,7 +1,7 @@
 import React, {createContext, useState, useMemo, useContext, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
-import {ClientNotFound} from 'pages/Authentication/ClientNotFound';
-import {ErrorPage} from 'pages/ErrorPage';
+import {ClientNotFound} from 'screens/Auth/ClientNotFound';
+import {ErrorPage} from 'screens/ErrorPage';
 
 export type ErrorState = {
   status: number | string;
@@ -16,7 +16,7 @@ export interface IErrorContext<T = Record<string, unknown>> {
 
 export const ErrorContext = createContext<IErrorContext>(undefined);
 
-//TODO: вынести в utils, сделать константы кодов
+//TODO: взять ErrorBoundary (use-error-boundary) или сделать что то получше чем сейчас
 const notFoundResponse = (error: ErrorState) =>
   (error?.status === 404 && error?.code === 'USER_NOT_FOUND') ||
   (error?.status === 409 && error?.code === 'CUSTOMER_PROFILE_NOT_FOUND');

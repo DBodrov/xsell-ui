@@ -3,12 +3,12 @@ export const anketa = {
   additionalMonthlyIncomeAmount: 0,
   additionalPhone: 'string',
   agreementFormLink: '/string',
-  approvedInterestRate: 0,
-  approvedLoanAmount: 0,
-  approvedLoanTermMonths: 0,
-  approvedMonthlyPayment: 0,
+  approvedInterestRate: 13,
+  approvedLoanAmount: 100_000,
+  approvedLoanTermMonths: 20,
+  approvedMonthlyPayment: 10_000,
   bankIdCode: 'string',
-  batchDocumentLink: 'string',
+  batchDocumentLink: '/download-document?resource=customers&storageKey=779436/documents.pdf',
   birthDate: '2020-11-27',
   campaignParticipant: false,
   dboActivated: false,
@@ -35,3 +35,8 @@ export const anketa = {
   workInn: 'string',
   workPlace: 'string',
 };
+
+export const getAnketa = (changes: Partial<typeof anketa>) => {
+  const updatedAnketa = {...anketa, ...changes};
+  return updatedAnketa;
+}

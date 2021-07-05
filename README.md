@@ -1,10 +1,8 @@
 Для сборки проекта нужна **Node JS** версии не ниже 14 запустить
 
     npm i
-    **DEV-режим + моки API**
+    **DEV-режим включает msw (моки для апи)**
     npm run dev
-    **DEV-режим + без моков**
-    npm start
 
     **Staging/UAT сборка**
     npm run build:stage

@@ -65,6 +65,9 @@ export function useAuthClient() {
   const auth1SignIn = useCallback(
     (auth1Data: IAuth1Params, isComeback = false, isClient = false) => {
       setState({status: 'pending', error: null});
+      if (auth1Data) {
+        auth1Data.phoneNumber = `7${auth1Data.phoneNumber}`;
+      }
       const fetchConfig = isComeback
         ? {url: '/gateway/auth1-retry', body: {}}
         : isClient
@@ -93,7 +96,6 @@ export function useAuthClient() {
           return response;
         },
         error => {
-          //console.log(error);
           setState({status: 'rejected', error});
           userEvents({category: 'AUTH', action: 'AUTH1_FAIL'});
           setErrorState(error);

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Spinner} from 'lib/components/Spinner';
+import {Spinner} from 'components/lib';
 import {useAnketa} from 'context/Anketa';
 import {TransferCardPage} from '../TransferCardPage';
 import {TransferAccountPage} from '../TransferAccountPage';
@@ -18,7 +18,7 @@ export function TransferDetailsPage() {
     if (!cards && !isSuccess && !isError) {
       fetchOTPCards();
     }
-    if (cards && anketa && isSuccess) {
+    if (anketa && isSuccess) {
       let currentPage = 'default';
       if (!hasCards && !hasDbo) {
         currentPage = 'account';
@@ -32,10 +32,10 @@ export function TransferDetailsPage() {
   }, [anketa, cards, fetchOTPCards, hasCards, hasDbo, isError, isSuccess]);
 
   if (isIdle || isLoading) {
-    return <Spinner withBackdrop message="Получаем данные..." />;
+    return <Spinner withBackdrop message="Обновляем анкету..." />;
   }
 
-  if (page === 'account' || page === 'default') {
+  if (page === 'account') {
     return <TransferAccountPage />
   }
 

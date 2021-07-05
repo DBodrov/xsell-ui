@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { OtpLogo, ShieldIcon } from 'icons';
+import {OtpLogo} from 'icons';
 
 const Header = styled.div`
   display: flex;
@@ -25,19 +25,6 @@ export function AppPageHeader() {
     <Header>
       <TopHead>
         <OtpLogo />
-        {/* <div
-          css={{
-            display: 'flex',
-            flexFlow: 'row nowrap',
-            width: '55%',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-          }}>
-          <ShieldIcon css={{ minWidth: 26 }} />
-          <span css={{ color: '#C5C5C5', fontSize: 10, paddingLeft: 10 }}>
-            Гарантируем безопасность ваших данных
-          </span>
-        </div> */}
       </TopHead>
     </Header>
   );

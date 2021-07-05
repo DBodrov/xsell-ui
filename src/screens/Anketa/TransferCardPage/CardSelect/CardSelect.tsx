@@ -13,7 +13,6 @@ function maskCardNumber(cardNumber: string): string {
   return '';
 }
 
-
 function CardSelectInputComponent(
   {value, noCards}: TCardSelectInputProps,
   ref: React.ForwardRefExoticComponent<HTMLDivElement>,
@@ -27,7 +26,7 @@ function CardSelectInputComponent(
       aria-label="card-input"
       ref={cardBoxRef}
       css={{borderColor: isOpen ? 'var(--color-primary)' : 'var(--color-border)'}}
-      onClick={noCards ? undefined: handleToggle}
+      onClick={noCards ? undefined : handleToggle}
     >
       {value ? (
         <>
@@ -100,7 +99,7 @@ function SelectCard(props: TCardSelectProps) {
 
     const handleResize = () => {
       handleClose();
-    }
+    };
 
     if (isOpen) {
       document.addEventListener('click', handleClickOutside);
@@ -115,12 +114,22 @@ function SelectCard(props: TCardSelectProps) {
 
   return (
     <div css={{position: 'relative', width: '100%'}}>
-      <CardSelectInput value={maskCardNumber(cardNumber)} ref={cardInputRef} noCards={!cardsList || cardsList.length === 0}/>
+      <CardSelectInput
+        value={maskCardNumber(cardNumber)}
+        ref={cardInputRef}
+        noCards={!cardsList || cardsList.length === 0}
+      />
       <Dropdown isOpen={isOpen} parentBound={isOpen ? cardInputRect : undefined} ref={dropDownRef}>
         <CardsList>
           {cardsList?.map(card => {
             return (
-              <li role="menuitem" css={{width: '100%'}} key={card.bankCardId} data-card={card.bankCardId} onClick={handleSelectCard}>
+              <li
+                role="menuitem"
+                css={{width: '100%'}}
+                key={card.bankCardId}
+                data-card={card.bankCardId}
+                onClick={handleSelectCard}
+              >
                 <CustomerCard
                   css={css`
                     background-color: ${card.bankCardId === currentCardId ? '#f3f3f3' : '#fff'};

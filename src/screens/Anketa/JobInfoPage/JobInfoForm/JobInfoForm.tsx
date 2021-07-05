@@ -1,76 +1,106 @@
 import React from 'react';
 import {css} from '@emotion/react';
-import {Input, InputNumber, Span, Checkbox, Button} from 'neutrino-ui';
+import {Input, InputNumber, Span, Checkbox, Button, InputPhone} from 'neutrino-ui';
 import {useAnketa} from 'context/Anketa';
 import {useCampaign} from 'utils/use-campaign';
 import {onlyDigit, maxLengthString} from 'utils/string.utils';
 import {SecuritySign} from 'components/lib';
-import {CustomerAddress, WorkIndustryField} from './components';
-import {fallbackAgreementLink} from './utils';
+import {CustomerAddress, WorkIndustryField, CollapseAgreements} from './components';
+import {BKI_AGREEMENT_DEFAULT, PERSONAL_DATA_AGREEMENT} from 'utils/externals';
 import {useJobinfoForm} from './use-jobinfo-form';
-import {Form, innFieldStyles, fieldStyles, Label, FormField, ErrorText} from './styles';
+import {TFieldName} from './types';
+import {
+  Form,
+  innFieldStyles,
+  fieldStyles,
+  Label,
+  FormField,
+  ErrorText,
+  countryCodeStyle,
+  placeholderStyles,
+  additionalPhoneFieldStyles,
+} from './styles';
 
-export function JobInfoForm(props: any) {
+export function JobInfoForm() {
   const {campaignParams, STAFF_CAMPAIGN} = useCampaign();
   const {anketa} = useAnketa();
 
   const {agreementFormLink, registrationAddress} = anketa;
-  const agreementLink = agreementFormLink ? `/gateway/doc${agreementFormLink}` : fallbackAgreementLink;
+  const agreementLink = agreementFormLink ? `/gateway/doc${agreementFormLink}` : BKI_AGREEMENT_DEFAULT;
 
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
+
   const {
-    formData,
+    values,
     dispatch,
     handleChangeAddress,
     handleFormSubmit,
-    errorState,
+    error,
     validateRequiredField,
     validateInn,
     validateMonthlyAmount,
     formValid,
-    validateLastWorkExpirience
+    validateLastWorkExperience,
+    validateAdditionalPhoneNumber,
   } = useJobinfoForm(isStaff);
 
   const handleChangeTextField = React.useCallback(
     (value: string, e?: React.ChangeEvent<HTMLInputElement>) => {
-      const fieldName = e?.currentTarget?.name;
-      dispatch({formData: {...formData, [fieldName]: value}});
+      const fieldName = e?.currentTarget?.name as TFieldName;
+      dispatch({type: 'CHANGE_VALUE', fieldName, payload: value});
     },
-    [dispatch, formData],
+    [dispatch],
   );
 
-
-  const handleChangeAgreement = React.useCallback(
+  const setCreditBureauConsentAgree = React.useCallback(
     (isAgree: boolean) => {
-      dispatch({formData: {...formData, creditBureauConsentAgree: isAgree}});
+      dispatch({type: 'CHANGE_VALUE', fieldName: 'creditBureauConsentAgree', payload: isAgree});
     },
-    [dispatch, formData],
+    [dispatch],
+  );
+
+  const setNotarialRecord = React.useCallback(
+    (isAgree: boolean) => {
+      dispatch({type: 'CHANGE_VALUE', fieldName: 'notarialRecord', payload: isAgree});
+    },
+    [dispatch],
+  );
+
+  const setPersonalDataProcessingConsentAgree = React.useCallback(
+    (isAgree: boolean) => {
+      dispatch({type: 'CHANGE_VALUE', fieldName: 'personalDataProcessingConsentAgree', payload: isAgree});
+    },
+    [dispatch],
   );
 
   const handleChangeInn = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const inn = onlyDigit(event.currentTarget.value);
-      const fullInn = maxLengthString(inn, 12)
+      const fullInn = maxLengthString(inn, 12);
 
-      dispatch({formData: {...formData, workInn: fullInn}});
+      dispatch({type: 'CHANGE_VALUE', fieldName: 'workInn', payload: fullInn});
     },
-    [dispatch, formData],
+    [dispatch],
   );
 
+  const handleChangePhone = React.useCallback((value?: string) => {
+    dispatch({type: 'CHANGE_VALUE', fieldName: 'additionalPhone', payload: value})
+  }, [dispatch]);
+
   const handleBlurInn = (event: React.FocusEvent<HTMLInputElement>) => {
-    validateInn(event);
+    validateInn();
   };
 
   const handleChangeIndustry = React.useCallback(
-    (id: string) => dispatch({formData: {...formData, workIndustry: id}}),
-    [dispatch, formData],
+    (id: string) => dispatch({type: 'CHANGE_VALUE', fieldName: 'workIndustry', payload: id}),
+    [dispatch],
   );
 
-  const hasError = (fieldName: keyof typeof formData) => {
-    return Boolean(errorState[fieldName]);
+  const hasError = (fieldName: string) => {
+    return Boolean(error[fieldName]);
   };
 
-  const errorStyleInputNumber = (field: keyof typeof formData) =>
+  const errorStyleInputNumber = (field: string) =>
     css({
       border: `1px ${hasError(field) ? 'var(--color-secondary)' : 'var(--color-border)'} solid`,
       '&:hover, &:focus': {
@@ -79,7 +109,7 @@ export function JobInfoForm(props: any) {
     });
 
   return (
-    <Form {...props}>
+    <Form onSubmit={handleFormSubmit}>
       <CustomerAddress address={registrationAddress} onChangeAddress={handleChangeAddress} />
       <FormField>
         <Label htmlFor="workInn">ИНН работодателя</Label>
@@ -97,10 +127,11 @@ export function JobInfoForm(props: any) {
           ]}
           onChange={handleChangeInn}
           onBlur={handleBlurInn}
-          value={formData.workInn}
+          value={values.workInn}
           id="workInn"
+          aria-label="ИНН работодателя"
         />
-        {hasError('workInn') ? <ErrorText>{errorState.workInn}</ErrorText> : null}
+        {hasError('workInn') ? <ErrorText>{error.workInn}</ErrorText> : null}
       </FormField>
       <FormField>
         <Label htmlFor="workPlace">Место работы</Label>
@@ -111,11 +142,11 @@ export function JobInfoForm(props: any) {
           aria-label="Место работы"
           hasError={hasError('workPlace')}
           onChangeHandler={handleChangeTextField}
-          onBlurHandler={validateRequiredField}
-          value={formData.workPlace}
+          onBlurHandler={() => validateRequiredField('workPlace')}
+          value={values.workPlace}
           css={[fieldStyles]}
         />
-        {hasError('workPlace') ? <ErrorText>{errorState.workPlace}</ErrorText> : null}
+        {hasError('workPlace') ? <ErrorText>{error.workPlace}</ErrorText> : null}
       </FormField>
       <FormField>
         <Label htmlFor="mainMonthlyIncomeAmount">Весь ежемесячный доход (руб)</Label>
@@ -124,13 +155,13 @@ export function JobInfoForm(props: any) {
           id="mainMonthlyIncomeAmount"
           aria-label="Весь ежемесячный доход (руб)"
           onChangeHandler={handleChangeTextField}
-          value={formData.mainMonthlyIncomeAmount}
+          value={values.mainMonthlyIncomeAmount}
           css={[fieldStyles, errorStyleInputNumber('mainMonthlyIncomeAmount')]}
           onBlurHandler={validateMonthlyAmount}
         />
 
         {hasError('mainMonthlyIncomeAmount') ? (
-          <ErrorText>{errorState.mainMonthlyIncomeAmount}</ErrorText>
+          <ErrorText>{error.mainMonthlyIncomeAmount}</ErrorText>
         ) : (
           <Span css={{fontSize: 14, color: 'var(--color-text-label)', paddingTop: 8}}>
             Ваш постоянный + дополнительный доход до вычета налогов
@@ -143,49 +174,81 @@ export function JobInfoForm(props: any) {
           name="lastWorkExperienceMonths"
           id="lastWorkExperienceMonths"
           onChangeHandler={handleChangeTextField}
-          value={formData.lastWorkExperienceMonths}
+          value={values.lastWorkExperienceMonths}
           aria-label="Стаж на последнем месте (месяцев)"
           css={[fieldStyles, errorStyleInputNumber('lastWorkExperienceMonths')]}
-          onBlurHandler={validateLastWorkExpirience}
+          onBlurHandler={validateLastWorkExperience}
         />
         {hasError('lastWorkExperienceMonths') ? (
-          <ErrorText>{errorState.lastWorkExperienceMonths}</ErrorText>
+          <ErrorText>{error.lastWorkExperienceMonths}</ErrorText>
         ) : null}
       </FormField>
       <WorkIndustryField
-        industryId={formData.workIndustry}
+        industryId={values.workIndustry}
         onChangeIndustry={handleChangeIndustry}
-        onBlurHandler={validateRequiredField}
+        onBlurHandler={() => validateRequiredField('workIndustry')}
         hasError={hasError('workIndustry')}
-        errorText={errorState.workIndustry}
+        errorText={error.workIndustry}
       />
-      <FormField css={{gridColumn: '1/3', '@media (min-width: 768px)': {maxWidth: 608}}}>
+      <FormField>
+        <Label htmlFor="additionalPhone">Дополнительный телефон</Label>
+        <InputPhone
+          countryCode="+7"
+          mask="(999) 999-99-99"
+          name="phoneNumber"
+          onChange={handleChangePhone}
+          onBlur={validateAdditionalPhoneNumber}
+          css={[additionalPhoneFieldStyles, errorStyleInputNumber('additionalPhone'), placeholderStyles]}
+          countryCodeCSS={countryCodeStyle}
+          id="additionalPhone"
+          value={values?.additionalPhone}
+          placeholder="(___) ___-__-__"
+          aria-label="дополнительный мобильный телефон"
+        />
+        {hasError('additionalPhone') ? <ErrorText>{error.additionalPhone}</ErrorText> : null}
+      </FormField>
+      <FormField css={{gridColumn: '1/3', '@media (min-width: 704px)': {maxWidth: 608}}}>
         <Checkbox
-          variant="primary"
-          onChangeHandler={handleChangeAgreement}
-          checked={formData.creditBureauConsentAgree}
+          onChangeHandler={setCreditBureauConsentAgree}
+          id="creditBureauConsentAgree"
+          checked={values.creditBureauConsentAgree}
           boxStyles={{borderRadius: 4, alignSelf: 'flex-start'}}
         >
-          <Span>
-            Я даю{' '}
+          <div>
+            Я даю согласие на{' '}
             <a
-              css={{color: 'var(--color-primary)'}}
-              href={agreementLink}
-              type="download"
+              href={PERSONAL_DATA_AGREEMENT}
+              target="_blank"
               rel="noopener noreferrer"
+              css={{color: 'var(--color-primary)'}}
             >
-              согласие Банку на запрос информации
-            </a>{' '}
+              обработку Банком моих персональных данных
+            </a>
+            в целях рассмотрения настоящего сообщения и{' '}
+            <a
+              href={agreementLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              css={{color: 'var(--color-primary)'}}
+            >
+              на запрос информации
+            </a>
             в Бюро кредитных историй для оценки моей платежеспособности
-          </Span>
+          </div>
         </Checkbox>
+        <CollapseAgreements
+          collectionSetted={values.personalDataProcessingConsentAgree}
+          notarialSetted={values.notarialRecord}
+          setCollection={setPersonalDataProcessingConsentAgree}
+          setNotarial={setNotarialRecord}
+        />
       </FormField>
       <FormField>
         <Button
           variant="primary"
           flat
           css={{width: 288, height: 48, borderRadius: 28}}
-          onClick={handleFormSubmit}
+          type="submit"
           disabled={!formValid()}
         >
           Все данные верны
