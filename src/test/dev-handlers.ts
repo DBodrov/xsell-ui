@@ -142,6 +142,38 @@ export const handlers = [
     return res(ctx.status(200), ctx.json({code: 'OK'}));
   }),
 
+  rest.post('/gateway/credit-application/get-calculator-params', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        minLoanAmount: 10000,
+        maxLoanAmount: 100000,
+        minLoanTermMonths: 12,
+        maxLoanTermMonths: 72,
+        approvedLoanAmount: 50000,
+        approvedLoanTermMonths: 24,
+        productCode: 'product_code',
+      }),
+    );
+  }),
+  rest.post('/gateway/credit-application/get-all-monthly-payment', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        monthlyPayment: 20000.34,
+        monthlySmsPayment: 100,
+        allSmsPayment: null,
+        monthlyJobLossProtectionPayment: null,
+        allJobLossProtectionPayment: null,
+        monthlyLifeAndHealthProtectionPayment: null,
+        allLifeAndHealthProtectionPayment: null,
+        monthlyCampaignPayment: null,
+        allCampaignPayment: 322.228,
+        rate: 19.9,
+      }),
+    );
+  }),
+
   rest.post('/gateway/credit-application/get-employee-monthly-payment', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({monthlyPayment: 12345}));
   }),
@@ -161,6 +193,7 @@ export const handlers = [
       }),
     );
   }),
+
   rest.post('/gateway/credit-application/send-documents', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({code: 'OK'}));
   }),
@@ -266,9 +299,9 @@ export const handlers = [
       return res(
         ctx.status(200),
         ctx.json({
-          suggestions: []
-        })
-      )
+          suggestions: [],
+        }),
+      );
     }
     return res(
       ctx.status(200),

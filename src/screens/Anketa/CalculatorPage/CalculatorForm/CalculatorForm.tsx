@@ -16,7 +16,7 @@ export function CalculatorForm() {
   const isStaff = campaignParams?.campaignName === STAFF_CAMPAIGN;
   const isFap = campaignParams?.campaignName === FAP_CAMPAIGN;
   const {step, updateAnketa} = useAnketa();
-  const maxAmount = isStaff ? 3000000 : 1000000;
+  const timer = React.useRef(null);
 
   const {
     getWorkExperience,
@@ -26,7 +26,9 @@ export function CalculatorForm() {
     validateLoanTerm,
     error,
     validateAllFields,
-  } = useCalcClient(maxAmount);
+    getCalculatorParams,
+    calculatorParams,
+  } = useCalcClient(campaignParams?.campaignName);
   const {payment, updateLoanParams} = usePayment(isStaff);
   const showDifferenceHave = !isStaff || (isStaff && values?.workExperience < 25);
 
@@ -95,10 +97,14 @@ export function CalculatorForm() {
       e.preventDefault();
       const formIsValid = (await validateAllFields()).every(Boolean);
       if (formIsValid) {
-        updateAnketa(step, values);
+        const loanParams = {
+          ...values,
+          rate: payment.rate,
+        };
+        updateAnketa(step, loanParams);
       }
     },
-    [step, updateAnketa, validateAllFields, values],
+    [payment?.rate, step, updateAnketa, validateAllFields, values],
   );
 
   const handleOpenModal = React.useCallback((e: React.PointerEvent<HTMLButtonElement>) => {
@@ -116,18 +122,24 @@ export function CalculatorForm() {
     if (isStaff && !values.workExperience) {
       getWorkExperience();
     }
-  }, [getWorkExperience, isStaff, updateLoanParams, validateAllFields, values, values.workExperience]);
+  }, [getWorkExperience, isStaff, values.workExperience]);
 
   React.useEffect(() => {
-    const timer = window.setTimeout(async () => {
+    timer.current = window.setTimeout(async () => {
       const formIsValid = (await validateAllFields()).every(Boolean);
       if (formIsValid) {
         updateLoanParams(values);
       }
     }, 300);
 
-    return () => window.clearTimeout(timer);
+    return () => window.clearTimeout(timer.current);
   }, [updateLoanParams, validateAllFields, values]);
+
+  React.useEffect(() => {
+    if (!calculatorParams) {
+      getCalculatorParams();
+    }
+  }, [calculatorParams, getCalculatorParams]);
 
   const hasError = (fieldName: string) => {
     return Boolean(error[fieldName]);
@@ -156,9 +168,9 @@ export function CalculatorForm() {
           <Range
             showCurrency
             value={values.requestedLoanAmount}
-            min={30000}
+            min={calculatorParams?.minLoanAmount}
             step={1000}
-            max={maxAmount}
+            max={calculatorParams?.maxLoanAmount}
             onChange={handleChangeAmount}
             onBlur={() => validateLoanAmount(values?.requestedLoanAmount)}
             formatter={val => val.toLocaleString('ru')}
@@ -171,8 +183,8 @@ export function CalculatorForm() {
             </span>
           ) : (
             <MinmaxText>
-              <span>от 30 000</span>
-              <span>{`до ${maxAmount.toLocaleString('ru')}`}</span>
+              <span>{`от ${calculatorParams?.minLoanAmount.toLocaleString('ru')}`}</span>
+              <span>{`до ${calculatorParams?.maxLoanAmount.toLocaleString('ru')}`}</span>
             </MinmaxText>
           )}
           {takeMore.isShowMore ? (
@@ -187,9 +199,9 @@ export function CalculatorForm() {
           <Label>Cрок кредита</Label>
           <Range
             value={values.requestedLoanTermMonths}
-            min={values.campaignParticipant ? 24 : 12}
+            min={calculatorParams?.minLoanTermMonths}
             step={12}
-            max={60}
+            max={calculatorParams?.maxLoanTermMonths}
             onChange={handleChangeTerm}
             onBlur={() => validateLoanTerm(values?.requestedLoanTermMonths)}
             aria-label="Cрок кредита"
@@ -201,8 +213,8 @@ export function CalculatorForm() {
             </span>
           ) : (
             <MinmaxText>
-              <span>{`${values.campaignParticipant ? '24 мес.' : '12 мес.'}`}</span>
-              <span>60 мес.</span>
+              <span>{`${calculatorParams?.minLoanTermMonths} мес.`}</span>
+              <span>{`${calculatorParams?.maxLoanTermMonths} мес.`}</span>
             </MinmaxText>
           )}
         </FormField>
@@ -243,7 +255,7 @@ export function CalculatorForm() {
                 color: 'var(--color-primary)',
               }}
             >
-              {values.rate} %
+              {payment?.rate} %
             </H2>
           </ListItem>
           {isStaff ? (

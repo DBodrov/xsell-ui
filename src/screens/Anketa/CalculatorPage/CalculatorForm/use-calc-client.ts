@@ -1,7 +1,6 @@
 import React from 'react';
 import {useFetch} from 'utils/use-fetch';
-import {getRate} from './utils';
-import {TFormState, IFormChanges, initFormState} from './types';
+import {TFormState, IFormChanges, initFormState, TCalculatorParams} from './types';
 
 const formStateReducer = (state: TFormState, changes: IFormChanges) => {
   switch (changes.type) {
@@ -52,26 +51,69 @@ function minMaxValidator(value: number, options: {minLimit: number; maxlimit: nu
   }
 }
 
-export function useCalcClient(maxAmount: number) {
-  const [{values, error, touched}, dispatch] = React.useReducer(formStateReducer, initFormState);
-  const fetchClient = useFetch();
-  const min = 30000;
-  const max = maxAmount;
+const initCalculatorParams: TCalculatorParams = {
+  approvedLoanAmount: 0,
+  approvedLoanTermMonths: 0,
+  maxLoanAmount: 0,
+  maxLoanTermMonths: 0,
+  minLoanAmount: 0,
+  minLoanTermMonths: 0,
+  productCode: null,
+};
 
-  const minTerm = values.campaignParticipant ? 24 : 12;
-  const maxTerm = 60;
+export function useCalcClient(campaignName?: string) {
+  const [calculatorParams, setCalculatorParams] = React.useState<TCalculatorParams | null>(null);
+  const [{values, error, touched}, dispatch] = React.useReducer(formStateReducer, initFormState);
+
+  const fetchClient = useFetch();
+  const {maxLoanAmount, maxLoanTermMonths, minLoanAmount, minLoanTermMonths} = calculatorParams
+    ? calculatorParams
+    : initCalculatorParams;
+
+  const getCalculatorParams = React.useCallback(() => {
+    fetchClient('/gateway/credit-application/get-calculator-params', {body: {campaignName}}).then(
+      (response: TCalculatorParams) => {
+        setCalculatorParams(response);
+        if (response?.approvedLoanAmount || response?.approvedLoanTermMonths) {
+          dispatch({
+            type: 'CHANGE_VALUE',
+            fieldName: 'requestedLoanAmount',
+            payload: response.approvedLoanAmount,
+          });
+          dispatch({
+            type: 'CHANGE_VALUE',
+            fieldName: 'requestedLoanTermMonths',
+            payload: response.approvedLoanTermMonths,
+          });
+          dispatch({
+            type: 'CHANGE_VALUE',
+            fieldName: 'productCode',
+            payload: response.productCode,
+          });
+          dispatch({
+            type: 'CHANGE_VALUE',
+            fieldName: 'campaign',
+            payload: campaignName,
+          });
+        }
+      },
+      e => {
+        console.error(e);
+      },
+    );
+  }, [campaignName, fetchClient]);
 
   const getWorkExperience = React.useCallback(() => {
     fetchClient('/gateway/customer-profile/get-work-experience', {method: 'post'}).then(
       (data: any) => {
-        const rateByExperience = getRate(data?.workExperienceMonths);
+        //const rateByExperience = getRate(data?.workExperienceMonths);
         dispatch({type: 'CHANGE_VALUE', fieldName: 'workExperience', payload: data?.workExperienceMonths});
-        dispatch({type: 'CHANGE_VALUE', fieldName: 'rate', payload: rateByExperience});
+        //dispatch({type: 'CHANGE_VALUE', fieldName: 'rate', payload: rateByExperience});
       },
       error => {
-        const fallbackRate = getRate(1);
+        //const fallbackRate = getRate(1);
         dispatch({type: 'CHANGE_VALUE', fieldName: 'workExperience', payload: 1});
-        dispatch({type: 'CHANGE_VALUE', fieldName: 'rate', payload: fallbackRate});
+        //dispatch({type: 'CHANGE_VALUE', fieldName: 'rate', payload: fallbackRate});
         console.error(error.message);
       },
     );
@@ -80,10 +122,12 @@ export function useCalcClient(maxAmount: number) {
   const validateLoanAmount = React.useCallback(
     async (value: number) => {
       try {
-        const errorMessage = `Введите от 30 000 до ${max.toLocaleString('ru')} рублей.`;
+        const errorMessage = `Введите от ${minLoanAmount.toLocaleString(
+          'ru',
+        )} до ${maxLoanAmount.toLocaleString('ru')} рублей.`;
         await minMaxValidator(value, {
-          minLimit: min,
-          maxlimit: max,
+          minLimit: minLoanAmount,
+          maxlimit: maxLoanAmount,
           errorMessage,
         });
         dispatch({type: 'ADD_ERROR', fieldName: 'requestedLoanAmount', payload: ''});
@@ -93,16 +137,16 @@ export function useCalcClient(maxAmount: number) {
         return false;
       }
     },
-    [max],
+    [maxLoanAmount, minLoanAmount],
   );
 
   const validateLoanTerm = React.useCallback(
     async (value: number) => {
       try {
-        const errorMessage = `Введите от ${minTerm} месяцев до ${maxTerm} месяцев.`;
+        const errorMessage = `Введите от ${minLoanTermMonths} месяцев до ${maxLoanTermMonths} месяцев.`;
         await minMaxValidator(value, {
-          minLimit: minTerm,
-          maxlimit: maxTerm,
+          minLimit: minLoanTermMonths,
+          maxlimit: maxLoanTermMonths,
           errorMessage,
         });
         dispatch({type: 'ADD_ERROR', fieldName: 'requestedLoanTermMonths', payload: ''});
@@ -112,7 +156,7 @@ export function useCalcClient(maxAmount: number) {
         return false;
       }
     },
-    [minTerm],
+    [maxLoanTermMonths, minLoanTermMonths],
   );
 
   const validateAllFields = React.useCallback(() => {
@@ -131,5 +175,7 @@ export function useCalcClient(maxAmount: number) {
     validateLoanTerm,
     validateAllFields,
     touched,
+    getCalculatorParams,
+    calculatorParams,
   };
 }
