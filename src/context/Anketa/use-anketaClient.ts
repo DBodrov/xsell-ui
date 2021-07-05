@@ -58,11 +58,12 @@ export function useAnketaClient() {
       setErrorState(undefined);
       fetchClient(anketaUpdateAPI[step], {body: anketa}).then(
         data => {
-          setState({status: 'resolved'});
+          //setState({status: 'resolved'});
           getAnketa();
           return data;
         },
         error => {
+          console.error(error)
           errorHandler(error);
         },
       );
@@ -123,30 +124,6 @@ export function useAnketaClient() {
     );
   }, [errorHandler, fetchClient, getAnketa]);
 
-  // const fetchCustomerCards = useCallback(() => {
-  //   setState({status: 'pending'});
-  //   fetchClient(`${PROFILE_URL}/get-otp-cards`, {body: {}}).then(
-  //     response => {
-  //       if ('customerOtpCards' in response) {
-  //         setState({
-  //           status: 'resolved',
-  //           data: {
-  //             ...data,
-  //             anketa: {...data.anketa, customerOtpCards: response?.customerOtpCards},
-  //           },
-  //         });
-  //       } else {
-  //         setState({
-  //           status: 'resolved',
-  //           data: {...data, anketa: {...data.anketa, customerOtpCards: []}},
-  //         });
-  //       }
-  //       // console.log(response);
-  //       return response;
-  //     },
-  //     error => errorHandler(error),
-  //   );
-  // }, [data, errorHandler, fetchClient]);
 
   return {
     getAnketa,
@@ -154,7 +131,6 @@ export function useAnketaClient() {
     archivingAnketa,
     refusePhotoPassport,
     verifySignature,
-    // fetchCustomerCards,
     data,
     status,
 

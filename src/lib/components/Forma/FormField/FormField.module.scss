@@ -1,9 +1,0 @@
-.FormField {
-  display: flex;
-  flex-flow: column nowrap;
-  width: 100%;
-
-  &.Inline {
-    flex-flow: row nowrap;
-  }
-}

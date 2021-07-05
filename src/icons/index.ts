@@ -12,3 +12,7 @@ export * from './UserBoxIcon';
 export * from './CCOnHand';
 export * from './CloseIcon';
 export * from './MasterCardIcon';
+export * from './CameraIcon';
+export * from './ArrowIcon';
+export * from './BankingBillIcon';
+export * from './ErrorIcon';

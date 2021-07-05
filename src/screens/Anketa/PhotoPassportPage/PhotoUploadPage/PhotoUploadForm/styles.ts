@@ -12,8 +12,8 @@ export const UploadForm = styled.div`
 export const PhotoCard = styled.div`
   display: flex;
   flex-flow: row wrap;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
-  border: 1px var(--color-border) solid;
-  padding: 16px 20px;
+  gap: 2rem;
+  margin-bottom: 24px;
 `;

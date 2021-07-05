@@ -1,5 +1,4 @@
 import GA from 'react-ga';
-import {DataService} from './data.service';
 import {TestMode, StagingMode, JestEnv} from './Environment';
 
 interface IAuditOptions {
@@ -20,8 +19,11 @@ const initAudit = () => {
 };
 
 const saveUserEvent = (userEvent: IUserEvent) => {
-  const dataService = new DataService('/gateway/report/store-event').setMethod('POST');
-  dataService.createRequest(userEvent);
+  window.fetch('/gateway/report/store-event', {
+    method: 'post',
+    body: JSON.stringify(userEvent),
+    headers: {'Content-Type': 'application/json'},
+  });
 };
 
 let cachePath: string;

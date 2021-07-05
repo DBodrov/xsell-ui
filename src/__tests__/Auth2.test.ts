@@ -3,10 +3,9 @@ import {
   screen,
   userEvent,
   renderApp,
-  // waitForElementToBeRemoved,
   waitForLoadingFinish,
 } from 'utils/test-utils';
-//jest.setTimeout(30000);
+
 const setupServer = () => {
   server.use(
     rest.post('/gateway/auth-status', (req, res, ctx) => {
@@ -22,7 +21,6 @@ const setupServer = () => {
 };
 
 test('re-send sms', async () => {
-  //jest.useFakeTimers();
   setupServer();
   renderApp();
   await waitForLoadingFinish();
@@ -32,20 +30,4 @@ test('re-send sms', async () => {
   expect(smsLink).toBeInTheDocument();
   userEvent.click(smsLink);
   expect(await screen.findByText(/Повторный запрос возможен через/i)).toBeInTheDocument();
-});
-
-test.skip('auth2 happy path', async () => {
-  /**Из за того что в MaskInput перемещается курсор программно, работу формы невозможно протестировать через Jest, т.к. в Node нет понятия курсор */
-  setupServer();
-  renderApp();
-  await waitForLoadingFinish();
-  const inputNode = screen.queryByRole('textbox');
-  expect(inputNode).toBeInTheDocument();
-
-  await userEvent.type(inputNode, '0');
-  //screen.debug(inputNode);
-  //await waitForElementToBeRemoved(() => inputNode, {timeout: 5000});
-  // await waitForLoadingFinish();
-  //jest.runAllTimers();
-  //expect(screen.queryByText(/обновляем анкету/i)).toBeInTheDocument();
 });

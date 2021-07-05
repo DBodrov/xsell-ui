@@ -13,10 +13,6 @@ declare module '*.woff';
 declare module '*.woff2';
 declare module '*.module.scss';
 
-// declare module '@emotion/react' {
-//   export interface Theme extends ITheme {}
-// }
-
 // custom global types
 type StringOrNumber = string | number;
 interface IKeyValue {

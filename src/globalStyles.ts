@@ -63,6 +63,7 @@ export const globalStyles = css(
       '--color-error': '#CC5200',
       '--color-text-error': '#CC5200',
       '--color-text-label': '#7D828B',
+      '--border-radius': '32px',
     },
     'html, body': {
       margin: 0,

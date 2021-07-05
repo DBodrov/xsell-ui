@@ -1,5 +1,5 @@
 import React, {useEffect, useLayoutEffect, createContext, useContext, useMemo} from 'react';
-import {Spinner} from 'lib/components/Spinner';
+import {Spinner} from 'components/lib';
 import {useCampaign} from 'utils/use-campaign';
 import {useAuthClient} from './use-authClient';
 import {IAuthContext} from './types';
