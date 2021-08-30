@@ -25,6 +25,7 @@ module.exports = env => {
     devtool: 'inline-source-map',
     bail: true,
     target: 'web',
+    stats: 'minimal',
 
     output: {
       path: resolveApp('dist'),
@@ -83,9 +84,9 @@ module.exports = env => {
       host: '0.0.0.0',
       port: 8080,
       hot: true,
-      noInfo: true,
-      stats: 'minimal',
-      contentBase: resolveApp('src'),
+      static: {
+        directory: resolveApp('dist'),
+      },
       proxy: {
         '/gateway': {
           target: 'https://dc-stage.cvm.isb',
